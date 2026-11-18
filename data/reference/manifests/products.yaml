@@ -1,0 +1,48 @@
+source: products
+title: Product catalog
+description: >
+  Products sold by Brindlewood Home, with category and current list price.
+  Use it to group sales by product or category.
+grain: One row per product (SKU).
+primary_key: [product_id]
+
+columns:
+  - name: product_id
+    type: string
+    role: id
+    description: Product identifier, e.g. P001.
+  - name: sku
+    type: string
+    role: id
+    description: Stock-keeping unit code.
+  - name: product_name
+    type: string
+    role: dimension
+    description: Product display name. Several products have similar names (e.g. desk lamps).
+    value_index: true
+  - name: category
+    type: string
+    role: dimension
+    description: Product category.
+    value_index: true
+    allowed_values: [Lighting, Kitchen, Textiles, Furniture, Decor]
+    aliases:
+      lamps: Lighting
+      lights: Lighting
+      homeware: Decor
+      soft furnishings: Textiles
+  - name: list_price
+    type: decimal
+    role: attribute
+    description: Current list price in EUR. Actual selling prices are in transactions.unit_price.
+    unit: EUR
+  - name: status
+    type: string
+    role: dimension
+    description: active or discontinued.
+    allowed_values: [active, discontinued]
+  - name: discontinued_date
+    type: date
+    role: attribute
+    nullable: true
+    description: Last day the product could be sold. Empty for active products.

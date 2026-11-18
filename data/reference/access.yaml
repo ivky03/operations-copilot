@@ -1,0 +1,29 @@
+# Initial access grants for the reference dataset: which groups may read each source.
+# Kept separate from manifests on purpose: stewards describe data, administrators grant access.
+groups:
+  operations: Store, fulfilment and customer operations staff
+  finance: Finance and planning staff
+
+grants:
+  # Datasets: readable by both groups
+  stores: [operations, finance]
+  products: [operations, finance]
+  transactions: [operations, finance]
+  returns: [operations, finance]
+
+  # Documents for all employees
+  metric-definitions: [operations, finance]
+  cancellation-policy: [operations, finance]
+  returns-refund-policy: [operations, finance]
+  pricing-and-promotions: [operations, finance]
+  data-quality-notes: [operations, finance]
+  market-launches: [operations, finance]
+
+  # Operations only
+  store-operations-handbook: [operations]
+  shipping-and-delivery: [operations]
+  inventory-replenishment: [operations]
+
+  # Finance only (restricted)
+  finance-margin-targets: [finance]
+  month-end-close: [finance]

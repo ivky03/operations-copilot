@@ -1,0 +1,59 @@
+# Dataset manifest: describes a table so the system can validate, load and query it.
+# Written by a data steward and uploaded alongside the CSV file.
+source: stores
+title: Stores and sales channels
+description: >
+  Every place Brindlewood Home sells from: physical stores and country web shops.
+  Use it to group sales by country, region or channel.
+grain: One row per store or online channel.
+primary_key: [store_id]
+
+columns:
+  - name: store_id
+    type: string
+    role: id
+    description: Store identifier, e.g. S01.
+  - name: store_name
+    type: string
+    role: dimension
+    description: Display name of the store or web shop.
+    value_index: true
+  - name: country
+    type: string
+    role: dimension
+    description: Country the store sells in. Full English country name.
+    value_index: true
+    aliases:
+      UK: United Kingdom
+      GB: United Kingdom
+      Great Britain: United Kingdom
+      Britain: United Kingdom
+      England: United Kingdom
+      Holland: Netherlands
+      NL: Netherlands
+      DE: Germany
+      FR: France
+      ES: Spain
+      IE: Ireland
+  - name: region
+    type: string
+    role: dimension
+    description: Commercial region grouping countries.
+    value_index: true
+  - name: channel
+    type: string
+    role: dimension
+    description: Retail (physical store) or Online (web shop).
+    value_index: true
+    allowed_values: [Retail, Online]
+    aliases:
+      web: Online
+      ecommerce: Online
+      e-commerce: Online
+      website: Online
+      in-store: Retail
+      physical: Retail
+  - name: opened_date
+    type: date
+    role: dimension
+    description: Date the store or web shop started trading.

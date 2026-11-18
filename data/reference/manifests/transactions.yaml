@@ -1,0 +1,133 @@
+source: transactions
+title: Sales transactions
+description: >
+  Every sales and cancellation line from stores and web shops.
+  The main table for revenue, units and order questions.
+grain: >
+  One row per invoice line. A cancellation is recorded as separate lines with the
+  original invoice number prefixed "C", negative quantities and is_cancellation = true.
+primary_key: [line_id]
+time_column: invoice_date
+
+columns:
+  - name: line_id
+    type: string
+    role: id
+    description: Unique line identifier (invoice number + line number).
+  - name: invoice_no
+    type: string
+    role: id
+    description: Invoice (order) number. Prefixed "C" for cancellation invoices.
+  - name: line_no
+    type: integer
+    role: id
+    description: Line number within the invoice.
+  - name: invoice_date
+    type: timestamp
+    role: time
+    description: >
+      When the sale happened, or for cancellation lines, when the cancellation happened.
+      Local store time.
+  - name: store_id
+    type: string
+    role: id
+    description: Store or web shop that made the sale.
+  - name: product_id
+    type: string
+    role: id
+    description: Product sold.
+  - name: customer_id
+    type: string
+    role: id
+    nullable: true
+    description: Loyalty customer identifier. Empty for guest checkouts (no loyalty account).
+  - name: quantity
+    type: integer
+    role: measure
+    description: Units sold. Negative on cancellation lines.
+  - name: unit_price
+    type: decimal
+    role: measure
+    description: Price actually charged per unit in EUR, after any promotion.
+    unit: EUR
+  - name: promo_code
+    type: string
+    role: dimension
+    nullable: true
+    description: Promotion applied to the line, if any.
+    value_index: true
+  - name: is_cancellation
+    type: boolean
+    role: dimension
+    description: True for cancellation lines.
+
+relationships:
+  - column: store_id
+    references: stores.store_id
+  - column: product_id
+    references: products.product_id
+
+# Governed metric definitions. Expressions may only use this table's columns, numbers and
+# + - * / ( ). Filters are structured, never free-form SQL.
+metrics:
+  - name: gross_sales
+    title: Gross sales
+    description: Value of all sales lines, before cancellations and refunds.
+    aggregation: sum
+    expression: quantity * unit_price
+    filters:
+      - {column: is_cancellation, op: "=", value: false}
+    unit: EUR
+  - name: cancellation_value
+    title: Cancellation value
+    description: Value of cancelled lines, as a positive amount, in the month the cancellation happened.
+    aggregation: sum
+    expression: -1 * quantity * unit_price
+    filters:
+      - {column: is_cancellation, op: "=", value: true}
+    unit: EUR
+  - name: units_sold
+    title: Units sold
+    description: Units on sales lines, before cancellations and returns.
+    aggregation: sum
+    expression: quantity
+    filters:
+      - {column: is_cancellation, op: "=", value: false}
+    unit: units
+  - name: order_count
+    title: Orders
+    description: Number of distinct sales invoices, including orders later cancelled.
+    aggregation: count_distinct
+    expression: invoice_no
+    filters:
+      - {column: is_cancellation, op: "=", value: false}
+    unit: orders
+  - name: cancelled_order_count
+    title: Cancelled orders
+    description: Number of distinct cancellation invoices.
+    aggregation: count_distinct
+    expression: invoice_no
+    filters:
+      - {column: is_cancellation, op: "=", value: true}
+    unit: orders
+
+# Metrics built from other metrics. Each component is calculated over the same filters and
+# groups, then combined. References to another source use "source.metric".
+derived_metrics:
+  - name: net_sales
+    title: Net sales
+    description: >
+      Gross sales minus cancellations minus refunds. Each component is attributed to the
+      period in which it happened (sale date, cancellation date, refund date).
+    formula: gross_sales - cancellation_value - returns.refund_value
+    unit: EUR
+  - name: average_order_value
+    title: Average order value (AOV)
+    description: Gross sales divided by orders.
+    formula: gross_sales / order_count
+    unit: EUR
+  - name: cancellation_rate
+    title: Cancellation rate
+    description: Cancelled orders divided by orders.
+    formula: cancelled_order_count / order_count
+    unit: ratio
