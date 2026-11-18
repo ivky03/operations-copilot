@@ -1,0 +1,69 @@
+source: returns
+title: Customer returns and refunds
+description: >
+  Products customers returned after purchase, and the refund paid.
+  Use it for refund and return-rate questions.
+grain: One row per returned invoice line (partial returns allowed).
+primary_key: [return_id]
+time_column: return_date
+
+columns:
+  - name: return_id
+    type: string
+    role: id
+    description: Return identifier, e.g. R-0001.
+  - name: invoice_no
+    type: string
+    role: id
+    description: Original sales invoice.
+  - name: line_no
+    type: integer
+    role: id
+    description: Line number on the original invoice.
+  - name: return_date
+    type: timestamp
+    role: time
+    description: When the return was processed and refunded.
+  - name: store_id
+    type: string
+    role: id
+    description: Store of the original sale (refunds are attributed to the selling store).
+  - name: product_id
+    type: string
+    role: id
+    description: Product returned.
+  - name: quantity
+    type: integer
+    role: measure
+    description: Units returned.
+  - name: refund_amount
+    type: decimal
+    role: measure
+    description: Amount refunded in EUR.
+    unit: EUR
+  - name: reason
+    type: string
+    role: dimension
+    nullable: true
+    description: Return reason. Empty when not recorded.
+    value_index: true
+
+relationships:
+  - column: store_id
+    references: stores.store_id
+  - column: product_id
+    references: products.product_id
+
+metrics:
+  - name: refund_value
+    title: Refund value
+    description: Total refunded, in the month the refund was processed.
+    aggregation: sum
+    expression: refund_amount
+    unit: EUR
+  - name: units_returned
+    title: Units returned
+    description: Units returned.
+    aggregation: sum
+    expression: quantity
+    unit: units
