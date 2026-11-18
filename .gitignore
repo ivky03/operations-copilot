@@ -1,0 +1,34 @@
+# Private notes — never commit. They live outside this repo; these lines are a safety net.
+devlog/
+notes/
+*interview*
+
+# Secrets — never commit. Use .env.example as the template.
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+frontend/dist/
+
+# Local data and model caches
+.data/
+.cache/
+*.onnx
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
