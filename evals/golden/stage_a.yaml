@@ -10,6 +10,8 @@
 #   abstain           say the data/documents cannot answer it; never invent a figure
 #   restricted        the persona lacks access; must not reveal any content from `must_not_cite`
 # Citations: "doc_id" means the current version; "doc_id@vN" pins a specific version.
+# Empty oracle rows ([]) mean no matching records: sums and counts are 0 for that slice, and an
+# answer stating 0 (or "no sales") is correct. Ratios over an empty slice are undefined.
 version: 1
 dataset: stage_a
 reference_date: "2026-04-30"   # "this month" / "last month" are relative to the data cutoff
