@@ -1,6 +1,6 @@
 """FastAPI application entry point.
 
-Run locally:  cd backend && uv run uvicorn app.main:app --reload
+Run locally:  cd backend && uv run uvicorn app.main:app --reload --port 8010
 """
 
 from pathlib import Path
