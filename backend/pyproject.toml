@@ -1,0 +1,41 @@
+[project]
+name = "operations-copilot"
+version = "0.1.0"
+description = "Internal AI assistant over governed datasets and documents (synthetic data)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "alembic>=1.20.1",
+    "boto3>=1.43.123",
+    "fastapi>=0.162.0",
+    "psycopg[binary]>=3.3.6",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy>=2",
+    "structlog>=26.1.0",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[tool.uv]
+# Supply-chain hygiene: never resolve packages published after this date.
+# Bump deliberately when upgrading dependencies.
+exclude-newer = "2026-11-01T00:00:00Z"
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM"]
+ignore = ["S101"]  # assert is fine in tests
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: needs Postgres and Floci running (docker compose up)"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
