@@ -1,0 +1,79 @@
+# Runs on every pull request and every push to main.
+# Branch protection requires these jobs to pass before a PR can merge.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A new push to the same PR cancels the in-progress run, so CI minutes aren't wasted.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read   # least privilege: CI only needs to read the code
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      # Same images as docker-compose.yml, so CI tests against the real dependencies.
+      postgres:
+        image: pgvector/pgvector:0.8.0-pg16
+        env:
+          POSTGRES_USER: copilot
+          POSTGRES_PASSWORD: copilot-dev-only
+          POSTGRES_DB: copilot
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U copilot -d copilot"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+      floci:
+        image: floci/floci:2.4.0
+        env:
+          FLOCI_STORAGE_MODE: memory      # CI is throwaway; no persistence needed
+          FLOCI_SERVICES_UI_ENABLED: "false"
+        ports: ["4566:4566"]
+    env:
+      DATABASE_URL: postgresql+psycopg://copilot:copilot-dev-only@localhost:5432/copilot
+      AWS_ENDPOINT_URL: http://localhost:4566
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      # Actions pinned to commit SHAs (tags can be moved; SHAs can't).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
+        with:
+          enable-cache: true
+      - name: Install dependencies (exactly as locked)
+        run: uv sync --frozen
+      - name: Lint
+        run: uv run ruff check .
+      - name: Format check
+        run: uv run ruff format --check .
+      - name: Apply migrations
+        run: uv run alembic upgrade head
+      - name: Tests (unit + integration)
+        run: uv run pytest -v
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies (exactly as locked)
+        run: npm ci
+      - name: Typecheck and build
+        run: npm run build

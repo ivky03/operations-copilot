@@ -4,6 +4,8 @@
 
 Employees ask questions in plain language. Operations Copilot answers with numbers computed from approved datasets, passages cited from approved documents, and the exact source versions used, drawing only on sources each employee is authorized to see.
 
+[![CI](https://github.com/ivky03/operations-copilot/actions/workflows/ci.yml/badge.svg)](https://github.com/ivky03/operations-copilot/actions/workflows/ci.yml)
+
 ---
 
 ## The problem
@@ -100,6 +102,35 @@ Each capability is evaluated separately, and results are published in `evals/rep
 | Failure recovery | Worker crashes, duplicate messages, restarts, backup restore |
 
 Deterministic tests (unit, integration, and mocked-model workflow tests) run in CI on every pull request. Model-quality evaluations run separately against real models. **No result is claimed before it has been measured.**
+
+## Running locally
+
+Prerequisites: Docker Desktop, [uv](https://docs.astral.sh/uv/), Node 20+.
+
+```bash
+cp .env.example .env                  # local defaults; no real secrets needed yet
+docker compose up -d                  # Postgres (host port 5433) + Floci S3/SQS emulator (4566)
+
+cd backend
+uv sync                               # install Python dependencies exactly as locked
+uv run alembic upgrade head           # apply database migrations
+uv run pytest                         # unit + integration tests
+uv run uvicorn app.main:app --reload  # API on http://localhost:8000
+
+# In a second terminal
+cd frontend && npm ci && npm run dev  # web app on http://localhost:5173
+```
+
+`GET /health` returns `200` when the API can reach PostgreSQL and the S3/SQS emulator, and `503` with per-dependency status otherwise. The application refuses to start if it's configured to target real AWS without an explicit `ALLOW_REAL_AWS=true`.
+
+## Repository layout
+
+```
+backend/            FastAPI application, migrations, tests
+frontend/           React + TypeScript web app
+.github/workflows/  CI pipeline
+docker-compose.yml  Local PostgreSQL and AWS emulator
+```
 
 ---
 
