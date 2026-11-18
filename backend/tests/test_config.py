@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from app.config import Settings
+from app.config import DEV_DATABASE_URL, Settings
 
 
 def make(**overrides) -> Settings:
@@ -38,3 +38,14 @@ def test_lookalike_host_is_rejected() -> None:
 def test_explicit_opt_in_allows_real_aws() -> None:
     s = make(aws_endpoint_url=None, allow_real_aws=True)
     assert s.allow_real_aws is True
+
+
+def test_dev_database_is_rejected_outside_local():
+    with pytest.raises(ValidationError, match="DATABASE_URL must be set"):
+        # Explicit, because the test run itself sets DATABASE_URL in the environment.
+        make(app_env="production", database_url=DEV_DATABASE_URL)
+
+
+def test_explicit_database_is_accepted_outside_local():
+    s = make(app_env="production", database_url="postgresql+psycopg://app:secret@db/prod")
+    assert s.cookie_secure is True
