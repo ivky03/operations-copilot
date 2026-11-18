@@ -1,0 +1,781 @@
+{
+  "calc-001": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 19058.0
+        }
+      ]
+    }
+  ],
+  "calc-002": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-01",
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "country"
+        ],
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "country": "France",
+          "gross_sales": 5344.0
+        },
+        {
+          "country": "Germany",
+          "gross_sales": 19971.0
+        },
+        {
+          "country": "Ireland",
+          "gross_sales": 3067.5
+        },
+        {
+          "country": "Netherlands",
+          "gross_sales": 2862.0
+        },
+        {
+          "country": "Spain",
+          "gross_sales": 3609.5
+        },
+        {
+          "country": "United Kingdom",
+          "gross_sales": 15522.0
+        }
+      ]
+    }
+  ],
+  "calc-003": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "group_by": [
+          "category"
+        ],
+        "metric": "units_sold"
+      },
+      "rows": [
+        {
+          "category": "Decor",
+          "units_sold": 53
+        },
+        {
+          "category": "Furniture",
+          "units_sold": 28
+        },
+        {
+          "category": "Kitchen",
+          "units_sold": 74
+        },
+        {
+          "category": "Lighting",
+          "units_sold": 57
+        },
+        {
+          "category": "Textiles",
+          "units_sold": 64
+        }
+      ]
+    }
+  ],
+  "calc-004": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-01"
+          ]
+        },
+        "metric": "average_order_value"
+      },
+      "rows": [
+        {
+          "average_order_value": 411.41
+        }
+      ]
+    }
+  ],
+  "calc-005": [
+    {
+      "query": {
+        "group_by": [
+          "month"
+        ],
+        "metric": "cancellation_rate"
+      },
+      "rows": [
+        {
+          "cancellation_rate": 0.0526,
+          "month": "2026-01"
+        },
+        {
+          "cancellation_rate": 0.0541,
+          "month": "2026-02"
+        },
+        {
+          "cancellation_rate": 0.0426,
+          "month": "2026-03"
+        },
+        {
+          "cancellation_rate": 0.14,
+          "month": "2026-04"
+        }
+      ]
+    }
+  ],
+  "calc-006": [
+    {
+      "query": {
+        "group_by": [
+          "month"
+        ],
+        "metric": "refund_value"
+      },
+      "rows": [
+        {
+          "month": "2026-01",
+          "refund_value": 813.0
+        },
+        {
+          "month": "2026-02",
+          "refund_value": 1769.0
+        },
+        {
+          "month": "2026-03",
+          "refund_value": 237.0
+        },
+        {
+          "month": "2026-04",
+          "refund_value": 2093.2
+        }
+      ]
+    }
+  ],
+  "calc-007": [
+    {
+      "query": {
+        "group_by": [
+          "product_name"
+        ],
+        "limit": 5,
+        "metric": "gross_sales",
+        "order_by_value": true
+      },
+      "rows": [
+        {
+          "gross_sales": 7896.0,
+          "product_name": "Oak Coffee Table"
+        },
+        {
+          "gross_sales": 7170.0,
+          "product_name": "Walnut Bench"
+        },
+        {
+          "gross_sales": 6783.0,
+          "product_name": "Wall Mirror"
+        },
+        {
+          "gross_sales": 6451.7,
+          "product_name": "Jute Area Rug"
+        },
+        {
+          "gross_sales": 5805.0,
+          "product_name": "Brass Floor Lamp"
+        }
+      ]
+    }
+  ],
+  "calc-008": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "channel"
+        ],
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "channel": "Online",
+          "net_sales": 15244.5
+        },
+        {
+          "channel": "Retail",
+          "net_sales": 3813.5
+        }
+      ]
+    }
+  ],
+  "calc-009": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Germany"
+          ],
+          "month": [
+            "2026-02"
+          ]
+        },
+        "metric": "order_count"
+      },
+      "rows": [
+        {
+          "order_count": 21
+        }
+      ]
+    }
+  ],
+  "calc-010": [
+    {
+      "query": {
+        "filters": {
+          "category": [
+            "Lighting"
+          ]
+        },
+        "group_by": [
+          "month"
+        ],
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 2648.0,
+          "month": "2026-01"
+        },
+        {
+          "gross_sales": 2208.0,
+          "month": "2026-02"
+        },
+        {
+          "gross_sales": 3399.5,
+          "month": "2026-03"
+        },
+        {
+          "gross_sales": 2863.5,
+          "month": "2026-04"
+        }
+      ]
+    }
+  ],
+  "calc-011": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "cancellation_value"
+      },
+      "rows": [
+        {
+          "cancellation_value": 1775.9
+        }
+      ]
+    },
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "cancelled_order_count"
+      },
+      "rows": [
+        {
+          "cancelled_order_count": 7
+        }
+      ]
+    }
+  ],
+  "calc-012": [
+    {
+      "query": {
+        "group_by": [
+          "region"
+        ],
+        "metric": "units_returned"
+      },
+      "rows": [
+        {
+          "region": "Central Europe",
+          "units_returned": 21
+        },
+        {
+          "region": "Southwest Europe",
+          "units_returned": 3
+        },
+        {
+          "region": "UK & Ireland",
+          "units_returned": 23
+        }
+      ]
+    }
+  ],
+  "comb-001": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "month",
+          "country"
+        ],
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "country": "Germany",
+          "month": "2026-02",
+          "net_sales": 7070.0
+        },
+        {
+          "country": "Ireland",
+          "month": "2026-02",
+          "net_sales": 509.0
+        },
+        {
+          "country": "Netherlands",
+          "month": "2026-02",
+          "net_sales": 4.0
+        },
+        {
+          "country": "Spain",
+          "month": "2026-02",
+          "net_sales": 2396.5
+        },
+        {
+          "country": "United Kingdom",
+          "month": "2026-02",
+          "net_sales": 2205.5
+        },
+        {
+          "country": "France",
+          "month": "2026-03",
+          "net_sales": 5344.0
+        },
+        {
+          "country": "Germany",
+          "month": "2026-03",
+          "net_sales": 8003.5
+        },
+        {
+          "country": "Ireland",
+          "month": "2026-03",
+          "net_sales": -509.0
+        },
+        {
+          "country": "Netherlands",
+          "month": "2026-03",
+          "net_sales": 1288.0
+        },
+        {
+          "country": "Spain",
+          "month": "2026-03",
+          "net_sales": 196.0
+        },
+        {
+          "country": "United Kingdom",
+          "month": "2026-03",
+          "net_sales": 4735.5
+        }
+      ]
+    }
+  ],
+  "comb-002": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "France"
+          ]
+        },
+        "group_by": [
+          "month"
+        ],
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 5344.0,
+          "month": "2026-03"
+        },
+        {
+          "gross_sales": 4362.1,
+          "month": "2026-04"
+        }
+      ]
+    }
+  ],
+  "comb-003": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Ireland"
+          ],
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "gross_sales"
+      },
+      "rows": []
+    },
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Ireland"
+          ],
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "cancellation_value"
+      },
+      "rows": [
+        {
+          "cancellation_value": 509.0
+        }
+      ]
+    },
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Ireland"
+          ],
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": -509.0
+        }
+      ]
+    }
+  ],
+  "comb-004": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "refund_value"
+      },
+      "rows": [
+        {
+          "refund_value": 2093.2
+        }
+      ]
+    }
+  ],
+  "comb-005": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "average_order_value"
+      },
+      "rows": [
+        {
+          "average_order_value": 440.45
+        }
+      ]
+    }
+  ],
+  "fu-001#1": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "country"
+        ],
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "country": "France",
+          "net_sales": 5344.0
+        },
+        {
+          "country": "Germany",
+          "net_sales": 8003.5
+        },
+        {
+          "country": "Ireland",
+          "net_sales": -509.0
+        },
+        {
+          "country": "Netherlands",
+          "net_sales": 1288.0
+        },
+        {
+          "country": "Spain",
+          "net_sales": 196.0
+        },
+        {
+          "country": "United Kingdom",
+          "net_sales": 4735.5
+        }
+      ]
+    }
+  ],
+  "fu-001#2": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "group_by": [
+          "country"
+        ],
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "country": "France",
+          "net_sales": 3853.1
+        },
+        {
+          "country": "Germany",
+          "net_sales": 3043.8
+        },
+        {
+          "country": "Netherlands",
+          "net_sales": 2091.5
+        },
+        {
+          "country": "Spain",
+          "net_sales": 245.0
+        },
+        {
+          "country": "United Kingdom",
+          "net_sales": 4651.9
+        }
+      ]
+    }
+  ],
+  "fu-002#1": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Germany"
+          ],
+          "month": [
+            "2026-02"
+          ]
+        },
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 7773.0
+        }
+      ]
+    }
+  ],
+  "fu-002#2": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Germany"
+          ],
+          "month": [
+            "2026-02"
+          ]
+        },
+        "group_by": [
+          "category"
+        ],
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "category": "Decor",
+          "gross_sales": 1338.0
+        },
+        {
+          "category": "Furniture",
+          "gross_sales": 2877.0
+        },
+        {
+          "category": "Kitchen",
+          "gross_sales": 756.5
+        },
+        {
+          "category": "Lighting",
+          "gross_sales": 1516.5
+        },
+        {
+          "category": "Textiles",
+          "gross_sales": 1285.0
+        }
+      ]
+    }
+  ],
+  "vg-001": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "United Kingdom"
+          ],
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 4651.9
+        }
+      ]
+    }
+  ],
+  "vg-002": [
+    {
+      "query": {
+        "filters": {
+          "country": [
+            "Netherlands"
+          ],
+          "month": [
+            "2026-01",
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 2862.0
+        }
+      ]
+    }
+  ],
+  "vg-003": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "Berlin Store"
+          ]
+        },
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 2794.5
+        }
+      ]
+    }
+  ],
+  "vg-004": [
+    {
+      "query": {
+        "filters": {
+          "category": [
+            "Textiles"
+          ],
+          "channel": [
+            "Online"
+          ],
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "units_sold"
+      },
+      "rows": [
+        {
+          "units_sold": 47
+        }
+      ]
+    }
+  ],
+  "vg-005": [
+    {
+      "query": {
+        "filters": {
+          "product_name": [
+            "Brass Floor Lamp"
+          ]
+        },
+        "group_by": [
+          "month"
+        ],
+        "metric": "gross_sales"
+      },
+      "rows": [
+        {
+          "gross_sales": 1419.0,
+          "month": "2026-01"
+        },
+        {
+          "gross_sales": 1032.0,
+          "month": "2026-02"
+        },
+        {
+          "gross_sales": 1935.0,
+          "month": "2026-03"
+        },
+        {
+          "gross_sales": 1419.0,
+          "month": "2026-04"
+        }
+      ]
+    }
+  ]
+}
