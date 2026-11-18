@@ -1,7 +1,7 @@
 """Alembic migration environment.
 
 The database URL comes from app.config.Settings, so migrations and the app always target
-the same database. Models' metadata is added here once we define ORM tables (M2).
+the same database.
 """
 
 from logging.config import fileConfig
@@ -10,12 +10,15 @@ from alembic import context
 from sqlalchemy import create_engine, pool
 
 from app.config import get_settings
+from app.models import Base
 
 config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = None  # set to Base.metadata in M2 for autogenerate support
+# Autogenerate compares these ORM classes with the database. Dataset tables in the `datasets`
+# schema are created at publish time and are deliberately not managed here.
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:

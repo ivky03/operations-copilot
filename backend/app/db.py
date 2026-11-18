@@ -4,9 +4,11 @@ One SQLAlchemy Engine per process. It keeps a pool of open connections, so each 
 doesn't pay the cost of opening a new TCP connection to Postgres.
 """
 
+from collections.abc import Iterator
 from functools import lru_cache
 
 from sqlalchemy import Engine, create_engine, text
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.config import get_settings
 
@@ -16,6 +18,24 @@ def get_engine() -> Engine:
     # pool_pre_ping: test a pooled connection before using it, so a Postgres restart
     # doesn't surface as a confusing error on the first request afterwards.
     return create_engine(get_settings().database_url, pool_pre_ping=True)
+
+
+@lru_cache
+def _session_factory() -> sessionmaker[Session]:
+    # expire_on_commit=False: objects stay readable after commit, e.g. to return them.
+    return sessionmaker(bind=get_engine(), expire_on_commit=False)
+
+
+def get_db() -> Iterator[Session]:
+    """FastAPI dependency: one database session per request, always closed afterwards.
+
+    Note: a *database* session (a unit of work) is unrelated to a *login* session (models.Session).
+    """
+    db = _session_factory()()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 def check_database() -> dict[str, str]:
