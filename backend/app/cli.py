@@ -23,6 +23,7 @@ from sqlalchemy.orm import Session
 
 from app import audit
 from app.db import _session_factory
+from app.documents.index import reindex_all
 from app.ingest.manifest import parse_manifest
 from app.ingest.publish import PublishResult, publish_dataset, publish_document
 from app.ingest.validate import validate_csv
@@ -172,6 +173,9 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("seed-reference", help="Create groups, demo users, sources and grants")
     sub.add_parser("publish-reference", help="Validate, load and publish all reference data")
+    sub.add_parser(
+        "index-documents", help="Rebuild search chunks for every stored document version"
+    )
     vd = sub.add_parser("validate-dataset", help="Check a CSV against a manifest (no changes)")
     vd.add_argument("--manifest", type=Path, required=True)
     vd.add_argument("--csv", type=Path, required=True)
@@ -213,6 +217,9 @@ def main(argv: list[str] | None = None) -> int:
                 _print_result(r)
             if any(r.status == "invalid" for r in results):
                 return 1
+        elif args.command == "index-documents":
+            for label, count in reindex_all(db).items():
+                print(f"  {label:<36} {count} chunks")
     return 0
 
 

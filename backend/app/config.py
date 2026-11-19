@@ -53,6 +53,11 @@ class Settings(BaseSettings):
     llm_fallback_model: str = "gemini-3.5-flash-lite"
     llm_timeout_seconds: float = 45.0
 
+    # Document embeddings run locally on the CPU (no API, no quota). The model (~64 MB) is
+    # downloaded once into the cache directory.
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
+    embedding_cache_dir: str = str(Path.home() / ".cache" / "fastembed")
+
     @property
     def is_local(self) -> bool:
         return self.app_env in {"local", "test"}
