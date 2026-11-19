@@ -1,37 +1,62 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { currentSession, logout, type Session } from "./api/client";
+import { HomePage } from "./HomePage";
+import { LoginPage } from "./LoginPage";
 
-type Check = { status: string; [key: string]: string };
-type Health = { status: string; checks: Record<string, Check> };
+/**
+ * Top-level switch: checking → signed out (login page) → signed in (home page).
+ * On load we ask the backend "who am I?" (/api/auth/me), so a page refresh keeps you signed in
+ * for as long as the server-side session is valid.
+ */
+type State =
+  | { status: "checking" }
+  | { status: "signed-out"; notice?: string }
+  | { status: "signed-in"; session: Session }
+  | { status: "error"; message: string };
 
-// M0 placeholder: proves the browser → API → Postgres/Floci path works end to end.
 export function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<State>({ status: "checking" });
 
   useEffect(() => {
-    fetch("/health")
-      .then((r) => r.json() as Promise<Health>)
-      .then(setHealth)
-      .catch((e: unknown) => setError(String(e)));
+    currentSession()
+      .then((session) => setState(session ? { status: "signed-in", session } : { status: "signed-out" }))
+      .catch((e: unknown) => setState({ status: "error", message: e instanceof Error ? e.message : String(e) }));
   }, []);
 
-  return (
-    <main style={{ fontFamily: "system-ui, sans-serif", maxWidth: 640, margin: "48px auto", padding: "0 16px" }}>
-      <h1>Operations Copilot</h1>
-      <p>Synthetic-data portfolio project. Skeleton build (M0).</p>
-      <h2>System health</h2>
-      {error && <p role="alert">Could not reach API: {error}</p>}
-      {!health && !error && <p>Checking…</p>}
-      {health && (
-        <ul>
-          <li>Overall: <strong>{health.status}</strong></li>
-          {Object.entries(health.checks).map(([name, c]) => (
-            <li key={name}>
-              {name}: {c.status}
-            </li>
-          ))}
-        </ul>
-      )}
-    </main>
+  const handleSessionExpired = useCallback(
+    () => setState({ status: "signed-out", notice: "Your session has ended. Please sign in again." }),
+    [],
   );
+
+  async function handleSignOut() {
+    try {
+      await logout();
+    } finally {
+      setState({ status: "signed-out" });
+    }
+  }
+
+  switch (state.status) {
+    case "checking":
+      return <p className="centered muted">Loading…</p>;
+    case "error":
+      return (
+        <p className="centered error" role="alert">
+          {state.message}
+        </p>
+      );
+    case "signed-out":
+      return (
+        <>
+          {state.notice && (
+            <p className="banner" role="status">
+              {state.notice}
+            </p>
+          )}
+          <LoginPage onLoggedIn={(session) => setState({ status: "signed-in", session })} />
+        </>
+      );
+    case "signed-in":
+      return <HomePage session={state.session} onSignOut={handleSignOut} onSessionExpired={handleSessionExpired} />;
+  }
 }
