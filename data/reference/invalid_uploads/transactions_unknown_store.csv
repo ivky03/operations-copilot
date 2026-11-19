@@ -1,0 +1,4 @@
+line_id,invoice_no,line_no,invoice_date,store_id,product_id,customer_id,quantity,unit_price,promo_code,is_cancellation
+INV-900101-1,INV-900101,1,2026-05-02T10:15:00,S01,P001,C1001,2,39.00,,false
+INV-900102-1,INV-900102,1,2026-05-02T12:00:00,S99,P001,C1002,1,39.00,,false
+INV-900103-1,INV-900103,1,2026-05-02T13:00:00,S02,P999,C1003,1,39.00,,false
