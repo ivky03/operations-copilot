@@ -18,6 +18,7 @@ from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
+from app.query.executor import READER_GRANTS_SQL
 
 
 def _clear_caches() -> None:
@@ -64,6 +65,8 @@ def _clean_tables(test_database: str) -> Iterator[None]:
         # drop them, so reset the whole schema too.
         conn.execute(text("DROP SCHEMA IF EXISTS datasets CASCADE"))
         conn.execute(text("CREATE SCHEMA datasets"))
+        for statement in READER_GRANTS_SQL:  # recreating the schema drops its privileges
+            conn.execute(text(statement))
 
 
 @pytest.fixture
