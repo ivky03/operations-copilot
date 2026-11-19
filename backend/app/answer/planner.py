@@ -13,7 +13,7 @@ from app.answer.context import SchemaContext
 from app.llm.client import CallRecord, LLMClient
 from app.query.plan import QueryPlan
 
-PROMPT_VERSION = "planner-v2"
+PROMPT_VERSION = "planner-v3"
 
 
 class AnswerPlan(BaseModel):
@@ -38,11 +38,11 @@ JSON fields:
     "documents"     it asks about policies, procedures, definitions or explanations rather
                     than numbers (document answers are handled by a different component)
 - "queries": for kind "data", 1 to 3 query objects (one per metric needed). Each query:
-    "metric":      a metric name exactly as listed (e.g. "net_sales")
-    "dimensions":  column names to group by (e.g. ["country"]); [] for a single total
+    "metric":      a metric name exactly as listed
+    "dimensions":  column names to group by (e.g. ["region"]); [] for a single total
     "filters":     [{"dimension": "<column>", "op": "=" | "in" | "!=" | "not in",
                      "values": ["<words from the question>"]}]
-                   Copy the user's EXACT words for values (e.g. "UK", "desk lamp"). Never
+                   Copy the user's EXACT words for values (e.g. "UK", "north"). Never
                    replace them with a value from the examples list, even if one looks close:
                    matching to real values, and asking the user when several match, happens
                    later. Use "in" for several values.
@@ -55,12 +55,22 @@ JSON fields:
 - "reason": for kind "unanswerable" or "documents", one short sentence.
 
 Rules:
+- Use "time_grain" ONLY when the question asks for a breakdown over time ("by month",
+  "monthly", "each month", "trend", "over time") or compares periods. A period mentioned only
+  as a filter ("in Q1", "between January and April", "in March") means ONE total for that
+  period: set "time_range" and omit "time_grain".
 - Comparing periods (e.g. February vs March): ONE query covering both periods with
   "time_grain": "month" and the dimensions requested.
+- "Why" questions about a derived metric (one with a "Formula" in the data description): also
+  query each metric named in its formula, with the same filters, so the answer can show what
+  drove the result.
 - "Q1" means January to March. "Last month" and "this month" are relative to the end of the
   data's date range, given below.
 - Never invent metric or column names. If no listed metric fits, use "unanswerable".
-- If the question mixes numbers and policy, plan the data part with kind "data".
+- If the question mixes numbers with a policy or explanation (e.g. "how much did X total, and
+  what is the rule for Y?", "why is there no data for Z in February?"), use kind "data" for
+  the numeric part. Never use "documents" or "unanswerable" when part of the question can
+  be answered with the listed metrics.
 - Reply with the JSON object only."""
 
 

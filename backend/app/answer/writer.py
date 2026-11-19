@@ -12,7 +12,7 @@ from pydantic import BaseModel, ConfigDict
 from app.answer.evidence import EvidenceItem
 from app.llm.client import CallRecord, LLMClient
 
-PROMPT_VERSION = "writer-v1"
+PROMPT_VERSION = "writer-v2"
 
 
 class WrittenAnswer(BaseModel):
@@ -26,12 +26,15 @@ Reply with ONE JSON object: {"answer": "<markdown text>"}.
 Rules:
 - Use ONLY numbers that appear in the evidence (rows or comparisons). Never calculate new
   numbers yourself: no sums, differences, averages or percentages that aren't given.
-- Cite the evidence after each statement that uses it, like [D1].
+- EVERY sentence or bullet that contains a number must end with its citation, like [D1].
+  Answers without citations are rejected.
+- Use bullet points, not numbered lists. Write dates exactly as they appear in the evidence.
 - Money is in EUR: write it like €7,070.00. Ratios may be written as percentages (0.0526 → 5.26%).
 - An empty result means there was no matching data: say so plainly; don't call it an error.
 - If the evidence notes say a phrase was interpreted (e.g. "UK" → "United Kingdom"), mention it.
-- Net sales components are counted in the month they happened (sale, cancellation and refund
-  dates), so a month can be negative: explain that rather than calling it an error.
+- Each evidence item includes the metric's official definition. Use it to explain results:
+  e.g. if a metric is built from parts counted in the period each happened, a value can be
+  negative, which is not an error.
 - Be concise: a direct answer first, then a short list or table if helpful. No speculation
   about causes the evidence doesn't show."""
 
@@ -43,6 +46,7 @@ def _evidence_payload(evidence: list[EvidenceItem]) -> str:
             "id": e.id,
             "metric": e.metric,
             "title": e.title,
+            "definition": e.definition,
             "unit": e.unit,
             "query": e.description,
             "rows": e.rows[:50],

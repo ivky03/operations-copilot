@@ -121,6 +121,8 @@ def test_restricted_datasets_never_reach_the_prompt(db, olivia):
     _, planner, _ = ask(db, olivia, "Refunds?", [{"kind": "unanswerable", "reason": "no data"}], [])
     prompt = json.dumps(planner.prompts[0])
     assert "refund_value" not in prompt and "Customer returns" not in prompt
+    # net_sales depends on returns, so it is unusable for this user and must not be offered
+    assert "`net_sales`" not in prompt
 
 
 # ----------------------------------------------------------------------------- verification
@@ -396,3 +398,27 @@ def test_ask_endpoint(client, db, olivia):
     assert resp.status_code == 200, resp.text
     body = resp.json()
     assert body["status"] == "answered" and body["evidence"][0]["rows"] == [{"net_sales": -509.0}]
+
+
+def test_verifier_ignores_list_numbering_and_typographic_characters():
+    rows = [
+        {"product_name": f"P{i}", "gross_sales": float(v)}
+        for i, v in enumerate([500, 400, 300, 200, 100])
+    ]
+    item = _item(rows, metric="gross_sales")
+    text = "1. P0: €500.00 [D1]\n2. P1: €400.00 [D1]\nFrom 2026‑01‑01 to 2026‑04‑01 [D1]"
+    assert verify(text, [item], "top products").ok
+    assert verify("Net sales were −€500.00 [D1]", [item], "q").ok  # minus sign variant
+
+
+def test_rejected_drafts_are_kept_for_diagnosis(db, olivia):
+    result, _, _ = ask(
+        db,
+        olivia,
+        "Ireland net sales March 2026?",
+        [IRELAND_MARCH],
+        [{"answer": "About €9,999 [D1]."}, {"answer": "Roughly €8,888 [D1]."}],
+    )
+    drafts = db.get(AnswerRun, result.run_id).verification["rejected_drafts"]
+    assert [d["draft"] for d in drafts] == ["About €9,999 [D1].", "Roughly €8,888 [D1]."]
+    assert "9,999" in drafts[0]["problems"]

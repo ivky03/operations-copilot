@@ -158,14 +158,19 @@ def answer_question(
 
         text = write_answer(writer, question, evidence, notes, calls)
         check = verify(text, evidence, question)
+        rejected = []
         if not check.ok:
+            rejected.append({"draft": text, "problems": check.feedback()})
             text = write_answer(writer, question, evidence, notes, calls, feedback=check.feedback())
             check = verify(text, evidence, question)
+            if not check.ok:
+                rejected.append({"draft": text, "problems": check.feedback()})
         verification = {
             "ok": check.ok,
             "unsupported_numbers": check.unsupported_numbers,
             "unknown_citations": check.unknown_citations,
             "missing_citation": check.missing_citation,
+            "rejected_drafts": rejected,  # kept for diagnosis; never shown to the user
         }
         if check.ok:
             status, answer = "answered", text
