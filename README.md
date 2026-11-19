@@ -114,7 +114,9 @@ docker compose up -d                  # Postgres (host port 5433) + Floci S3/SQS
 cd backend
 uv sync                               # install Python dependencies exactly as locked
 uv run alembic upgrade head           # apply database migrations
-uv run pytest                         # unit + integration tests
+uv run python -m app.cli seed-reference     # groups, demo users (passwords printed once), sources
+uv run python -m app.cli publish-reference  # validate, load and publish the reference dataset
+uv run pytest                         # unit, integration and end-to-end tests
 uv run uvicorn app.main:app --reload --port 8010  # API on http://localhost:8010
 
 # In a second terminal

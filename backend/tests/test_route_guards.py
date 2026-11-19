@@ -47,3 +47,13 @@ def test_every_admin_route_rejects_non_admins(client, make_user, method, path):
     csrf = login(client, "employee@example.com")
     resp = client.request(method, _concrete(path), json={}, headers={"X-CSRF-Token": csrf})
     assert resp.status_code == 403, f"{method} {path} answered {resp.status_code} for an employee"
+
+
+def test_frontend_api_contract_is_current():
+    """Drift guard: backend response shapes changed? Re-export the contract and regenerate the
+    frontend types (`uv run python -m app.openapi_export`, then `npm run gen:api`)."""
+    from app.openapi_export import CONTRACT, render
+
+    assert CONTRACT.read_text(encoding="utf-8") == render(), (
+        "frontend/src/api/openapi.json is stale"
+    )
