@@ -105,7 +105,7 @@ Deterministic tests (unit, integration, and mocked-model workflow tests) run in 
 
 ## Running locally
 
-Prerequisites: Docker Desktop, [uv](https://docs.astral.sh/uv/), Node 20+.
+Prerequisites: Docker Desktop, [uv](https://docs.astral.sh/uv/), Node 22 (`frontend/.nvmrc`; run `nvm use` in `frontend/`).
 
 ```bash
 cp .env.example .env                  # local defaults; no real secrets needed yet
@@ -115,10 +115,10 @@ cd backend
 uv sync                               # install Python dependencies exactly as locked
 uv run alembic upgrade head           # apply database migrations
 uv run pytest                         # unit + integration tests
-uv run uvicorn app.main:app --reload  # API on http://localhost:8000
+uv run uvicorn app.main:app --reload --port 8010  # API on http://localhost:8010
 
 # In a second terminal
-cd frontend && npm ci && npm run dev  # web app on http://localhost:5173
+cd frontend && nvm use && npm ci && npm run dev  # web app on http://localhost:5173
 ```
 
 `GET /health` returns `200` when the API can reach PostgreSQL and the S3/SQS emulator, and `503` with per-dependency status otherwise. The application refuses to start if it's configured to target real AWS without an explicit `ALLOW_REAL_AWS=true`.
