@@ -109,3 +109,41 @@ td:nth-child(2), th:nth-child(2), td:nth-child(3) { white-space: nowrap; }
   .user > span { display: none; }
   td:nth-child(3), th:nth-child(3) { display: none; }
 }
+
+/* Ask panel */
+.ask { margin-top: 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.ask label { margin-top: 0; }
+.ask-row { display: flex; gap: 0.5rem; }
+.ask-row input { flex: 1; min-width: 0; }
+.ask-row button { margin-top: 0; }
+.examples { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip {
+  margin: 0; padding: 0.3rem 0.7rem; font-weight: 500; font-size: 0.85rem;
+  background: var(--badge-bg); color: var(--text); border: 1px solid var(--border); border-radius: 999px;
+}
+.answer { border-top: 1px solid var(--border); padding-top: 0.75rem; }
+.answer-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+.status { font-size: 0.85rem; font-weight: 600; padding: 0.15rem 0.6rem; border-radius: 999px; }
+.status.ok { background: #e3f4ea; color: #1d6b3a; }
+.status.warn { background: #fdf2dc; color: #8a5a00; }
+.status.info { background: var(--badge-bg); color: var(--text); }
+.status.error { background: var(--danger-bg); color: var(--danger-text); }
+@media (prefers-color-scheme: dark) {
+  .status.ok { background: #183526; color: #8fd9ab; }
+  .status.warn { background: #3a2e12; color: #f2cf7f; }
+}
+.markdown table { margin: 0.5rem 0; }
+.markdown p { margin: 0.5rem 0; }
+.options { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.5rem 0; }
+.note { color: var(--muted); font-style: italic; margin: 0.25rem 0; }
+.small { font-size: 0.85rem; }
+.evidence-list h2 { margin-top: 1rem; }
+.evidence { border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; margin-top: 0.6rem; }
+.evidence h3 { font-size: 0.95rem; margin: 0 0 0.25rem; }
+.evidence-id { font-family: ui-monospace, monospace; background: var(--badge-bg); padding: 0 0.4rem; border-radius: 4px; }
+.table-scroll { overflow-x: auto; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+pre.sql { white-space: pre-wrap; word-break: break-word; font-size: 0.78rem; background: var(--bg); padding: 0.6rem; border-radius: 6px; }
+details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
+.sources-panel { margin-top: 1.25rem; }
+.sources-panel > summary { font-size: 1rem; font-weight: 600; color: var(--text); }

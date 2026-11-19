@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ApiError, listSources, type Session, type SourceItem } from "./api/client";
+import { AskPanel } from "./AskPanel";
 
 type Props = { session: Session; onSignOut: () => void; onSessionExpired: () => void };
 
@@ -87,9 +88,13 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
             <span className="badge">none</span>
           )}
         </p>
-        <p className="muted">
-          These are the sources you can access. Sources restricted to other groups are not shown.
-        </p>
+        <AskPanel onSessionExpired={onSessionExpired} />
+
+        <details className="sources-panel">
+          <summary>
+            Sources you can access {sources ? `(${sources.length})` : ""}
+          </summary>
+          <p className="muted">Sources restricted to other groups are not shown.</p>
 
         {error && (
           <p className="error" role="alert">
@@ -103,6 +108,7 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
             <SourceTable title="Documents" items={documents} />
           </div>
         )}
+        </details>
       </main>
     </>
   );
