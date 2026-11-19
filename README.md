@@ -108,7 +108,7 @@ Deterministic tests (unit, integration, and mocked-model workflow tests) run in 
 Prerequisites: Docker Desktop, [uv](https://docs.astral.sh/uv/), Node 22 (`frontend/.nvmrc`; run `nvm use` in `frontend/`).
 
 ```bash
-cp .env.example .env                  # local defaults; no real secrets needed yet
+cp .env.example .env                  # then add GROQ_API_KEY (free tier) to ask questions
 docker compose up -d                  # Postgres (host port 5433) + Floci S3/SQS emulator (4566)
 
 cd backend

@@ -79,6 +79,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/ask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ask */
+        post: operations["ask_api_ask_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/auth/login": {
         parameters: {
             query?: never;
@@ -232,6 +249,32 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AskRequest */
+        AskRequest: {
+            /** Question */
+            question: string;
+        };
+        /** AskResponse */
+        AskResponse: {
+            /** Answer */
+            answer: string;
+            /** Evidence */
+            evidence: components["schemas"]["EvidenceOut"][];
+            /** Latency Ms */
+            latency_ms: number;
+            /** Notes */
+            notes: string[];
+            /** Options */
+            options: string[];
+            /** Run Id */
+            run_id: string;
+            /** Sources */
+            sources: {
+                [key: string]: string | number;
+            }[];
+            /** Status */
+            status: string;
+        };
         /** CandidateOut */
         CandidateOut: {
             /** Column */
@@ -258,6 +301,35 @@ export interface components {
             password: string;
             /** @default employee */
             role: components["schemas"]["Role"];
+        };
+        /** EvidenceOut */
+        EvidenceOut: {
+            /** Columns */
+            columns: string[];
+            /** Comparisons */
+            comparisons: {
+                [key: string]: string | number | null;
+            }[];
+            /** Description */
+            description: string;
+            /** Id */
+            id: string;
+            /** Metric */
+            metric: string;
+            /** Rows */
+            rows: {
+                [key: string]: string | number | null;
+            }[];
+            /** Sources */
+            sources: {
+                [key: string]: string | number;
+            }[];
+            /** Sql */
+            sql: string;
+            /** Title */
+            title: string;
+            /** Unit */
+            unit: string | null;
         };
         /** Filter */
         Filter: {
@@ -587,6 +659,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UserOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ask_api_ask_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AskRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AskResponse"];
                 };
             };
             /** @description Validation Error */
