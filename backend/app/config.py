@@ -48,7 +48,9 @@ class Settings(BaseSettings):
     gemini_api_key: SecretStr | None = None
     llm_planner_model: str = "openai/gpt-oss-120b"
     llm_writer_model: str = "openai/gpt-oss-120b"
-    llm_fallback_model: str = "gemini-2.5-flash"  # used with the Gemini key
+    # Fallback: chosen from live probes (2026-11-18): answered in ~0.5 s while the larger
+    # free-tier Flash models returned 503 "high demand" or timed out. Change here if that shifts.
+    llm_fallback_model: str = "gemini-3.5-flash-lite"
     llm_timeout_seconds: float = 45.0
 
     @property

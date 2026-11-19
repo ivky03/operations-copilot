@@ -7,6 +7,7 @@ They say nothing about MODEL QUALITY; that is measured separately against the re
 """
 
 import json
+import time
 
 import httpx
 import pytest
@@ -266,6 +267,26 @@ def test_rate_limit_is_waited_out_using_the_providers_hint():
     plan = LLMClient([provider], retry_delay=0).complete_json("plan", [], AnswerPlan, calls)
     assert plan.kind == "clarify"
     assert [c.status for c in calls] == ["error", "ok"] and calls[0].error == "HTTP 429"
+
+
+def test_long_rate_limit_wait_switches_provider_instead_of_waiting():
+    from app.answer.planner import AnswerPlan
+
+    busy = OpenAICompatibleProvider(
+        "groq",
+        "https://x.test",
+        "k",
+        "m",
+        transport=_transport([httpx.Response(429, headers={"retry-after": "20"})]),
+    )
+    up = OpenAICompatibleProvider(
+        "gemini", "https://y.test", "k", "m", transport=_transport([_ok({"kind": "clarify"})])
+    )
+    calls: list[CallRecord] = []
+    start = time.monotonic()
+    LLMClient([busy, up], retry_delay=0).complete_json("plan", [], AnswerPlan, calls)
+    assert time.monotonic() - start < 2  # did not sit out the 20 s
+    assert [(c.provider, c.status) for c in calls] == [("groq", "error"), ("gemini", "ok")]
 
 
 def test_failover_to_the_second_provider():

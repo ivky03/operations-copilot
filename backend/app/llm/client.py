@@ -4,7 +4,8 @@
   both. Providers are tried in order: Groq first, then Gemini only if its key is configured.
 - Temporary failures (timeouts, 5xx) get one retry, then the next provider. Rate limits (429)
   get up to two retries, waiting as long as the provider says (Retry-After or the token-reset
-  header), capped at MAX_RATE_LIMIT_WAIT seconds.
+  header), capped at MAX_RATE_LIMIT_WAIT seconds; but if the wait is longer than
+  FAILOVER_INSTEAD_OF_WAITING and another provider exists, we switch to it straight away.
 - Replies must be JSON matching a Pydantic model. If one doesn't, the model is asked once more
   with the validation error ("repair"); a second failure raises LLMOutputError.
 - Every attempt is recorded as a CallRecord (provider, model, tokens, latency, outcome) for
@@ -26,6 +27,9 @@ GROQ_URL = "https://api.groq.com/openai/v1"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai"
 TRANSIENT_STATUS = {408, 429, 500, 502, 503, 504}
 MAX_RATE_LIMIT_WAIT = 30.0
+# If a provider asks us to wait longer than this and another provider is configured, switch
+# immediately instead of waiting: two free tiers' allowances effectively add up.
+FAILOVER_INSTEAD_OF_WAITING = 5.0
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -150,9 +154,10 @@ class LLMClient:
         if not self.providers:
             raise LLMUnavailableError("No language model provider is configured.")
         last_error: Exception | None = None
-        for provider in self.providers:
+        for i, provider in enumerate(self.providers):
+            has_next = i + 1 < len(self.providers)
             try:
-                return self._with_repair(provider, purpose, messages, schema, calls)
+                return self._with_repair(provider, purpose, messages, schema, calls, has_next)
             except LLMOutputError:
                 raise  # the provider answered; switching providers won't fix our prompt
             except Exception as e:  # provider failed after retry: try the next one
@@ -161,8 +166,8 @@ class LLMClient:
             f"The language model service is unavailable ({_describe(last_error)})."
         ) from last_error
 
-    def _with_repair(self, provider, purpose, messages, schema, calls):
-        text = self._call(provider, purpose, messages, calls)
+    def _with_repair(self, provider, purpose, messages, schema, calls, has_next=False):
+        text = self._call(provider, purpose, messages, calls, has_next)
         try:
             return schema.model_validate_json(_extract_json(text))
         except (ValidationError, ValueError) as first:
@@ -176,14 +181,16 @@ class LLMClient:
                     f"{_short(first)}. Reply again with only the corrected JSON object.",
                 },
             ]
-            text = self._call(provider, f"{purpose}_repair", repair, calls)
+            text = self._call(provider, f"{purpose}_repair", repair, calls, has_next)
             try:
                 return schema.model_validate_json(_extract_json(text))
             except (ValidationError, ValueError) as second:
                 calls[-1].status = "invalid_output"
                 raise LLMOutputError(f"Model reply was not valid: {_short(second)}") from second
 
-    def _call(self, provider: Provider, purpose: str, messages: list[dict], calls) -> str:
+    def _call(
+        self, provider: Provider, purpose: str, messages: list[dict], calls, has_next=False
+    ) -> str:
         transient_retries, rate_limit_retries = 1, 2
         while True:
             start = time.monotonic()
@@ -201,6 +208,8 @@ class LLMClient:
                     )
                 )
                 wait = _rate_limit_wait(e)
+                if wait is not None and wait > FAILOVER_INSTEAD_OF_WAITING and has_next:
+                    raise  # another provider can answer now; don't sit idle
                 if wait is not None and rate_limit_retries > 0:
                     rate_limit_retries -= 1
                     time.sleep(wait + self.retry_delay)
