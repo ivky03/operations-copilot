@@ -69,6 +69,12 @@ def sign_in(page, email: str, password: str) -> None:
     page.get_by_role("button", name="Sign in").click()
 
 
+def open_sources(page) -> None:
+    """The source list is in a collapsible section below the question box."""
+    page.get_by_text("Sources you can access").click()
+    page.get_by_role("table").first.wait_for()
+
+
 def test_sign_in_shows_only_the_sources_your_groups_can_read(live_app, page):
     url, passwords = live_app
     page.goto(url)
@@ -78,8 +84,8 @@ def test_sign_in_shows_only_the_sources_your_groups_can_read(live_app, page):
 
     sign_in(page, OPS, passwords[OPS])
     page.get_by_text("Welcome, Olivia").wait_for()
-    page.get_by_role("table").first.wait_for()
-    assert page.locator("tbody tr").count() == 13
+    open_sources(page)
+    assert page.locator(".sources-panel tbody tr").count() == 13
     assert page.get_by_text("shipping-and-delivery").count() == 1
     assert page.get_by_text("finance-margin-targets").count() == 0
 
@@ -91,7 +97,34 @@ def test_sign_in_shows_only_the_sources_your_groups_can_read(live_app, page):
 
     sign_in(page, FIN, passwords[FIN])
     page.get_by_text("Welcome, Felix").wait_for()
-    page.get_by_role("table").first.wait_for()
-    assert page.locator("tbody tr").count() == 12
+    open_sources(page)
+    assert page.locator(".sources-panel tbody tr").count() == 12
     assert page.get_by_text("finance-margin-targets").count() == 1
     assert page.get_by_text("shipping-and-delivery").count() == 0
+
+
+def test_asking_a_question_shows_a_verified_answer_with_evidence(live_app, page):
+    """Scripted model (no quota used); real browser, real API, real SQL."""
+    from app.api.ask import get_planner_llm, get_writer_llm
+    from app.main import app
+    from tests.test_answer_pipeline import IRELAND_MARCH, fake
+
+    planner, _ = fake(IRELAND_MARCH)
+    writer, _ = fake({"answer": "Ireland's net sales in March 2026 were **−€509.00** [D1]."})
+    app.dependency_overrides[get_planner_llm] = lambda: planner
+    app.dependency_overrides[get_writer_llm] = lambda: writer
+    try:
+        url, passwords = live_app
+        page.goto(url)
+        sign_in(page, OPS, passwords[OPS])
+        page.get_by_label("Ask a question about your data").fill("Ireland net sales in March 2026?")
+        page.get_by_role("button", name="Ask", exact=True).click()
+        page.get_by_text("Answered · numbers verified").wait_for()
+        assert "−€509.00" in page.locator(".markdown").inner_text()
+        evidence = page.locator(".evidence").first
+        assert "Net sales" in evidence.inner_text()
+        assert "transactions v1" in evidence.inner_text()
+        evidence.get_by_text("Show SQL").click()
+        assert "WITH c0 AS" in evidence.locator("pre.sql").inner_text()
+    finally:
+        app.dependency_overrides.clear()

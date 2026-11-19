@@ -14,6 +14,7 @@ from datetime import date
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.ingest.expressions import names, parse
 from app.ingest.publish import DATASET_SCHEMA
 from app.query.catalog import Catalog, Dataset
 from app.query.compiler import q
@@ -36,6 +37,10 @@ def _coverage(ds: Dataset) -> tuple[date | None, date | None]:
     sql = f"SELECT min({q(col)})::date, max({q(col)})::date FROM {DATASET_SCHEMA}.{q(ds.table)}"  # noqa: S608
     row = run_readonly(sql, {}, ["start", "end"]).rows[0]
     return row["start"], row["end"]
+
+
+def _external_refs(formula: str) -> set[str]:
+    return {n for n in names(parse(formula)) if "." in n}
 
 
 def _examples(db: Session, ds: Dataset) -> dict[str, list[str]]:
@@ -65,13 +70,22 @@ def build_context(db: Session, catalog: Catalog) -> SchemaContext:
             lines.append(f"Date column: {m.time_column}; data from {start} to {end}.")
         for rel in m.relationships:
             lines.append(f"Linked: {m.source}.{rel.column} → {rel.references}")
-        all_metrics = [*m.metrics, *m.derived_metrics]
+        # A derived metric whose formula uses another dataset the user can't read is unusable
+        # for them, and naming it would reveal that dataset: leave it out entirely.
+        usable_derived = [
+            d
+            for d in m.derived_metrics
+            if all(ref.split(".")[0] in catalog.datasets for ref in _external_refs(d.formula))
+        ]
+        all_metrics = [*m.metrics, *usable_derived]
         if all_metrics:
             lines.append("Metrics:")
             for metric in all_metrics:
                 unit = f" ({metric.unit})" if metric.unit else ""
+                formula = f" Formula: {metric.formula}." if hasattr(metric, "formula") else ""
                 lines.append(
-                    f"- `{metric.name}`{unit}: {metric.title}. {metric.description.strip()}"
+                    f"- `{metric.name}`{unit}: {metric.title}. "
+                    f"{metric.description.strip()}{formula}"
                 )
         examples = _examples(db, ds)
         dims = [

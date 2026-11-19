@@ -59,6 +59,7 @@ class CompiledQuery:
     unit: str | None
     title: str
     sources: list[Dataset]  # dataset versions the answer depends on
+    definition: str = ""  # governed description from the manifest
 
 
 @dataclass
@@ -238,4 +239,5 @@ def compile_plan(plan: QueryPlan, catalog: Catalog) -> CompiledQuery:
         unit=metric.unit,
         title=metric.title,
         sources=list(sources.values()),
+        definition=" ".join(metric.description.split()),
     )

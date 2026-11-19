@@ -15,6 +15,11 @@ from dataclasses import dataclass, field
 from app.answer.evidence import EvidenceItem
 
 CITATION = re.compile(r"\[(D\d+)\]")
+# Models often write typographic characters: non-breaking/figure/en/em dashes and minus signs,
+# and narrow or non-breaking spaces. Normalise them so dates and negatives are recognised.
+DASHES = dict.fromkeys(map(ord, "\u2010\u2011\u2012\u2013\u2014\u2212"), "-")
+SPACES = dict.fromkeys(map(ord, "\u00a0\u202f\u2009\u2007"), " ")
+LIST_MARKER = re.compile(r"^\s*\d{1,2}[.)]\s", re.MULTILINE)  # "1. " or "2) " at a line start
 ISO_DATE = re.compile(r"\b\d{4}-\d{2}(?:-\d{2})?\b")
 NUMBER = re.compile(r"(?<![\w.])[-−]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?")
 TOLERANCE = 0.006
@@ -74,8 +79,10 @@ def verify(answer: str, evidence: list[EvidenceItem], question: str) -> Verifica
     unknown = sorted(cited - known_ids)
     missing = bool(evidence) and not (cited & known_ids)
 
-    text = CITATION.sub(" ", answer)
+    text = answer.translate(DASHES).translate(SPACES)
+    text = CITATION.sub(" ", text)
     text = ISO_DATE.sub(" ", text)
+    text = LIST_MARKER.sub(" ", text)
     allowed = allowed_numbers(evidence, question)
     unsupported = []
     for raw in NUMBER.findall(text):

@@ -24,6 +24,7 @@ class EvidenceItem:
     sql: str
     sources: list[dict]
     comparisons: list[dict] = field(default_factory=list)
+    definition: str = ""  # the metric's governed definition, from its manifest
 
     def as_dict(self) -> dict:
         return self.__dict__.copy()
@@ -88,4 +89,5 @@ def build_evidence(
         sql=compiled.sql,
         sources=[{"source": s.slug, "version": s.version} for s in compiled.sources],
         comparisons=_comparisons(plan, result, compiled.metric),
+        definition=compiled.definition,
     )

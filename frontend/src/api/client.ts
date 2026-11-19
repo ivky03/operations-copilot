@@ -82,3 +82,8 @@ export async function logout(): Promise<void> {
 }
 
 export const listSources = () => request<SourceItem[]>("GET", "/api/sources");
+
+export type AskResponse = components["schemas"]["AskResponse"];
+export type Evidence = components["schemas"]["EvidenceOut"];
+
+export const ask = (question: string) => request<AskResponse>("POST", "/api/ask", { question });
