@@ -187,6 +187,19 @@ def test_alias_is_applied_and_shown_as_a_note(db, olivia):
     assert "Interpreted “UK” as “United Kingdom”." in result.notes
 
 
+def test_same_interpretation_is_noted_once_across_queries(db, olivia):
+    uk = [{"dimension": "country", "values": ["UK"]}]
+    plan = {
+        "kind": "data",
+        "queries": [
+            {"metric": "order_count", "filters": uk},
+            {"metric": "gross_sales", "filters": uk},
+        ],
+    }
+    result, _, _ = ask(db, olivia, "UK orders and sales?", [plan], [{"answer": "x [D1][D2]"}])
+    assert result.notes.count("Interpreted “UK” as “United Kingdom”.") == 1
+
+
 def test_unknown_value_is_explained_not_guessed(db, olivia):
     plan = {
         "kind": "data",

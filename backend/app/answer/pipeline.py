@@ -99,11 +99,14 @@ def _ground_plan(
                     f"I couldn't find “{phrase}” in {resolved.dataset.slug} "
                     f"({resolved.column.name.replace('_', ' ')}), so I can't answer that.",
                 )
+            note = None
             if g.match.value != phrase:
-                notes.append(f"Interpreted “{phrase}” as “{g.match.value}”.")
+                note = f"Interpreted “{phrase}” as “{g.match.value}”."
             elif not set(_words(g.match.value)) & set(_words(question)):
                 label = resolved.column.name.replace("_", " ")
-                notes.append(f"Interpreted your question as {label} “{g.match.value}”.")
+                note = f"Interpreted your question as {label} “{g.match.value}”."
+            if note and note not in notes:  # several queries may ground the same value
+                notes.append(note)
             values.append(g.match.value)
         new_filters.append(f.model_copy(update={"values": values}))
     return plan.model_copy(update={"filters": new_filters})
