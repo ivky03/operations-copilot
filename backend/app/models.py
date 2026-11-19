@@ -241,3 +241,45 @@ class DocumentContent(Base):
         ForeignKey("source_versions.id", ondelete="CASCADE"), primary_key=True
     )
     body: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+class AnswerRun(Base):
+    """One question and everything needed to explain its answer later: the plan, groundings,
+    SQL and rows, the answer text, the dataset versions used, and how it ended."""
+
+    __tablename__ = "answer_runs"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    created_at: Mapped[datetime] = _created_at()
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
+    question: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(String(30), nullable=False)
+    answer: Mapped[str | None] = mapped_column(Text)
+    plan: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    evidence: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    source_versions: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    verification: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    latency_ms: Mapped[int | None] = mapped_column(Integer)
+
+
+class LlmCall(Base):
+    """One request to a language model provider: who, what for, which model, tokens, latency.
+    Prompts are not stored here; the answer run holds the structured trace."""
+
+    __tablename__ = "llm_calls"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    at: Mapped[datetime] = _created_at()
+    answer_run_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("answer_runs.id", ondelete="CASCADE"), index=True
+    )
+    purpose: Mapped[str] = mapped_column(String(30), nullable=False)  # plan | answer
+    provider: Mapped[str] = mapped_column(String(30), nullable=False)
+    model: Mapped[str] = mapped_column(String(100), nullable=False)
+    status: Mapped[str] = mapped_column(String(30), nullable=False)  # ok | error | invalid_output
+    prompt_tokens: Mapped[int | None] = mapped_column(Integer)
+    completion_tokens: Mapped[int | None] = mapped_column(Integer)
+    latency_ms: Mapped[int] = mapped_column(Integer, nullable=False)
+    error: Mapped[str | None] = mapped_column(Text)
