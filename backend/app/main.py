@@ -11,12 +11,17 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from app.api import admin, sources
+from app.auth import router as auth_router
 from app.aws import check_aws
 from app.db import check_database
 
 log = structlog.get_logger()
 
 app = FastAPI(title="Operations Copilot", version="0.1.0")
+app.include_router(auth_router)
+app.include_router(sources.router)
+app.include_router(admin.router)
 
 
 @app.get("/health")

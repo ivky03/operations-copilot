@@ -1,0 +1,201 @@
+"""Database tables for identity, access and sources, as SQLAlchemy ORM classes.
+
+Each class is one table in the `public` schema. Alembic compares these classes with the live
+database to generate migrations. Steward-uploaded dataset tables live in the separate
+`datasets` schema and are created at publish time, not here.
+"""
+
+import uuid
+from datetime import datetime
+from enum import StrEnum
+
+from sqlalchemy import (
+    Boolean,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    func,
+    text,
+)
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class Role(StrEnum):
+    EMPLOYEE = "employee"  # ask questions about sources their groups can read
+    STEWARD = "steward"  # employee + manage sources (from M6)
+    ADMIN = "admin"  # manage users, groups and grants
+
+
+class SourceKind(StrEnum):
+    DATASET = "dataset"
+    DOCUMENT = "document"
+
+
+class SourceStatus(StrEnum):
+    ACTIVE = "active"
+    ARCHIVED = "archived"  # hidden from answers, restorable
+    DELETED = "deleted"  # tombstone: content removed, row kept so late jobs can see it
+
+
+class VersionStatus(StrEnum):
+    UPLOADED = "uploaded"
+    VALIDATING = "validating"
+    INVALID = "invalid"
+    READY = "ready"  # validated and processed, not yet visible
+    PUBLISHED = "published"  # the version answers use (at most one per source)
+    SUPERSEDED = "superseded"  # an older published version
+
+
+def _enum(e: type[StrEnum], name: str) -> Enum:
+    # Store the lowercase values ("employee"), not Python member names ("EMPLOYEE").
+    return Enum(e, name=name, values_callable=lambda x: [m.value for m in x])
+
+
+def _uuid_pk() -> Mapped[uuid.UUID]:
+    # Random UUIDs instead of 1, 2, 3...: IDs in URLs can't be guessed or enumerated.
+    return mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+
+
+def _created_at() -> Mapped[datetime]:
+    return mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    email: Mapped[str] = mapped_column(String(320), unique=True, nullable=False)  # stored lowercase
+    display_name: Mapped[str] = mapped_column(String(200), nullable=False)
+    password_hash: Mapped[str] = mapped_column(Text, nullable=False)  # argon2; never the password
+    role: Mapped[Role] = mapped_column(_enum(Role, "user_role"), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    created_at: Mapped[datetime] = _created_at()
+
+    groups: Mapped[list["Group"]] = relationship(secondary="user_groups", back_populates="members")
+
+
+class Group(Base):
+    __tablename__ = "groups"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    slug: Mapped[str] = mapped_column(String(64), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String(200), nullable=False)
+    created_at: Mapped[datetime] = _created_at()
+
+    members: Mapped[list[User]] = relationship(secondary="user_groups", back_populates="groups")
+
+
+class UserGroup(Base):
+    """Membership: which groups a user belongs to (and therefore which sources they can read)."""
+
+    __tablename__ = "user_groups"
+
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    group_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True
+    )
+
+
+class Session(Base):
+    """A logged-in browser. The cookie holds a random token; we store only its SHA-256 hash,
+    so a leaked database backup does not hand out working sessions."""
+
+    __tablename__ = "sessions"
+
+    token_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    csrf_token: Mapped[str] = mapped_column(String(64), nullable=False)
+    created_at: Mapped[datetime] = _created_at()
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    user: Mapped[User] = relationship()
+
+
+class Source(Base):
+    """A dataset or document, independent of its versions."""
+
+    __tablename__ = "sources"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    slug: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
+    kind: Mapped[SourceKind] = mapped_column(_enum(SourceKind, "source_kind"), nullable=False)
+    title: Mapped[str] = mapped_column(String(300), nullable=False)
+    status: Mapped[SourceStatus] = mapped_column(
+        _enum(SourceStatus, "source_status"), nullable=False, default=SourceStatus.ACTIVE
+    )
+    created_at: Mapped[datetime] = _created_at()
+
+    versions: Mapped[list["SourceVersion"]] = relationship(back_populates="source")
+    granted_groups: Mapped[list[Group]] = relationship(secondary="source_grants")
+
+
+class SourceVersion(Base):
+    __tablename__ = "source_versions"
+    __table_args__ = (
+        UniqueConstraint("source_id", "version"),
+        # At most one published version per source, enforced by the database itself,
+        # so two concurrent publishes can't both win.
+        Index(
+            "uq_one_published_version",
+            "source_id",
+            unique=True,
+            postgresql_where=text("status = 'published'"),
+        ),
+    )
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    source_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sources.id", ondelete="CASCADE"), nullable=False
+    )
+    version: Mapped[int] = mapped_column(Integer, nullable=False)
+    status: Mapped[VersionStatus] = mapped_column(
+        _enum(VersionStatus, "version_status"), nullable=False, default=VersionStatus.UPLOADED
+    )
+    content_hash: Mapped[str] = mapped_column(String(64), nullable=False)  # SHA-256 of the file
+    meta: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    created_at: Mapped[datetime] = _created_at()
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    source: Mapped[Source] = relationship(back_populates="versions")
+
+
+class SourceGrant(Base):
+    """Which groups may read a source. Granted by administrators only."""
+
+    __tablename__ = "source_grants"
+
+    source_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sources.id", ondelete="CASCADE"), primary_key=True
+    )
+    group_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("groups.id", ondelete="CASCADE"), primary_key=True
+    )
+
+
+class AuditLog(Base):
+    """Append-only record of administrative and steward actions: who did what, when."""
+
+    __tablename__ = "audit_log"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    at: Mapped[datetime] = _created_at()
+    actor_user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
+    action: Mapped[str] = mapped_column(String(100), nullable=False)
+    target: Mapped[str] = mapped_column(String(300), nullable=False)
+    details: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
