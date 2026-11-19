@@ -8,7 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 from urllib.parse import urlparse
 
-from pydantic import model_validator
+from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Repo-root .env, regardless of which directory the process starts in.
@@ -41,6 +41,15 @@ class Settings(BaseSettings):
 
     # Cost guardrail: real (billable) AWS must be enabled explicitly.
     allow_real_aws: bool = False
+
+    # Language models. Keys are SecretStr: printing or logging settings shows '**********'.
+    # Groq is the primary provider; Gemini becomes the fallback only if its key is set.
+    groq_api_key: SecretStr | None = None
+    gemini_api_key: SecretStr | None = None
+    llm_planner_model: str = "openai/gpt-oss-120b"
+    llm_writer_model: str = "openai/gpt-oss-120b"
+    llm_fallback_model: str = "gemini-2.5-flash"  # used with the Gemini key
+    llm_timeout_seconds: float = 45.0
 
     @property
     def is_local(self) -> bool:
