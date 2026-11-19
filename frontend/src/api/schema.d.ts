@@ -133,6 +133,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/ground": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Ground Phrase */
+        post: operations["ground_phrase_api_ground_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Run Query */
+        post: operations["run_query_api_query_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/sources": {
         parameters: {
             query?: never;
@@ -198,6 +232,17 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** CandidateOut */
+        CandidateOut: {
+            /** Column */
+            column: string;
+            /** Dataset */
+            dataset: string;
+            /** Score */
+            score: number;
+            /** Value */
+            value: string;
+        };
         /** CreateUser */
         CreateUser: {
             /** Display Name */
@@ -214,6 +259,38 @@ export interface components {
             /** @default employee */
             role: components["schemas"]["Role"];
         };
+        /** Filter */
+        Filter: {
+            /** Dimension */
+            dimension: string;
+            /**
+             * Op
+             * @default =
+             * @enum {string}
+             */
+            op: "=" | "!=" | "in" | "not in";
+            /** Values */
+            values: string[];
+        };
+        /** GroundOut */
+        GroundOut: {
+            /** Candidates */
+            candidates: components["schemas"]["CandidateOut"][];
+            match: components["schemas"]["CandidateOut"] | null;
+            /** Phrase */
+            phrase: string;
+            /** Status */
+            status: string;
+        };
+        /** GroundRequest */
+        GroundRequest: {
+            /** Column */
+            column?: string | null;
+            /** Dataset */
+            dataset?: string | null;
+            /** Phrase */
+            phrase: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -225,6 +302,51 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /** QueryOut */
+        QueryOut: {
+            /** Columns */
+            columns: string[];
+            /** Metric */
+            metric: string;
+            /** Rows */
+            rows: {
+                [key: string]: string | number | null;
+            }[];
+            /** Sources */
+            sources: components["schemas"]["SourceVersionOut"][];
+            /** Sql */
+            sql: string;
+            /** Title */
+            title: string;
+            /** Unit */
+            unit: string | null;
+        };
+        /** QueryPlan */
+        QueryPlan: {
+            /**
+             * Dimensions
+             * @default []
+             */
+            dimensions: string[];
+            /**
+             * Filters
+             * @default []
+             */
+            filters: components["schemas"]["Filter"][];
+            /** Limit */
+            limit?: number | null;
+            /** Metric */
+            metric: string;
+            /**
+             * Order
+             * @default dimensions
+             * @enum {string}
+             */
+            order: "dimensions" | "metric_desc" | "metric_asc";
+            /** Time Grain */
+            time_grain?: ("day" | "week" | "month" | "quarter" | "year") | null;
+            time_range?: components["schemas"]["TimeRange"] | null;
         };
         /**
          * Role
@@ -259,6 +381,29 @@ export interface components {
             slug: string;
             /** Title */
             title: string;
+        };
+        /** SourceVersionOut */
+        SourceVersionOut: {
+            /** Source */
+            source: string;
+            /** Version */
+            version: number;
+        };
+        /**
+         * TimeRange
+         * @description Half-open range: start <= time < end. "February 2026" is 2026-02-01 to 2026-03-01.
+         */
+        TimeRange: {
+            /**
+             * End
+             * Format: date
+             */
+            end: string;
+            /**
+             * Start
+             * Format: date
+             */
+            start: string;
         };
         /** UserOut */
         UserOut: {
@@ -522,6 +667,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SessionOut"];
+                };
+            };
+        };
+    };
+    ground_phrase_api_ground_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GroundRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroundOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_query_api_query_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QueryPlan"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QueryOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

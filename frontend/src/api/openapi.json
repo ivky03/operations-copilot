@@ -1,6 +1,34 @@
 {
   "components": {
     "schemas": {
+      "CandidateOut": {
+        "properties": {
+          "column": {
+            "title": "Column",
+            "type": "string"
+          },
+          "dataset": {
+            "title": "Dataset",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "dataset",
+          "column",
+          "value",
+          "score"
+        ],
+        "title": "CandidateOut",
+        "type": "object"
+      },
       "CreateUser": {
         "properties": {
           "display_name": {
@@ -40,6 +68,114 @@
         "title": "CreateUser",
         "type": "object"
       },
+      "Filter": {
+        "additionalProperties": false,
+        "properties": {
+          "dimension": {
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)?$",
+            "title": "Dimension",
+            "type": "string"
+          },
+          "op": {
+            "default": "=",
+            "enum": [
+              "=",
+              "!=",
+              "in",
+              "not in"
+            ],
+            "title": "Op",
+            "type": "string"
+          },
+          "values": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Values",
+            "type": "array"
+          }
+        },
+        "required": [
+          "dimension",
+          "values"
+        ],
+        "title": "Filter",
+        "type": "object"
+      },
+      "GroundOut": {
+        "properties": {
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateOut"
+            },
+            "title": "Candidates",
+            "type": "array"
+          },
+          "match": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CandidateOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "phrase": {
+            "title": "Phrase",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "phrase",
+          "status",
+          "match",
+          "candidates"
+        ],
+        "title": "GroundOut",
+        "type": "object"
+      },
+      "GroundRequest": {
+        "properties": {
+          "column": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Column"
+          },
+          "dataset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset"
+          },
+          "phrase": {
+            "title": "Phrase",
+            "type": "string"
+          }
+        },
+        "required": [
+          "phrase"
+        ],
+        "title": "GroundRequest",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -69,6 +205,166 @@
           "password"
         ],
         "title": "LoginRequest",
+        "type": "object"
+      },
+      "QueryOut": {
+        "properties": {
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Columns",
+            "type": "array"
+          },
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          },
+          "rows": {
+            "items": {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceVersionOut"
+            },
+            "title": "Sources",
+            "type": "array"
+          },
+          "sql": {
+            "title": "Sql",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          }
+        },
+        "required": [
+          "metric",
+          "title",
+          "unit",
+          "columns",
+          "rows",
+          "sql",
+          "sources"
+        ],
+        "title": "QueryOut",
+        "type": "object"
+      },
+      "QueryPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "dimensions": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)?$",
+              "type": "string"
+            },
+            "maxItems": 4,
+            "title": "Dimensions",
+            "type": "array"
+          },
+          "filters": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            },
+            "maxItems": 10,
+            "title": "Filters",
+            "type": "array"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "maximum": 1000.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit"
+          },
+          "metric": {
+            "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)?$",
+            "title": "Metric",
+            "type": "string"
+          },
+          "order": {
+            "default": "dimensions",
+            "enum": [
+              "dimensions",
+              "metric_desc",
+              "metric_asc"
+            ],
+            "title": "Order",
+            "type": "string"
+          },
+          "time_grain": {
+            "anyOf": [
+              {
+                "enum": [
+                  "day",
+                  "week",
+                  "month",
+                  "quarter",
+                  "year"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Grain"
+          },
+          "time_range": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeRange"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "metric"
+        ],
+        "title": "QueryPlan",
         "type": "object"
       },
       "Role": {
@@ -172,6 +468,46 @@
           "published_at"
         ],
         "title": "SourceOut",
+        "type": "object"
+      },
+      "SourceVersionOut": {
+        "properties": {
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "version"
+        ],
+        "title": "SourceVersionOut",
+        "type": "object"
+      },
+      "TimeRange": {
+        "additionalProperties": false,
+        "description": "Half-open range: start <= time < end. \"February 2026\" is 2026-02-01 to 2026-03-01.",
+        "properties": {
+          "end": {
+            "format": "date",
+            "title": "End",
+            "type": "string"
+          },
+          "start": {
+            "format": "date",
+            "title": "Start",
+            "type": "string"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "TimeRange",
         "type": "object"
       },
       "UserOut": {
@@ -556,6 +892,88 @@
         "summary": "Me",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/api/ground": {
+      "post": {
+        "operationId": "ground_phrase_api_ground_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroundRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GroundOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Ground Phrase",
+        "tags": [
+          "query"
+        ]
+      }
+    },
+    "/api/query": {
+      "post": {
+        "operationId": "run_query_api_query_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryPlan"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Run Query",
+        "tags": [
+          "query"
         ]
       }
     },
