@@ -2,7 +2,8 @@
 
 Tests run against a separate database, `<name>_test` (e.g. copilot_test), so they never
 touch development data. It's created and migrated once per test run, and every table is
-emptied after each test, so tests can't affect each other.
+emptied after each test (including the `datasets` schema of published tables), so tests
+can't affect each other.
 """
 
 import os
@@ -59,6 +60,10 @@ def _clean_tables(test_database: str) -> Iterator[None]:
     names = ", ".join(f'"{t.name}"' for t in Base.metadata.sorted_tables)
     with get_engine().begin() as conn:
         conn.execute(text(f"TRUNCATE {names} RESTART IDENTITY CASCADE"))
+        # Published dataset versions are physical tables; emptying the version rows doesn't
+        # drop them, so reset the whole schema too.
+        conn.execute(text("DROP SCHEMA IF EXISTS datasets CASCADE"))
+        conn.execute(text("CREATE SCHEMA datasets"))
 
 
 @pytest.fixture

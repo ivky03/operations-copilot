@@ -199,3 +199,45 @@ class AuditLog(Base):
     action: Mapped[str] = mapped_column(String(100), nullable=False)
     target: Mapped[str] = mapped_column(String(300), nullable=False)
     details: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+
+
+class ValueIndexEntry(Base):
+    """Distinct values of value-indexed columns in one dataset version, plus aliases.
+
+    Used for value grounding: mapping words in a question ("UK", "desk lamp") to values that
+    actually exist ("United Kingdom", "Blue Desk Lamp"). `value_norm` is lowercased and has a
+    trigram index for fuzzy matching. For an alias row, `value` is the alias and `canonical` is
+    the real value it stands for; for a real value, both are the same.
+    """
+
+    __tablename__ = "value_index"
+    __table_args__ = (
+        Index(
+            "ix_value_index_trgm",
+            "value_norm",
+            postgresql_using="gin",
+            postgresql_ops={"value_norm": "gin_trgm_ops"},
+        ),
+        UniqueConstraint("source_version_id", "column_name", "value"),
+    )
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    source_version_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("source_versions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    column_name: Mapped[str] = mapped_column(String(63), nullable=False)
+    value: Mapped[str] = mapped_column(Text, nullable=False)
+    value_norm: Mapped[str] = mapped_column(Text, nullable=False)
+    canonical: Mapped[str] = mapped_column(Text, nullable=False)
+    is_alias: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+
+
+class DocumentContent(Base):
+    """The text of one document version. Chunking and embeddings are built from it in M4."""
+
+    __tablename__ = "document_contents"
+
+    source_version_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("source_versions.id", ondelete="CASCADE"), primary_key=True
+    )
+    body: Mapped[str] = mapped_column(Text, nullable=False)
