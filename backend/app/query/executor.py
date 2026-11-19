@@ -8,6 +8,7 @@ Even if the compiler had a bug, a query runs:
 """
 
 from dataclasses import dataclass
+from datetime import date, datetime
 from decimal import Decimal
 
 from sqlalchemy import text
@@ -43,8 +44,13 @@ class QueryResult:
 
 
 def _plain(value: object) -> object:
-    # Exact decimals from Postgres become floats for JSON; rounding for display happens later.
-    return float(value) if isinstance(value, Decimal) else value
+    """Convert database values to JSON-safe ones: decimals → float (rounding for display happens
+    later), dates and timestamps → ISO text. Results are stored as JSON and sent to the browser."""
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, datetime | date):
+        return value.isoformat()
+    return value
 
 
 def execute(compiled: CompiledQuery) -> QueryResult:

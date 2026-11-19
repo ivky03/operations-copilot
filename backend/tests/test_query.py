@@ -95,6 +95,18 @@ def test_answers_record_the_dataset_versions_they_used(catalog):
     }
 
 
+def test_dates_in_results_are_json_safe(catalog):
+    """Regression: a result with a date column crashed saving the answer trace (eval run 1)."""
+    plan = QueryPlan(
+        metric="gross_sales",
+        dimensions=["opened_date"],
+        filters=[{"dimension": "country", "values": ["France"]}],
+    )
+    rows = execute(compile_plan(plan, catalog)).rows
+    assert rows and rows[0]["opened_date"] == "2026-03-02"
+    json.dumps(rows)  # must not raise
+
+
 # ----------------------------------------------------------------------------- authorization
 
 

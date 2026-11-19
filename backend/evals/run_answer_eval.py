@@ -61,7 +61,36 @@ def run(only: list[str] | None, delay: float) -> dict:
             continue
         user = users[case["persona"]]
         started = time.monotonic()
-        r = answer_question(db, user, case["question"], get_planner_llm(), get_writer_llm())
+        try:
+            r = answer_question(db, user, case["question"], get_planner_llm(), get_writer_llm())
+        except Exception as e:  # a crash is a failed case, not a failed run
+            db.rollback()
+            note = f"pipeline crashed: {type(e).__name__}: {str(e)[:150]}"
+            scores.append(
+                CaseScore(
+                    case["id"], case["category"], scored=True, behaviour_ok=False, notes=[note]
+                )
+            )
+            results.append(
+                {
+                    "id": case["id"],
+                    "category": case["category"],
+                    "persona": case["persona"],
+                    "question": case["question"],
+                    "expected": case["expected"],
+                    "status": "crashed",
+                    "answer": "",
+                    "notes": [],
+                    "options": [],
+                    "evidence": [],
+                    "calls": [],
+                    "latency_ms": int((time.monotonic() - started) * 1000),
+                    "run_id": None,
+                    "score": scores[-1].__dict__ | {"passed": False},
+                }
+            )
+            print(f"[{n:>2}/{len(cases)}] {case['id']:<9} FAIL  crashed  {note[:90]}")
+            continue
         calls = db.scalars(select(LlmCall).where(LlmCall.answer_run_id == r.run_id)).all()
         record = {
             "id": case["id"],
