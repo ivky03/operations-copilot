@@ -3,6 +3,8 @@
 Usage (from backend/):
     uv run python -m app.cli create-user --email a@b.co --name "A B" --role admin --groups finance
     uv run python -m app.cli seed-reference     # groups, demo users, sources and grants
+    uv run python -m app.cli publish-reference  # validate, load and publish all reference data
+    uv run python -m app.cli validate-dataset --manifest m.yaml --csv t.csv   # dry run
 
 Passwords are never accepted as command-line arguments, because those end up in shell
 history. create-user prompts for one; seed-reference generates random passwords and prints
@@ -21,6 +23,9 @@ from sqlalchemy.orm import Session
 
 from app import audit
 from app.db import _session_factory
+from app.ingest.manifest import parse_manifest
+from app.ingest.publish import PublishResult, publish_dataset, publish_document
+from app.ingest.validate import validate_csv
 from app.models import Group, Role, Source, SourceGrant, SourceKind, User
 from app.security import hash_password
 
@@ -107,6 +112,54 @@ def seed_reference(db: Session) -> dict[str, str]:
     return new_passwords
 
 
+def _dataset_order() -> list[Path]:
+    """Manifests ordered so every dataset comes after the datasets it depends on
+    (relationships and cross-dataset metrics). A cycle is reported as an error."""
+    manifests = {
+        p.stem: yaml.safe_load(p.read_text()) for p in (REFERENCE / "manifests").glob("*.yaml")
+    }
+    deps = {}
+    for name, m in manifests.items():
+        refs = {r["references"].split(".")[0] for r in m.get("relationships", [])}
+        refs |= {
+            token.split(".")[0]
+            for d in m.get("derived_metrics", [])
+            for token in d["formula"].replace("(", " ").replace(")", " ").split()
+            if "." in token
+        }
+        deps[name] = refs - {name}
+    ordered: list[str] = []
+    while deps:
+        ready = sorted(n for n, d in deps.items() if d <= set(ordered))
+        if not ready:
+            raise SystemExit(f"Circular dependencies between datasets: {sorted(deps)}")
+        ordered += ready
+        for n in ready:
+            del deps[n]
+    return [REFERENCE / "manifests" / f"{n}.yaml" for n in ordered]
+
+
+def publish_reference(db: Session) -> list[PublishResult]:
+    results = []
+    for manifest_path in _dataset_order():
+        manifest = yaml.safe_load(manifest_path.read_text())
+        csv_bytes = (REFERENCE / "tables" / f"{manifest['source']}.csv").read_bytes()
+        results.append(publish_dataset(db, manifest, csv_bytes))
+    for doc_path in sorted((REFERENCE / "documents").glob("*.md")):  # v1 sorts before v2
+        results.append(publish_document(db, doc_path.read_bytes()))
+    return results
+
+
+def _print_result(r: PublishResult) -> None:
+    version = f"v{r.version}" if r.version else "  "
+    detail = f"{r.row_count} rows" if r.row_count is not None else ""
+    print(f"  {r.status:<10} {r.source:<28} {version:<4} {detail}")
+    for issue in r.issues:
+        print(f"      - {issue}")
+    if r.issue_count > len(r.issues):
+        print(f"      ... and {r.issue_count - len(r.issues)} more")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -118,7 +171,27 @@ def main(argv: list[str] | None = None) -> int:
     cu.add_argument("--groups", nargs="*", default=[])
 
     sub.add_parser("seed-reference", help="Create groups, demo users, sources and grants")
+    sub.add_parser("publish-reference", help="Validate, load and publish all reference data")
+    vd = sub.add_parser("validate-dataset", help="Check a CSV against a manifest (no changes)")
+    vd.add_argument("--manifest", type=Path, required=True)
+    vd.add_argument("--csv", type=Path, required=True)
     args = parser.parse_args(argv)
+
+    if args.command == "validate-dataset":
+        manifest, problems = parse_manifest(yaml.safe_load(args.manifest.read_text()))
+        if manifest is None:
+            print("Manifest is invalid:", *problems, sep="\n  - ")
+            return 1
+        result = validate_csv(manifest, args.csv.read_bytes())
+        if result.ok:
+            print(f"Valid: {len(result.rows)} rows match the manifest.")
+            return 0
+        print(f"Invalid: {result.issue_count} problem(s)")
+        for issue in result.issues:
+            print(f"  - {issue}")
+        if result.issue_count > len(result.issues):
+            print(f"  ... and {result.issue_count - len(result.issues)} more")
+        return 1
 
     with _session_factory()() as db:
         if args.command == "create-user":
@@ -134,6 +207,12 @@ def main(argv: list[str] | None = None) -> int:
                     print(f"  {email:<40} {pw}")
             else:
                 print("Reference setup already present; nothing changed.")
+        elif args.command == "publish-reference":
+            results = publish_reference(db)
+            for r in results:
+                _print_result(r)
+            if any(r.status == "invalid" for r in results):
+                return 1
     return 0
 
 
