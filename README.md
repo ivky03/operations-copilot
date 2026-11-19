@@ -101,7 +101,14 @@ Each capability is evaluated separately, and results are published in `evals/rep
 | Permission boundaries | Zero restricted content in answers, search, caches, notifications or model prompts (hard gate) |
 | Failure recovery | Worker crashes, duplicate messages, restarts, backup restore |
 
-Deterministic tests (unit, integration, and mocked-model workflow tests) run in CI on every pull request. Model-quality evaluations run separately against real models. **No result is claimed before it has been measured.**
+Deterministic tests (unit, integration, and mocked-model workflow tests) run in CI on every pull request; this includes the retrieval evaluation, which uses local embeddings and fails the build if search quality regresses. Model-quality evaluations of answers run separately against real models:
+
+```bash
+cd backend
+uv run python -m evals.run_retrieval_eval   # seconds; deterministic
+uv run python -m evals.run_answer_eval      # ~25 min on free tiers; results vary between runs
+```
+ **No result is claimed before it has been measured.**
 
 ## Running locally
 
@@ -116,6 +123,7 @@ uv sync                               # install Python dependencies exactly as l
 uv run alembic upgrade head           # apply database migrations
 uv run python -m app.cli seed-reference     # groups, demo users (passwords printed once), sources
 uv run python -m app.cli publish-reference  # validate, load and publish the reference dataset
+                                      # (first run downloads the ~64 MB local embedding model)
 uv run pytest                         # unit, integration and end-to-end tests
 uv run uvicorn app.main:app --reload --port 8010  # API on http://localhost:8010
 
