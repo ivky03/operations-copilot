@@ -147,3 +147,17 @@ pre.sql { white-space: pre-wrap; word-break: break-word; font-size: 0.78rem; bac
 details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
 .sources-panel { margin-top: 1.25rem; }
 .sources-panel > summary { font-size: 1rem; font-weight: 600; color: var(--text); }
+
+/* Document passages */
+.badge.ok { background: #e3f4ea; color: #1d6b3a; }
+.badge.warn { background: #fdf2dc; color: #8a5a00; }
+@media (prefers-color-scheme: dark) {
+  .badge.ok { background: #183526; color: #8fd9ab; }
+  .badge.warn { background: #3a2e12; color: #f2cf7f; }
+}
+.passage.cited { border-left: 3px solid var(--accent); }
+.passage.uncited { opacity: 0.7; }
+.passage blockquote {
+  margin: 0.4rem 0 0; padding: 0 0 0 0.75rem; border-left: 2px solid var(--border); overflow-x: auto;
+}
+.passage blockquote p:first-child { margin-top: 0; }

@@ -36,6 +36,17 @@ class EvidenceOut(BaseModel):
     sources: list[dict[str, str | int]]
 
 
+class PassageOut(BaseModel):
+    id: str
+    source: str
+    version: int
+    doc_title: str
+    heading: str
+    effective_date: str | None
+    current: bool
+    content: str
+
+
 class AskResponse(BaseModel):
     run_id: str
     status: str
@@ -43,6 +54,7 @@ class AskResponse(BaseModel):
     options: list[str]
     notes: list[str]
     evidence: list[EvidenceOut]
+    passages: list[PassageOut]
     sources: list[dict[str, str | int]]
     latency_ms: int
 
@@ -72,6 +84,7 @@ async def ask(
         options=result.options,
         notes=result.notes,
         evidence=[EvidenceOut(**{k: v for k, v in e.as_dict().items()}) for e in result.evidence],
+        passages=[PassageOut(**p.as_dict()) for p in result.passages],
         sources=result.sources,
         latency_ms=result.latency_ms,
     )

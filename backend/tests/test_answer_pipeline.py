@@ -238,12 +238,10 @@ def test_malformed_json_is_repaired_once(db, olivia):
     assert result.status == "clarification" and len(planner.prompts) == 2
 
 
-@pytest.mark.parametrize(
-    ("kind", "status"), [("unanswerable", "unanswerable"), ("documents", "documents")]
-)
-def test_non_data_questions_are_not_answered_with_numbers(db, olivia, kind, status):
-    result, _, _ = ask(db, olivia, "q?", [{"kind": kind, "reason": "because"}], [])
-    assert result.status == status and result.evidence == []
+def test_unanswerable_questions_are_not_answered_with_numbers(db, olivia):
+    plan = {"kind": "unanswerable", "reason": "because"}
+    result, _, _ = ask(db, olivia, "q?", [plan], [])
+    assert result.status == "unanswerable" and result.evidence == [] and result.passages == []
 
 
 # ----------------------------------------------------------------------------- providers
@@ -411,6 +409,7 @@ def test_ask_endpoint(client, db, olivia):
     assert resp.status_code == 200, resp.text
     body = resp.json()
     assert body["status"] == "answered" and body["evidence"][0]["rows"] == [{"net_sales": -509.0}]
+    assert body["passages"] == []  # the plan asked for no documents
 
 
 def test_verifier_ignores_list_numbering_and_typographic_characters():
