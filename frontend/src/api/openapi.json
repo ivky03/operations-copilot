@@ -47,6 +47,13 @@
             "title": "Options",
             "type": "array"
           },
+          "passages": {
+            "items": {
+              "$ref": "#/components/schemas/PassageOut"
+            },
+            "title": "Passages",
+            "type": "array"
+          },
           "run_id": {
             "title": "Run Id",
             "type": "string"
@@ -80,6 +87,7 @@
           "options",
           "notes",
           "evidence",
+          "passages",
           "sources",
           "latency_ms"
         ],
@@ -409,6 +417,61 @@
           "password"
         ],
         "title": "LoginRequest",
+        "type": "object"
+      },
+      "PassageOut": {
+        "properties": {
+          "content": {
+            "title": "Content",
+            "type": "string"
+          },
+          "current": {
+            "title": "Current",
+            "type": "boolean"
+          },
+          "doc_title": {
+            "title": "Doc Title",
+            "type": "string"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date"
+          },
+          "heading": {
+            "title": "Heading",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "source",
+          "version",
+          "doc_title",
+          "heading",
+          "effective_date",
+          "current",
+          "content"
+        ],
+        "title": "PassageOut",
         "type": "object"
       },
       "QueryOut": {

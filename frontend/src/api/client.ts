@@ -85,5 +85,6 @@ export const listSources = () => request<SourceItem[]>("GET", "/api/sources");
 
 export type AskResponse = components["schemas"]["AskResponse"];
 export type Evidence = components["schemas"]["EvidenceOut"];
+export type Passage = components["schemas"]["PassageOut"];
 
 export const ask = (question: string) => request<AskResponse>("POST", "/api/ask", { question });

@@ -266,6 +266,8 @@ export interface components {
             notes: string[];
             /** Options */
             options: string[];
+            /** Passages */
+            passages: components["schemas"]["PassageOut"][];
             /** Run Id */
             run_id: string;
             /** Sources */
@@ -374,6 +376,25 @@ export interface components {
             email: string;
             /** Password */
             password: string;
+        };
+        /** PassageOut */
+        PassageOut: {
+            /** Content */
+            content: string;
+            /** Current */
+            current: boolean;
+            /** Doc Title */
+            doc_title: string;
+            /** Effective Date */
+            effective_date: string | null;
+            /** Heading */
+            heading: string;
+            /** Id */
+            id: string;
+            /** Source */
+            source: string;
+            /** Version */
+            version: number;
         };
         /** QueryOut */
         QueryOut: {
