@@ -23,6 +23,7 @@ from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
 from app import audit
+from app.documents.index import index_document
 from app.ingest.manifest import Column, Manifest, parse_manifest
 from app.ingest.validate import Issue, validate_csv
 from app.models import (
@@ -377,7 +378,9 @@ def publish_document(db: Session, content: bytes, actor: User | None = None) -> 
     db.add(version)
     db.flush()
     db.add(DocumentContent(source_version_id=version.id, body=body))
+    # Same transaction: the version becomes visible together with its search index.
+    chunks = index_document(db, version, body)
     _mark_published(db, source, version)
-    audit.record(db, actor, "version.publish", f"{slug} v{expected}")
+    audit.record(db, actor, "version.publish", f"{slug} v{expected}", chunks=chunks)
     db.commit()
     return PublishResult(slug, "published", expected)

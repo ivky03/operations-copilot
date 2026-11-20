@@ -1,0 +1,2143 @@
+{
+  "meta": {
+    "kind": "retrieval evaluation (deterministic; local embeddings, no language model)",
+    "timestamp": "2026-11-19T13:10:20+00:00",
+    "commit": "00c394a",
+    "uncommitted_changes": false,
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "k": 5
+  },
+  "summary": {
+    "keyword": {
+      "hit@1": 0.735,
+      "hit@3": 0.882,
+      "hit@5": 0.912,
+      "recall@5": 0.897,
+      "mrr": 0.811,
+      "queries_ranked": 34,
+      "leak_probes": 5,
+      "leaks": 0,
+      "stale": 0
+    },
+    "vector": {
+      "hit@1": 0.853,
+      "hit@3": 0.971,
+      "hit@5": 0.971,
+      "recall@5": 0.971,
+      "mrr": 0.907,
+      "queries_ranked": 34,
+      "leak_probes": 5,
+      "leaks": 0,
+      "stale": 0
+    },
+    "hybrid": {
+      "hit@1": 0.853,
+      "hit@3": 0.971,
+      "hit@5": 1.0,
+      "recall@5": 0.985,
+      "mrr": 0.914,
+      "queries_ranked": 34,
+      "leak_probes": 5,
+      "leaks": 0,
+      "stale": 0
+    }
+  },
+  "queries": {
+    "keyword": [
+      {
+        "id": "r-001",
+        "results": [
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-001",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-002",
+        "results": [
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "data-quality-notes@v1#Missing return reasons"
+        ],
+        "score": {
+          "id": "r-002",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-003",
+        "results": [
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v1#Return window",
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Condition of returned goods"
+        ],
+        "score": {
+          "id": "r-003",
+          "relevant": 1,
+          "first_rank": 3,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-004",
+        "results": [
+          "metric-definitions@v1#Net sales",
+          "metric-definitions@v1#Gross sales",
+          "metric-definitions@v1#Orders and average order value",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "cancellation-policy@v1#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-004",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-005",
+        "results": [
+          "data-quality-notes@v1#Missing customer IDs",
+          "cancellation-policy@v1#When customers can cancel",
+          "store-operations-handbook@v1#Escalation",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-005",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-006",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "shipping-and-delivery@v1#Delivery times",
+          "data-quality-notes@v1#Negative quantities",
+          "market-launches@v1#Store network"
+        ],
+        "score": {
+          "id": "r-006",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-007",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "shipping-and-delivery@v1#Delivery times",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "inventory-replenishment@v1#Supplier lead times"
+        ],
+        "score": {
+          "id": "r-007",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-008",
+        "results": [
+          "pricing-and-promotions@v1#Promotions",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "finance-margin-targets@v1#Promotions",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "pricing-and-promotions@v1#List prices"
+        ],
+        "score": {
+          "id": "r-008",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-009",
+        "results": [
+          "finance-margin-targets@v1#Targets by category",
+          "finance-margin-targets@v1#Actual margins",
+          "finance-margin-targets@v1#Promotions",
+          "finance-margin-targets@v1#Introduction",
+          "metric-definitions@v1#Gross sales"
+        ],
+        "score": {
+          "id": "r-009",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-010",
+        "results": [
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Sign-off",
+          "month-end-close@v1#Introduction",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-010",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-011",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "metric-definitions@v1#Orders and average order value",
+          "shipping-and-delivery@v1#Delivery times",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders"
+        ],
+        "score": {
+          "id": "r-011",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-012",
+        "results": [
+          "returns-refund-policy@v2#Refund timing",
+          "metric-definitions@v1#Refund value",
+          "returns-refund-policy@v2#Reporting treatment",
+          "returns-refund-policy@v2#Partial returns",
+          "cancellation-policy@v1#Refunds for cancelled orders"
+        ],
+        "score": {
+          "id": "r-012",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-013",
+        "results": [
+          "metric-definitions@v1#Orders and average order value",
+          "metric-definitions@v1#Cancellation value",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-013",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-014",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "data-quality-notes@v1#Missing customer IDs",
+          "inventory-replenishment@v1#Discontinued products",
+          "metric-definitions@v1#Refund value",
+          "data-quality-notes@v1#What the data does not contain"
+        ],
+        "score": {
+          "id": "r-014",
+          "relevant": 1,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-015",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "data-quality-notes@v1#Missing customer IDs",
+          "store-operations-handbook@v1#Escalation",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-015",
+          "relevant": 1,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-016",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "shipping-and-delivery@v1#Delivery times",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-016",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-017",
+        "results": [
+          "store-operations-handbook@v1#Opening hours",
+          "market-launches@v1#France web shop launch",
+          "returns-refund-policy@v2#Refund timing",
+          "shipping-and-delivery@v1#Delivery times",
+          "inventory-replenishment@v1#Supplier lead times"
+        ],
+        "score": {
+          "id": "r-017",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-018",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "data-quality-notes@v1#Missing return reasons"
+        ],
+        "score": {
+          "id": "r-018",
+          "relevant": 1,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-019",
+        "results": [
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "market-launches@v1#Range changes",
+          "metric-definitions@v1#Cancellation value",
+          "market-launches@v1#France web shop launch"
+        ],
+        "score": {
+          "id": "r-019",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-020",
+        "results": [
+          "metric-definitions@v1#Orders and average order value",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "inventory-replenishment@v1#Supplier lead times",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-020",
+          "relevant": 1,
+          "first_rank": 4,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-021",
+        "results": [
+          "inventory-replenishment@v1#Cycle counts",
+          "store-operations-handbook@v1#Processing a return in store",
+          "store-operations-handbook@v1#Opening hours",
+          "store-operations-handbook@v1#Escalation",
+          "market-launches@v1#Store network"
+        ],
+        "score": {
+          "id": "r-021",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-022",
+        "results": [
+          "pricing-and-promotions@v1#Price matching",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "pricing-and-promotions@v1#List prices",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "pricing-and-promotions@v1#Promotions"
+        ],
+        "score": {
+          "id": "r-022",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-023",
+        "results": [
+          "returns-refund-policy@v2#Partial returns",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "returns-refund-policy@v2#Return window",
+          "data-quality-notes@v1#Missing return reasons"
+        ],
+        "score": {
+          "id": "r-023",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-024",
+        "results": [
+          "cancellation-policy@v1#How cancellations are recorded",
+          "data-quality-notes@v1#Negative quantities",
+          "metric-definitions@v1#Orders and average order value",
+          "metric-definitions@v1#Cancellation rate",
+          "store-operations-handbook@v1#Processing a return in store"
+        ],
+        "score": {
+          "id": "r-024",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-025",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "cancellation-policy@v1#When customers can cancel",
+          "metric-definitions@v1#Gross sales",
+          "pricing-and-promotions@v1#Recording prices on sales"
+        ],
+        "score": {
+          "id": "r-025",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-026",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "market-launches@v1#Range changes",
+          "market-launches@v1#Store network",
+          "returns-refund-policy@v2#Introduction",
+          "store-operations-handbook@v1#Processing a return in store"
+        ],
+        "score": {
+          "id": "r-026",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-027",
+        "results": [
+          "market-launches@v1#Range changes"
+        ],
+        "score": {
+          "id": "r-027",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-028",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-028",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-029",
+        "results": [
+          "metric-definitions@v1#Cancellation value",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-029",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-030",
+        "results": [
+          "data-quality-notes@v1#What the data does not contain",
+          "market-launches@v1#France web shop launch",
+          "metric-definitions@v1#What these metrics do not include",
+          "data-quality-notes@v1#Missing customer IDs",
+          "data-quality-notes@v1#Missing return reasons"
+        ],
+        "score": {
+          "id": "r-030",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-031",
+        "results": [
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "metric-definitions@v1#Refund value",
+          "returns-refund-policy@v2#Reporting treatment",
+          "returns-refund-policy@v2#Refund timing"
+        ],
+        "score": {
+          "id": "r-031",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-032",
+        "results": [
+          "data-quality-notes@v1#Timestamps"
+        ],
+        "score": {
+          "id": "r-032",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-033",
+        "results": [
+          "month-end-close@v1#Sign-off",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Introduction",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-033",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-034",
+        "results": [
+          "returns-refund-policy@v2#Refund timing",
+          "returns-refund-policy@v1#Refund timing",
+          "returns-refund-policy@v2#Reporting treatment",
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Introduction"
+        ],
+        "score": {
+          "id": "r-034",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-035",
+        "results": [
+          "metric-definitions@v1#Gross sales",
+          "inventory-replenishment@v1#Cycle counts",
+          "metric-definitions@v1#What these metrics do not include",
+          "cancellation-policy@v1#Reporting treatment",
+          "data-quality-notes@v1#What the data does not contain"
+        ],
+        "score": {
+          "id": "r-035",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-036",
+        "results": [
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "metric-definitions@v1#Cancellation value",
+          "metric-definitions@v1#Net sales",
+          "data-quality-notes@v1#Timestamps",
+          "market-launches@v1#Range changes"
+        ],
+        "score": {
+          "id": "r-036",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-037",
+        "results": [
+          "metric-definitions@v1#Orders and average order value",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#How cancellations are recorded"
+        ],
+        "score": {
+          "id": "r-037",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-038",
+        "results": [
+          "metric-definitions@v1#Gross sales",
+          "market-launches@v1#Range changes",
+          "returns-refund-policy@v2#Introduction",
+          "market-launches@v1#France web shop launch",
+          "data-quality-notes@v1#Coverage"
+        ],
+        "score": {
+          "id": "r-038",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-039",
+        "results": [
+          "inventory-replenishment@v1#Supplier lead times",
+          "metric-definitions@v1#What these metrics do not include",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "data-quality-notes@v1#What the data does not contain"
+        ],
+        "score": {
+          "id": "r-039",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      }
+    ],
+    "vector": [
+      {
+        "id": "r-001",
+        "results": [
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Reporting treatment",
+          "cancellation-policy@v1#Cancelled orders and returns"
+        ],
+        "score": {
+          "id": "r-001",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-002",
+        "results": [
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Exceptions",
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-002",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-003",
+        "results": [
+          "returns-refund-policy@v2#Introduction",
+          "returns-refund-policy@v2#Return window",
+          "returns-refund-policy@v1#Return window",
+          "data-quality-notes@v1#Coverage",
+          "store-operations-handbook@v1#Processing a return in store"
+        ],
+        "score": {
+          "id": "r-003",
+          "relevant": 1,
+          "first_rank": 3,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-004",
+        "results": [
+          "metric-definitions@v1#Net sales",
+          "metric-definitions@v1#Gross sales",
+          "metric-definitions@v1#What these metrics do not include",
+          "metric-definitions@v1#Introduction",
+          "metric-definitions@v1#Orders and average order value"
+        ],
+        "score": {
+          "id": "r-004",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-005",
+        "results": [
+          "data-quality-notes@v1#Missing customer IDs",
+          "data-quality-notes@v1#What the data does not contain",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "data-quality-notes@v1#Negative quantities",
+          "data-quality-notes@v1#Missing return reasons"
+        ],
+        "score": {
+          "id": "r-005",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-006",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "data-quality-notes@v1#Coverage",
+          "market-launches@v1#Range changes",
+          "shipping-and-delivery@v1#Delivery times",
+          "metric-definitions@v1#Introduction"
+        ],
+        "score": {
+          "id": "r-006",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-007",
+        "results": [
+          "shipping-and-delivery@v1#Delivery times",
+          "shipping-and-delivery@v1#Delivery charges",
+          "inventory-replenishment@v1#Supplier lead times",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "returns-refund-policy@v2#Refund timing"
+        ],
+        "score": {
+          "id": "r-007",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-008",
+        "results": [
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "finance-margin-targets@v1#Promotions",
+          "pricing-and-promotions@v1#Promotions",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "returns-refund-policy@v2#Exceptions"
+        ],
+        "score": {
+          "id": "r-008",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-009",
+        "results": [
+          "finance-margin-targets@v1#Targets by category",
+          "finance-margin-targets@v1#Introduction",
+          "finance-margin-targets@v1#Promotions",
+          "finance-margin-targets@v1#Actual margins",
+          "metric-definitions@v1#What these metrics do not include"
+        ],
+        "score": {
+          "id": "r-009",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-010",
+        "results": [
+          "month-end-close@v1#Introduction",
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Sign-off",
+          "data-quality-notes@v1#Coverage"
+        ],
+        "score": {
+          "id": "r-010",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-011",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "shipping-and-delivery@v1#Delivery times"
+        ],
+        "score": {
+          "id": "r-011",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-012",
+        "results": [
+          "returns-refund-policy@v2#Refund timing",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Return window",
+          "returns-refund-policy@v2#Introduction",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-012",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-013",
+        "results": [
+          "metric-definitions@v1#Orders and average order value",
+          "inventory-replenishment@v1#Reorder points",
+          "metric-definitions@v1#Cancellation value",
+          "inventory-replenishment@v1#Supplier lead times",
+          "store-operations-handbook@v1#End-of-day cash-up"
+        ],
+        "score": {
+          "id": "r-013",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-014",
+        "results": [
+          "returns-refund-policy@v2#Condition of returned goods",
+          "returns-refund-policy@v2#Return window",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel",
+          "store-operations-handbook@v1#Escalation"
+        ],
+        "score": {
+          "id": "r-014",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-015",
+        "results": [
+          "returns-refund-policy@v2#Condition of returned goods",
+          "returns-refund-policy@v2#Return window",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Refund timing",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-015",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-016",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "inventory-replenishment@v1#Discontinued products"
+        ],
+        "score": {
+          "id": "r-016",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-017",
+        "results": [
+          "store-operations-handbook@v1#Opening hours",
+          "data-quality-notes@v1#Timestamps",
+          "market-launches@v1#France web shop launch",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "market-launches@v1#Store network"
+        ],
+        "score": {
+          "id": "r-017",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-018",
+        "results": [
+          "store-operations-handbook@v1#Processing a return in store",
+          "inventory-replenishment@v1#Supplier lead times",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "inventory-replenishment@v1#Reorder points",
+          "returns-refund-policy@v2#Return window"
+        ],
+        "score": {
+          "id": "r-018",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-019",
+        "results": [
+          "market-launches@v1#Range changes",
+          "metric-definitions@v1#Cancellation value",
+          "inventory-replenishment@v1#Discontinued products",
+          "returns-refund-policy@v2#Introduction",
+          "cancellation-policy@v1#Cancelled orders and returns"
+        ],
+        "score": {
+          "id": "r-019",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-020",
+        "results": [
+          "inventory-replenishment@v1#Supplier lead times",
+          "shipping-and-delivery@v1#Delivery times",
+          "inventory-replenishment@v1#Reorder points",
+          "shipping-and-delivery@v1#Delivery charges",
+          "returns-refund-policy@v2#Return window"
+        ],
+        "score": {
+          "id": "r-020",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-021",
+        "results": [
+          "inventory-replenishment@v1#Cycle counts",
+          "inventory-replenishment@v1#Reorder points",
+          "inventory-replenishment@v1#Discontinued products",
+          "store-operations-handbook@v1#Opening hours",
+          "inventory-replenishment@v1#Supplier lead times"
+        ],
+        "score": {
+          "id": "r-021",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-022",
+        "results": [
+          "pricing-and-promotions@v1#Price matching",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "pricing-and-promotions@v1#List prices",
+          "cancellation-policy@v1#When customers can cancel",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-022",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-023",
+        "results": [
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Return window",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "store-operations-handbook@v1#Processing a return in store",
+          "inventory-replenishment@v1#Discontinued products"
+        ],
+        "score": {
+          "id": "r-023",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-024",
+        "results": [
+          "data-quality-notes@v1#Negative quantities",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "metric-definitions@v1#Orders and average order value",
+          "data-quality-notes@v1#Missing customer IDs",
+          "pricing-and-promotions@v1#Recording prices on sales"
+        ],
+        "score": {
+          "id": "r-024",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-025",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "pricing-and-promotions@v1#List prices",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-025",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-026",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "data-quality-notes@v1#Coverage",
+          "returns-refund-policy@v2#Introduction",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "store-operations-handbook@v1#Escalation"
+        ],
+        "score": {
+          "id": "r-026",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-027",
+        "results": [
+          "returns-refund-policy@v2#Introduction",
+          "data-quality-notes@v1#Coverage",
+          "store-operations-handbook@v1#Escalation",
+          "data-quality-notes@v1#Negative quantities",
+          "shipping-and-delivery@v1#Dispatch cut-off"
+        ],
+        "score": {
+          "id": "r-027",
+          "relevant": 1,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-028",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "shipping-and-delivery@v1#Dispatch cut-off"
+        ],
+        "score": {
+          "id": "r-028",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-029",
+        "results": [
+          "metric-definitions@v1#Cancellation value",
+          "cancellation-policy@v1#Reporting treatment",
+          "metric-definitions@v1#Cancellation rate",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Refunds for cancelled orders"
+        ],
+        "score": {
+          "id": "r-029",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-030",
+        "results": [
+          "data-quality-notes@v1#What the data does not contain",
+          "metric-definitions@v1#What these metrics do not include",
+          "data-quality-notes@v1#Introduction",
+          "data-quality-notes@v1#Missing return reasons",
+          "data-quality-notes@v1#Coverage"
+        ],
+        "score": {
+          "id": "r-030",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-031",
+        "results": [
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "returns-refund-policy@v2#Refund timing",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Return window"
+        ],
+        "score": {
+          "id": "r-031",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-032",
+        "results": [
+          "data-quality-notes@v1#Timestamps",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "returns-refund-policy@v2#Refund timing",
+          "shipping-and-delivery@v1#Delivery times",
+          "store-operations-handbook@v1#Processing a return in store"
+        ],
+        "score": {
+          "id": "r-032",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-033",
+        "results": [
+          "month-end-close@v1#Sign-off",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Introduction",
+          "cancellation-policy@v1#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-033",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-034",
+        "results": [
+          "returns-refund-policy@v1#Refund timing",
+          "returns-refund-policy@v2#Refund timing",
+          "returns-refund-policy@v2#Introduction",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Return window"
+        ],
+        "score": {
+          "id": "r-034",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-035",
+        "results": [
+          "metric-definitions@v1#What these metrics do not include",
+          "metric-definitions@v1#Gross sales",
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "metric-definitions@v1#Net sales",
+          "data-quality-notes@v1#What the data does not contain"
+        ],
+        "score": {
+          "id": "r-035",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-036",
+        "results": [
+          "data-quality-notes@v1#Coverage",
+          "store-operations-handbook@v1#Escalation",
+          "data-quality-notes@v1#Timestamps",
+          "inventory-replenishment@v1#Reorder points",
+          "store-operations-handbook@v1#End-of-day cash-up"
+        ],
+        "score": {
+          "id": "r-036",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-037",
+        "results": [
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "cancellation-policy@v1#When customers can cancel",
+          "returns-refund-policy@v2#Refund timing"
+        ],
+        "score": {
+          "id": "r-037",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-038",
+        "results": [
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "cancellation-policy@v1#Reporting treatment",
+          "data-quality-notes@v1#Coverage",
+          "metric-definitions@v1#Gross sales",
+          "data-quality-notes@v1#Negative quantities"
+        ],
+        "score": {
+          "id": "r-038",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-039",
+        "results": [
+          "inventory-replenishment@v1#Supplier lead times",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "data-quality-notes@v1#Negative quantities",
+          "data-quality-notes@v1#What the data does not contain",
+          "inventory-replenishment@v1#Reorder points"
+        ],
+        "score": {
+          "id": "r-039",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      }
+    ],
+    "hybrid": [
+      {
+        "id": "r-001",
+        "results": [
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-001",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-002",
+        "results": [
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Partial returns",
+          "returns-refund-policy@v2#Exceptions",
+          "returns-refund-policy@v2#Condition of returned goods"
+        ],
+        "score": {
+          "id": "r-002",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-003",
+        "results": [
+          "returns-refund-policy@v2#Return window",
+          "returns-refund-policy@v1#Return window",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Introduction",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-003",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-004",
+        "results": [
+          "metric-definitions@v1#Net sales",
+          "metric-definitions@v1#Gross sales",
+          "metric-definitions@v1#Orders and average order value",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "metric-definitions@v1#What these metrics do not include"
+        ],
+        "score": {
+          "id": "r-004",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-005",
+        "results": [
+          "data-quality-notes@v1#Missing customer IDs",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "data-quality-notes@v1#What the data does not contain",
+          "store-operations-handbook@v1#Escalation",
+          "cancellation-policy@v1#When customers can cancel"
+        ],
+        "score": {
+          "id": "r-005",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-006",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "shipping-and-delivery@v1#Delivery times",
+          "market-launches@v1#Store network",
+          "data-quality-notes@v1#Coverage",
+          "market-launches@v1#Range changes"
+        ],
+        "score": {
+          "id": "r-006",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-007",
+        "results": [
+          "shipping-and-delivery@v1#Delivery times",
+          "shipping-and-delivery@v1#Delivery charges",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "inventory-replenishment@v1#Supplier lead times",
+          "returns-refund-policy@v2#Refund timing"
+        ],
+        "score": {
+          "id": "r-007",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-008",
+        "results": [
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "pricing-and-promotions@v1#Promotions",
+          "finance-margin-targets@v1#Promotions",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-008",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-009",
+        "results": [
+          "finance-margin-targets@v1#Targets by category",
+          "finance-margin-targets@v1#Introduction",
+          "finance-margin-targets@v1#Actual margins",
+          "finance-margin-targets@v1#Promotions",
+          "metric-definitions@v1#What these metrics do not include"
+        ],
+        "score": {
+          "id": "r-009",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-010",
+        "results": [
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Introduction",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Sign-off",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-010",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-011",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "shipping-and-delivery@v1#Delivery times",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "metric-definitions@v1#Orders and average order value"
+        ],
+        "score": {
+          "id": "r-011",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-012",
+        "results": [
+          "returns-refund-policy@v2#Refund timing",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Partial returns",
+          "metric-definitions@v1#Refund value",
+          "returns-refund-policy@v2#Return window"
+        ],
+        "score": {
+          "id": "r-012",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-013",
+        "results": [
+          "metric-definitions@v1#Orders and average order value",
+          "metric-definitions@v1#Cancellation value",
+          "cancellation-policy@v1#Reporting treatment",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "metric-definitions@v1#Net sales"
+        ],
+        "score": {
+          "id": "r-013",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-014",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Escalation",
+          "inventory-replenishment@v1#Discontinued products"
+        ],
+        "score": {
+          "id": "r-014",
+          "relevant": 1,
+          "first_rank": 3,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-015",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "returns-refund-policy@v2#Return window",
+          "store-operations-handbook@v1#Escalation",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "returns-refund-policy@v2#Partial returns"
+        ],
+        "score": {
+          "id": "r-015",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-016",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "cancellation-policy@v1#When customers can cancel",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "shipping-and-delivery@v1#Delivery times",
+          "returns-refund-policy@v2#Condition of returned goods"
+        ],
+        "score": {
+          "id": "r-016",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-017",
+        "results": [
+          "store-operations-handbook@v1#Opening hours",
+          "market-launches@v1#France web shop launch",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "data-quality-notes@v1#Timestamps",
+          "inventory-replenishment@v1#Supplier lead times"
+        ],
+        "score": {
+          "id": "r-017",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-018",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "data-quality-notes@v1#Missing return reasons",
+          "store-operations-handbook@v1#Processing a return in store",
+          "inventory-replenishment@v1#Supplier lead times"
+        ],
+        "score": {
+          "id": "r-018",
+          "relevant": 1,
+          "first_rank": 4,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-019",
+        "results": [
+          "market-launches@v1#Range changes",
+          "metric-definitions@v1#Cancellation value",
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "inventory-replenishment@v1#Discontinued products",
+          "returns-refund-policy@v2#Introduction"
+        ],
+        "score": {
+          "id": "r-019",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-020",
+        "results": [
+          "inventory-replenishment@v1#Supplier lead times",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "inventory-replenishment@v1#Reorder points",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "shipping-and-delivery@v1#Delivery charges"
+        ],
+        "score": {
+          "id": "r-020",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-021",
+        "results": [
+          "inventory-replenishment@v1#Cycle counts",
+          "store-operations-handbook@v1#Opening hours",
+          "inventory-replenishment@v1#Discontinued products",
+          "store-operations-handbook@v1#Escalation",
+          "inventory-replenishment@v1#Reorder points"
+        ],
+        "score": {
+          "id": "r-021",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-022",
+        "results": [
+          "pricing-and-promotions@v1#Price matching",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "pricing-and-promotions@v1#List prices",
+          "returns-refund-policy@v2#Partial returns",
+          "inventory-replenishment@v1#Discontinued products"
+        ],
+        "score": {
+          "id": "r-022",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-023",
+        "results": [
+          "returns-refund-policy@v2#Partial returns",
+          "store-operations-handbook@v1#Processing a return in store",
+          "returns-refund-policy@v2#Return window",
+          "returns-refund-policy@v2#Condition of returned goods",
+          "returns-refund-policy@v2#Exceptions"
+        ],
+        "score": {
+          "id": "r-023",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-024",
+        "results": [
+          "data-quality-notes@v1#Negative quantities",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "metric-definitions@v1#Orders and average order value",
+          "data-quality-notes@v1#Missing customer IDs",
+          "metric-definitions@v1#Cancellation rate"
+        ],
+        "score": {
+          "id": "r-024",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-025",
+        "results": [
+          "shipping-and-delivery@v1#Delivery charges",
+          "cancellation-policy@v1#When customers can cancel",
+          "pricing-and-promotions@v1#Recording prices on sales",
+          "pricing-and-promotions@v1#List prices",
+          "pricing-and-promotions@v1#Current and recent promotions"
+        ],
+        "score": {
+          "id": "r-025",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-026",
+        "results": [
+          "market-launches@v1#France web shop launch",
+          "returns-refund-policy@v2#Introduction",
+          "market-launches@v1#Store network",
+          "market-launches@v1#Range changes",
+          "data-quality-notes@v1#Coverage"
+        ],
+        "score": {
+          "id": "r-026",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-027",
+        "results": [
+          "market-launches@v1#Range changes",
+          "returns-refund-policy@v2#Introduction",
+          "data-quality-notes@v1#Coverage",
+          "store-operations-handbook@v1#Escalation",
+          "data-quality-notes@v1#Negative quantities"
+        ],
+        "score": {
+          "id": "r-027",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-028",
+        "results": [
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Cancelled orders and returns",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-028",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-029",
+        "results": [
+          "metric-definitions@v1#Cancellation value",
+          "cancellation-policy@v1#How cancellations are recorded",
+          "cancellation-policy@v1#Reporting treatment",
+          "cancellation-policy@v1#When customers can cancel",
+          "cancellation-policy@v1#Refunds for cancelled orders"
+        ],
+        "score": {
+          "id": "r-029",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-030",
+        "results": [
+          "data-quality-notes@v1#What the data does not contain",
+          "metric-definitions@v1#What these metrics do not include",
+          "data-quality-notes@v1#Introduction",
+          "data-quality-notes@v1#Missing return reasons",
+          "data-quality-notes@v1#Coverage"
+        ],
+        "score": {
+          "id": "r-030",
+          "relevant": 2,
+          "first_rank": 1,
+          "found_in_5": 2,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-031",
+        "results": [
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "returns-refund-policy@v2#Refund timing",
+          "returns-refund-policy@v2#Reporting treatment",
+          "cancellation-policy@v1#Refunds for cancelled orders"
+        ],
+        "score": {
+          "id": "r-031",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-032",
+        "results": [
+          "data-quality-notes@v1#Timestamps",
+          "shipping-and-delivery@v1#Dispatch cut-off",
+          "returns-refund-policy@v2#Refund timing",
+          "shipping-and-delivery@v1#Delivery times",
+          "store-operations-handbook@v1#Processing a return in store"
+        ],
+        "score": {
+          "id": "r-032",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-033",
+        "results": [
+          "month-end-close@v1#Sign-off",
+          "month-end-close@v1#Late adjustments",
+          "month-end-close@v1#Timeline",
+          "month-end-close@v1#Introduction",
+          "metric-definitions@v1#Cancellation value"
+        ],
+        "score": {
+          "id": "r-033",
+          "relevant": 1,
+          "first_rank": 1,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-034",
+        "results": [
+          "returns-refund-policy@v2#Refund timing",
+          "returns-refund-policy@v1#Refund timing",
+          "returns-refund-policy@v2#Introduction",
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "returns-refund-policy@v2#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-034",
+          "relevant": 1,
+          "first_rank": 2,
+          "found_in_5": 1,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-035",
+        "results": [
+          "metric-definitions@v1#Gross sales",
+          "metric-definitions@v1#What these metrics do not include",
+          "data-quality-notes@v1#What the data does not contain",
+          "cancellation-policy@v1#Reporting treatment",
+          "metric-definitions@v1#Net sales"
+        ],
+        "score": {
+          "id": "r-035",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-036",
+        "results": [
+          "store-operations-handbook@v1#End-of-day cash-up",
+          "data-quality-notes@v1#Timestamps",
+          "metric-definitions@v1#Cancellation value",
+          "inventory-replenishment@v1#Reorder points",
+          "cancellation-policy@v1#Reporting treatment"
+        ],
+        "score": {
+          "id": "r-036",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-037",
+        "results": [
+          "cancellation-policy@v1#Refunds for cancelled orders",
+          "metric-definitions@v1#Orders and average order value",
+          "cancellation-policy@v1#When customers can cancel",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "cancellation-policy@v1#Cancelled orders and returns"
+        ],
+        "score": {
+          "id": "r-037",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-038",
+        "results": [
+          "metric-definitions@v1#Gross sales",
+          "data-quality-notes@v1#Coverage",
+          "cancellation-policy@v1#Reporting treatment",
+          "metric-definitions@v1#What these metrics do not include",
+          "returns-refund-policy@v2#Introduction"
+        ],
+        "score": {
+          "id": "r-038",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      },
+      {
+        "id": "r-039",
+        "results": [
+          "inventory-replenishment@v1#Supplier lead times",
+          "pricing-and-promotions@v1#Current and recent promotions",
+          "data-quality-notes@v1#What the data does not contain",
+          "metric-definitions@v1#What these metrics do not include",
+          "data-quality-notes@v1#Negative quantities"
+        ],
+        "score": {
+          "id": "r-039",
+          "relevant": 0,
+          "first_rank": null,
+          "found_in_5": 0,
+          "leaks": [],
+          "stale": []
+        }
+      }
+    ]
+  }
+}

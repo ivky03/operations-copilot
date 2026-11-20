@@ -9,8 +9,10 @@ import uuid
 from datetime import datetime
 from enum import StrEnum
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     Boolean,
+    Computed,
     DateTime,
     Enum,
     ForeignKey,
@@ -22,7 +24,7 @@ from sqlalchemy import (
     func,
     text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR, UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -233,7 +235,7 @@ class ValueIndexEntry(Base):
 
 
 class DocumentContent(Base):
-    """The text of one document version. Chunking and embeddings are built from it in M4."""
+    """The text of one document version, exactly as published. Chunks are built from it."""
 
     __tablename__ = "document_contents"
 
@@ -241,6 +243,43 @@ class DocumentContent(Base):
         ForeignKey("source_versions.id", ondelete="CASCADE"), primary_key=True
     )
     body: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+EMBEDDING_DIMS = 384  # BAAI/bge-small-en-v1.5
+
+
+class DocChunk(Base):
+    """One searchable section of a document version.
+
+    `search_text` is a generated column: Postgres keeps the full-text index in step with the
+    text, so it can never go stale. Title and heading are weighted above the body.
+    """
+
+    __tablename__ = "doc_chunks"
+    __table_args__ = (
+        UniqueConstraint("source_version_id", "ordinal"),
+        Index("ix_doc_chunks_search_text", "search_text", postgresql_using="gin"),
+    )
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    source_version_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("source_versions.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    ordinal: Mapped[int] = mapped_column(Integer, nullable=False)  # position in the document
+    doc_title: Mapped[str] = mapped_column(Text, nullable=False)
+    heading: Mapped[str] = mapped_column(Text, nullable=False)
+    content: Mapped[str] = mapped_column(Text, nullable=False)
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIMS), nullable=False)
+    # Vectors from different models aren't comparable; recorded so a model change is detectable.
+    embedding_model: Mapped[str] = mapped_column(String(100), nullable=False)
+    search_text: Mapped[str] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "setweight(to_tsvector('english', doc_title || ' ' || heading), 'A') || "
+            "setweight(to_tsvector('english', content), 'B')",
+            persisted=True,
+        ),
+    )
 
 
 class AnswerRun(Base):
