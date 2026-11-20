@@ -53,6 +53,9 @@ function Turn({
   return (
     <article className="turn">
       <p className="question">{turn.question}</p>
+      {turn.standalone_question && (
+        <p className="understood small">Understood as: “{turn.standalone_question}”</p>
+      )}
       <div className="answer" aria-live={latest ? "polite" : undefined}>
         <div className="answer-head">
           <span className={`status ${status.tone}`}>{status.label}</span>

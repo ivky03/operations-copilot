@@ -319,6 +319,8 @@ export interface components {
             sources: {
                 [key: string]: string | number;
             }[];
+            /** Standalone Question */
+            standalone_question?: string | null;
             /** Status */
             status: string;
         };

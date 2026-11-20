@@ -192,6 +192,9 @@ def test_conversation_follow_up_reopen_rename_delete(live_app, page):
         box.press("Enter")
         page.get_by_text("No April data").wait_for()
         assert page.locator(".turn").count() == 2
+        assert page.locator(".understood").inner_text() == (
+            "Understood as: “Ireland net sales in April 2026”"
+        )
         assert (
             page.locator(".turn").first.locator(".evidence-details").get_attribute("open") is None
         )

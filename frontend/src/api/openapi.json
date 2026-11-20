@@ -103,6 +103,17 @@
             "title": "Sources",
             "type": "array"
           },
+          "standalone_question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standalone Question"
+          },
           "status": {
             "title": "Status",
             "type": "string"

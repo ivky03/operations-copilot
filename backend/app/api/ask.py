@@ -68,6 +68,7 @@ class AskResponse(BaseModel):
     run_id: str
     conversation_id: str | None = None
     question: str
+    standalone_question: str | None = None  # how a follow-up was understood ("And April?" → …)
     status: str
     answer: str
     options: list[str]
@@ -117,6 +118,7 @@ def _from_result(result: AnswerResult, conversation: Conversation) -> AskRespons
         run_id=result.run_id,
         conversation_id=str(conversation.id),
         question=result.question,
+        standalone_question=result.standalone_question,
         status=result.status,
         answer=result.answer,
         options=result.options,
@@ -140,8 +142,10 @@ def _from_run(run: AnswerRun, readable: set[str]) -> AskResponse:
             **base, status="redacted", answer=REDACTED, options=[], notes=[], evidence=[],
             passages=[], sources=[],
         )  # fmt: skip
+    restated = run.plan.get("standalone_question") if run.conversation_id else None
     return AskResponse(
         **base,
+        standalone_question=restated if restated and restated != run.question else None,
         status=run.status,
         answer=run.answer or "",
         options=run.verification.get("options", []),

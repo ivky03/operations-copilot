@@ -45,6 +45,7 @@ class AnswerResult:
     status: str  # answered | answered_fallback | clarification | unanswerable | error
     answer: str
     options: list[str] = field(default_factory=list)  # choices offered with a clarification
+    standalone_question: str | None = None  # how a follow-up was understood, if restated
     evidence: list[EvidenceItem] = field(default_factory=list)
     passages: list[Passage] = field(default_factory=list)
     notes: list[str] = field(default_factory=list)
@@ -258,6 +259,7 @@ def answer_question(
         run_id=str(run_id),
         question=question,
         status=status,
+        standalone_question=standalone if standalone != question else None,
         answer=answer,
         options=options,
         evidence=evidence,

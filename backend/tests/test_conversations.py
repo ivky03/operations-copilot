@@ -192,6 +192,9 @@ def test_ask_starts_a_conversation_and_follow_ups_join_it(client, api):
         "And April?",
     ]
     assert convo["turns"][0]["evidence"][0]["rows"] == [{"net_sales": -509.0}]
+    assert second["standalone_question"] == "What were Ireland's net sales in April 2026?"
+    assert convo["turns"][1]["standalone_question"] == second["standalone_question"]
+    assert convo["turns"][0]["standalone_question"] is None  # first question needs no restating
 
 
 def test_long_questions_make_short_titles(client, api):
