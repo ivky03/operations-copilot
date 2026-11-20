@@ -29,9 +29,7 @@ EXPECTED_STATUS = {
     "abstain": {"unanswerable"},
 }
 # Categories needing capabilities that don't exist yet; reported, not scored.
-NOT_YET = {
-    "follow_up": "needs conversations (M5)",
-}
+NOT_YET: dict[str, str] = {}
 RATIO_METRICS = {"cancellation_rate"}
 
 
@@ -161,6 +159,25 @@ def score_case(
         score.citations_ok, notes = citations_match(expected, result.get("answer", ""), passages)
         score.notes += notes
     return score
+
+
+def combine_turns(case_id: str, category: str, turns: list[CaseScore]) -> CaseScore:
+    """A multi-turn case passes only if every turn passes. Notes are labelled by turn."""
+
+    def all_of(values: list[bool | None]) -> bool | None:
+        checked = [v for v in values if v is not None]
+        return all(checked) if checked else None
+
+    return CaseScore(
+        case_id,
+        category,
+        scored=True,
+        behaviour_ok=all(bool(t.behaviour_ok) for t in turns),
+        data_ok=all_of([t.data_ok for t in turns]),
+        verified=all_of([t.verified for t in turns]),
+        citations_ok=all_of([t.citations_ok for t in turns]),
+        notes=[f"turn {t.case_id.rsplit('#', 1)[-1]}: {n}" for t in turns for n in t.notes],
+    )
 
 
 def percentile(values: list[float], p: float) -> float | None:

@@ -1,6 +1,13 @@
 """Unit tests for the evaluation scoring rules (no model involved)."""
 
-from evals.answer_eval import data_matches, percentile, rows_match, score_case
+from evals.answer_eval import (
+    CaseScore,
+    combine_turns,
+    data_matches,
+    percentile,
+    rows_match,
+    score_case,
+)
 
 ORACLE = [
     {
@@ -111,9 +118,14 @@ def test_unversioned_must_cite_accepts_any_version_but_only_if_cited():
     ).passed
 
 
-def test_follow_ups_are_not_scored_until_conversations_exist():
-    s = score_case("fu-1", "follow_up", {"answer": "answer"}, {"status": "x", "evidence": []}, None)
-    assert s.scored is False and s.passed is None and "M5" in s.notes[0]
+def test_follow_up_case_passes_only_if_every_turn_passes():
+    ok = CaseScore("fu#1", "follow_up", scored=True, behaviour_ok=True, data_ok=True)
+    bad = CaseScore("fu#2", "follow_up", scored=True, behaviour_ok=True, data_ok=False,
+                    notes=["expected net_sales not matched"])  # fmt: skip
+    assert combine_turns("fu", "follow_up", [ok, ok]).passed
+    combined = combine_turns("fu", "follow_up", [ok, bad])
+    assert not combined.passed and combined.notes == ["turn 2: expected net_sales not matched"]
+    assert combined.citations_ok is None  # no turn checked citations
 
 
 def test_percentile():
