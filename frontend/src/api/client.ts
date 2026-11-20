@@ -87,4 +87,18 @@ export type AskResponse = components["schemas"]["AskResponse"];
 export type Evidence = components["schemas"]["EvidenceOut"];
 export type Passage = components["schemas"]["PassageOut"];
 
-export const ask = (question: string) => request<AskResponse>("POST", "/api/ask", { question });
+export type ConversationSummary = components["schemas"]["ConversationSummary"];
+export type Conversation = components["schemas"]["ConversationOut"];
+
+/** Ask a question; without a conversation id the server starts a new conversation. */
+export const ask = (question: string, conversationId?: string | null) =>
+  request<AskResponse>("POST", "/api/ask", {
+    question,
+    ...(conversationId ? { conversation_id: conversationId } : {}),
+  });
+
+export const listConversations = () => request<ConversationSummary[]>("GET", "/api/conversations");
+export const getConversation = (id: string) => request<Conversation>("GET", `/api/conversations/${id}`);
+export const renameConversation = (id: string, title: string) =>
+  request<ConversationSummary>("PATCH", `/api/conversations/${id}`, { title });
+export const deleteConversation = (id: string) => request<void>("DELETE", `/api/conversations/${id}`);
