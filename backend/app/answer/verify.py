@@ -1,8 +1,14 @@
 """Check an answer before anyone sees it.
 
-1. Every number in the answer must appear in the evidence (allowing for display rounding),
-   in the question itself, or be a year. Anything else is treated as invented.
-2. Every citation ([D1]) must refer to real evidence, and answers with evidence must cite it.
+1. Every number in the answer must appear in the data evidence (allowing for display
+   rounding), in a document passage the answer cites, in the question itself, or be a year.
+   Anything else is treated as invented. A number from a passage the answer does NOT cite
+   is rejected: the reader must be able to check it.
+2. Every citation ([D1], [C2]) must refer to real evidence, and answers with evidence must
+   cite it.
+
+Limitation: numbers are matched against all cited passages, not the passage cited in the
+same sentence, and their labels aren't checked ("30 days" written as "30 weeks" passes).
 
 Percentages are accepted for ratio metrics (0.0526 may be written 5.26%) and for the
 code-computed percentage changes. A sign may be dropped when the text says "down" or "lower";
@@ -13,8 +19,11 @@ import re
 from dataclasses import dataclass, field
 
 from app.answer.evidence import EvidenceItem
+from app.answer.passages import Passage
 
-CITATION = re.compile(r"\[(D\d+)\]")
+# [D1], [C2], and lists such as [C1, C3] or [D1; C2]
+CITATION = re.compile(r"\[\s*([DC]\d+(?:\s*[,;]\s*[DC]\d+)*)\s*\]")
+CITATION_ID = re.compile(r"[DC]\d+")
 # Models often write typographic characters: non-breaking/figure/en/em dashes and minus signs,
 # and narrow or non-breaking spaces. Normalise them so dates and negatives are recognised.
 DASHES = dict.fromkeys(map(ord, "\u2010\u2011\u2012\u2013\u2014\u2212"), "-")
@@ -41,7 +50,7 @@ class Verification:
         if self.unknown_citations:
             problems.append("these citations don't exist: " + ", ".join(self.unknown_citations))
         if self.missing_citation:
-            problems.append("cite the evidence you used, e.g. [D1]")
+            problems.append("cite the evidence you used, e.g. [D1] or [C1]")
         return "; ".join(problems)
 
 
@@ -73,17 +82,40 @@ def allowed_numbers(evidence: list[EvidenceItem], question: str) -> set[float]:
     return allowed
 
 
-def verify(answer: str, evidence: list[EvidenceItem], question: str) -> Verification:
-    known_ids = {e.id for e in evidence}
-    cited = set(CITATION.findall(answer))
-    unknown = sorted(cited - known_ids)
-    missing = bool(evidence) and not (cited & known_ids)
+def _plain(text: str) -> str:
+    return text.translate(DASHES).translate(SPACES)
 
-    text = answer.translate(DASHES).translate(SPACES)
+
+def passage_numbers(passages: list[Passage]) -> set[float]:
+    allowed: set[float] = set()
+    for p in passages:
+        for raw in NUMBER.findall(_plain(p.content)):
+            allowed |= _variants(float(raw.replace(",", "").replace("−", "-")), False)
+    return allowed
+
+
+def cited_ids(answer: str) -> set[str]:
+    return {i for group in CITATION.findall(answer) for i in CITATION_ID.findall(group)}
+
+
+def verify(
+    answer: str,
+    evidence: list[EvidenceItem],
+    question: str,
+    passages: list[Passage] | None = None,
+) -> Verification:
+    passages = passages or []
+    known_ids = {e.id for e in evidence} | {p.id for p in passages}
+    cited = cited_ids(answer)
+    unknown = sorted(cited - known_ids)
+    missing = bool(known_ids) and not (cited & known_ids)
+
+    text = _plain(answer)
     text = CITATION.sub(" ", text)
     text = ISO_DATE.sub(" ", text)
     text = LIST_MARKER.sub(" ", text)
     allowed = allowed_numbers(evidence, question)
+    allowed |= passage_numbers([p for p in passages if p.id in cited])
     unsupported = []
     for raw in NUMBER.findall(text):
         value = float(raw.replace(",", "").replace("−", "-"))

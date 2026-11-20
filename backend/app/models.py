@@ -284,7 +284,8 @@ class DocChunk(Base):
 
 class AnswerRun(Base):
     """One question and everything needed to explain its answer later: the plan, groundings,
-    SQL and rows, the answer text, the dataset versions used, and how it ended."""
+    SQL and rows, document passages, the answer text, the source versions used, and how it
+    ended."""
 
     __tablename__ = "answer_runs"
 
@@ -298,6 +299,9 @@ class AnswerRun(Base):
     answer: Mapped[str | None] = mapped_column(Text)
     plan: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
     evidence: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
+    passages: Mapped[list] = mapped_column(
+        JSONB, nullable=False, default=list, server_default=text("'[]'::jsonb")
+    )
     source_versions: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
     verification: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
     latency_ms: Mapped[int | None] = mapped_column(Integer)
