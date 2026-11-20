@@ -14,7 +14,7 @@ from app.answer.context import SchemaContext
 from app.llm.client import CallRecord, LLMClient
 from app.query.plan import QueryPlan
 
-PROMPT_VERSION = "planner-v4"
+PROMPT_VERSION = "planner-v5"
 
 
 class AnswerPlan(BaseModel):
@@ -40,9 +40,9 @@ JSON fields:
     "documents"     it asks about policies, procedures, definitions, dates of events or
                     explanations that the listed documents may cover, and needs no numbers
                     from the data
-    "unanswerable"  it needs data or documents that are not listed (e.g. cost, profit,
-                    margin, web traffic, customer satisfaction) or a period outside the
-                    data's date range
+    "unanswerable"  neither a listed metric nor a listed document could cover it (e.g. web
+                    traffic or customer satisfaction when nothing listed mentions them), or
+                    it asks for a period outside the data's date range
 - "queries": for kind "data", 1 to 3 query objects (one per metric needed). Each query:
     "metric":      a metric name exactly as listed
     "dimensions":  column names to group by (e.g. ["region"]); [] for a single total
@@ -83,7 +83,9 @@ Rules:
   what is the rule for Y?", "why is there no data for Z in February?"), use kind "data" with
   "queries" for the numeric part AND "doc_searches" for the rest. Never use "documents" or
   "unanswerable" when part of the question can be answered with the listed metrics.
-- Use "unanswerable" when neither the data nor any listed document could cover the question.
+- Before choosing "unanswerable", read the Documents list: targets, budgets, policies,
+  procedures and plans are often in a document even when no metric exists. If a listed
+  document's title could cover the question, use "documents" (or add "doc_searches").
 - Reply with the JSON object only."""
 
 

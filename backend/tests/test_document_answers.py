@@ -11,7 +11,7 @@ import pytest
 from sqlalchemy import select
 
 from app.answer.passages import Passage, document_titles, retrieve_passages
-from app.answer.verify import cited_ids, verify
+from app.answer.verify import cited_ids, normalise_citations, verify
 from app.answer.writer import template_answer
 from app.cli import publish_reference, seed_reference
 from app.models import AnswerRun, User
@@ -186,6 +186,24 @@ def test_verifier_checks_numbers_against_cited_passages(answer, ok):
         _passage("C2", "Paid within 5 business days."),
     ]
     assert verify(answer, [], "q", passages).ok is ok
+
+
+def test_lenticular_brackets_count_as_citations_and_are_normalised(db, users):
+    probe = retrieve_passages(db, users["ops"], ["return window"])
+    cid = next(p.id for p in probe if p.heading == "Return window")
+    result, _, _ = ask(
+        db,
+        users["ops"],
+        "What is our return window?",
+        [RETURN_WINDOW],
+        [{"answer": f"The return window is **30 days**【{cid}】."}],  # as gpt-oss writes it
+    )
+    assert result.status == "answered" and f"[{cid}]" in result.answer
+
+
+def test_citations_get_a_space_but_adjacent_citations_stay_together():
+    assert normalise_citations("on 1 March 2026【C3】【C1】.") == "on 1 March 2026 [C3][C1]."
+    assert normalise_citations("as listed [x] here") == "as listed [x] here"
 
 
 def test_cited_ids_reads_every_citation_style():

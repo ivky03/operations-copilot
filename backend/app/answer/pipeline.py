@@ -23,7 +23,7 @@ from app.answer.context import build_context
 from app.answer.evidence import EvidenceItem, build_evidence
 from app.answer.passages import Passage, document_titles, retrieve_passages
 from app.answer.planner import AnswerPlan, plan_question
-from app.answer.verify import cited_ids, verify
+from app.answer.verify import cited_ids, normalise_citations, verify
 from app.answer.writer import template_answer, write_answer
 from app.llm.client import CallRecord, LLMClient, LLMOutputError, LLMUnavailableError
 from app.models import AnswerRun, LlmCall, User
@@ -178,14 +178,16 @@ def answer_question(
             # rather than showing model text that can't be checked against a citation.
             verification = {"ok": True, "writer_found_no_answer": True}
             raise _Stop("unanswerable", NOT_IN_DOCUMENTS)
-        text = draft.answer
+        text = normalise_citations(draft.answer)
         check = verify(text, evidence, question, passages)
         rejected = []
         if not check.ok:
             rejected.append({"draft": text, "problems": check.feedback()})
-            text = write_answer(
-                writer, question, evidence, notes, calls, check.feedback(), passages
-            ).answer
+            text = normalise_citations(
+                write_answer(
+                    writer, question, evidence, notes, calls, check.feedback(), passages
+                ).answer
+            )
             check = verify(text, evidence, question, passages)
             if not check.ok:
                 rejected.append({"draft": text, "problems": check.feedback()})

@@ -24,6 +24,17 @@ from app.answer.passages import Passage
 # [D1], [C2], and lists such as [C1, C3] or [D1; C2]
 CITATION = re.compile(r"\[\s*([DC]\d+(?:\s*[,;]\s*[DC]\d+)*)\s*\]")
 CITATION_ID = re.compile(r"[DC]\d+")
+# Some models cite with CJK lenticular or full-width brackets: 【C1】 or ［C1］.
+SPACE_BEFORE_CITATION = re.compile(r"(?<=[^\s\[\]])(?=\[\s*[DC]\d)")  # "2026[C1]" → "2026 [C1]"
+BRACKETS = str.maketrans({"\u3010": "[", "\u3011": "]", "\uff3b": "[", "\uff3d": "]"})
+
+
+def normalise_citations(answer: str) -> str:
+    """Rewrite look-alike brackets as [ ] so citations are recognised, shown and scored the
+    same way everywhere. Applied to the answer before verification and before it's saved."""
+    return SPACE_BEFORE_CITATION.sub(" ", answer.translate(BRACKETS))
+
+
 # Models often write typographic characters: non-breaking/figure/en/em dashes and minus signs,
 # and narrow or non-breaking spaces. Normalise them so dates and negatives are recognised.
 DASHES = dict.fromkeys(map(ord, "\u2010\u2011\u2012\u2013\u2014\u2212"), "-")
