@@ -83,6 +83,7 @@ def run(only: list[str] | None, delay: float) -> dict:
                     "notes": [],
                     "options": [],
                     "evidence": [],
+                    "passages": [],
                     "calls": [],
                     "latency_ms": int((time.monotonic() - started) * 1000),
                     "run_id": None,
@@ -105,6 +106,10 @@ def run(only: list[str] | None, delay: float) -> dict:
             "evidence": [
                 {"metric": e.metric, "description": e.description, "rows": e.rows}
                 for e in r.evidence
+            ],
+            "passages": [
+                {"id": p.id, "source": p.source, "version": p.version, "heading": p.heading}
+                for p in r.passages
             ],
             "latency_ms": int((time.monotonic() - started) * 1000),
             "calls": [
@@ -147,6 +152,7 @@ def run(only: list[str] | None, delay: float) -> dict:
             "writer_model": settings.llm_writer_model,
             "fallback_model": settings.llm_fallback_model if settings.gemini_api_key else None,
             "prompt_versions": {"planner": planner.PROMPT_VERSION, "writer": writer.PROMPT_VERSION},
+            "embedding_model": settings.embedding_model,
             "cases_run": len(cases),
         },
         "results": results,
@@ -163,6 +169,7 @@ def summarise(report: dict) -> dict:
     for cat, items in sorted(by_cat.items()):
         scored = [s for s in items if s.scored]
         data = [s for s in scored if s.data_ok is not None]
+        cites = [s for s in scored if s.citations_ok is not None]
         categories[cat] = {
             "cases": len(items),
             "scored": len(scored),
@@ -170,6 +177,8 @@ def summarise(report: dict) -> dict:
             "behaviour_ok": sum(1 for s in scored if s.behaviour_ok),
             "data_checked": len(data),
             "data_ok": sum(1 for s in data if s.data_ok),
+            "citations_checked": len(cites),
+            "citations_ok": sum(1 for s in cites if s.citations_ok),
             "not_scored_reason": items[0].notes[0] if not scored and items[0].notes else None,
         }
     results = report["results"]
@@ -216,14 +225,17 @@ def render_markdown(report: dict, summary: dict) -> str:
         f"## Result: {o['passed']} / {o['scored']} scored cases passed",
         "",
         "| Category | Cases | Scored | Passed | Behaviour OK | Data OK / checked "
-        "| Not scored because |",
-        "|---|---|---|---|---|---|---|",
+        "| Citations OK / checked | Not scored because |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for cat, c in summary["categories"].items():
         data = f"{c['data_ok']} / {c['data_checked']}" if c["data_checked"] else "–"
+        cites = (
+            f"{c['citations_ok']} / {c['citations_checked']}" if c.get("citations_checked") else "–"
+        )
         lines.append(
             f"| {cat} | {c['cases']} | {c['scored']} | {c['passed']} "
-            f"| {c['behaviour_ok']} | {data} "
+            f"| {c['behaviour_ok']} | {data} | {cites} "
             f"| {c['not_scored_reason'] or ''} |"
         )
     lat, tok = summary["latency_ms"], summary["tokens_per_question"]
@@ -252,10 +264,18 @@ def render_markdown(report: dict, summary: dict) -> str:
             f"- Expected: `{r['expected']['answer']}`; got status `{r['status']}`",
             f"- Notes: {'; '.join(r['score']['notes'])}",
             f"- Evidence: {[e['description'] for e in r['evidence']] or 'none'}",
+            f"- Passages: {_passage_labels(r) or 'none'}",
             f"- Answer: {r['answer'][:300].replace(chr(10), ' ')}",
             "",
         ]
     return "\n".join(lines) + "\n"
+
+
+def _passage_labels(record: dict) -> str:
+    return "; ".join(
+        f"{p['id']} {p['source']}@v{p['version']} › {p['heading']}"
+        for p in record.get("passages", [])
+    )
 
 
 def main() -> None:

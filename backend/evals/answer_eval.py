@@ -5,13 +5,21 @@ A case passes when:
   (answer → answered, clarify → clarification, abstain → unanswerable,
   restricted → nothing answered from restricted sources), and
 - data (when the case declares data): every expected oracle result is matched by one of the
-  answer's evidence items, by metric and rows (rounded per metric type).
+  answer's evidence items, by metric and rows (rounded per metric type), and
+- citations (when the case declares must_cite / must_not_cite): every must_cite document
+  ("doc" = any version, "doc@v2" = that version) is cited by a passage the answer text
+  references ([C2]); no must_not_cite document is cited.
+
+Restricted cases pass only if no passage from a must_not_cite document was even retrieved
+(so it never reached the model) and the pipeline didn't error. Citations are parsed here
+with our own simple pattern, independently of the verifier.
 
 Evidence may carry an extra column that is constant across its rows (e.g. "month": "2026-02"
 when the planner grouped a single-month question by month). Such a column carries no extra
 information, so it is dropped before comparing; any other difference is a failure.
 """
 
+import re
 from dataclasses import dataclass, field
 
 ANSWERED = {"answered", "answered_fallback"}
@@ -22,7 +30,6 @@ EXPECTED_STATUS = {
 }
 # Categories needing capabilities that don't exist yet; reported, not scored.
 NOT_YET = {
-    "policy": "needs document retrieval (M4)",
     "follow_up": "needs conversations (M5)",
 }
 RATIO_METRICS = {"cancellation_rate"}
@@ -36,13 +43,16 @@ class CaseScore:
     behaviour_ok: bool | None = None
     data_ok: bool | None = None
     verified: bool | None = None
+    citations_ok: bool | None = None
     notes: list[str] = field(default_factory=list)
 
     @property
     def passed(self) -> bool | None:
         if not self.scored:
             return None
-        return bool(self.behaviour_ok) and self.data_ok is not False
+        return (
+            bool(self.behaviour_ok) and self.data_ok is not False and self.citations_ok is not False
+        )
 
 
 def _round(metric: str, value):
@@ -93,19 +103,51 @@ def data_matches(expected_items: list[dict], evidence: list[dict]) -> tuple[bool
     return not notes, notes
 
 
+def _matches(label: str, passage: dict) -> bool:
+    doc, _, version = label.partition("@v")
+    return passage["source"] == doc and (not version or passage["version"] == int(version))
+
+
+def cited_passages(answer: str, passages: list[dict]) -> list[dict]:
+    ids = {i for group in re.findall(r"\[([^\]]*)\]", answer) for i in re.findall(r"C\d+", group)}
+    return [p for p in passages if p["id"] in ids]
+
+
+def citations_match(expected: dict, answer: str, passages: list[dict]) -> tuple[bool, list[str]]:
+    cited = cited_passages(answer, passages)
+    notes = []
+    for label in expected.get("must_cite", []):
+        if not any(_matches(label, p) for p in cited):
+            notes.append(f"did not cite {label}")
+    for label in expected.get("must_not_cite", []):
+        if any(_matches(label, p) for p in cited):
+            notes.append(f"cited {label}, which it must not")
+    return not notes, notes
+
+
 def score_case(
     case_id: str, category: str, expected: dict, result: dict, oracle: list | None
 ) -> CaseScore:
-    """`result`: {status, answer, evidence: [{metric, rows}]}; `oracle`: expected data items."""
+    """`result`: {status, answer, evidence: [{metric, rows}], passages: [{id, source, version}]};
+    `oracle`: expected data items."""
     if category in NOT_YET:
         return CaseScore(case_id, category, scored=False, notes=[NOT_YET[category]])
     score = CaseScore(case_id, category, scored=True)
     status = result["status"]
     want = expected["answer"]
+    passages = result.get("passages", [])
     if want == "restricted":
-        # Documents aren't searchable yet, so this only proves nothing was answered.
-        score.behaviour_ok = status not in ANSWERED and not result["evidence"]
-        score.notes.append("restricted-content check is partial until documents exist (M4)")
+        leaked = sorted(
+            {
+                f"{p['source']}@v{p['version']}"
+                for p in passages
+                for label in expected.get("must_not_cite", [])
+                if _matches(label, p)
+            }
+        )
+        score.behaviour_ok = status != "error" and not leaked
+        if leaked:
+            score.notes.append(f"retrieved restricted passages: {', '.join(leaked)}")
     else:
         score.behaviour_ok = status in EXPECTED_STATUS[want]
     if not score.behaviour_ok:
@@ -115,8 +157,9 @@ def score_case(
         score.notes += notes
     if want == "answer" and status in ANSWERED:
         score.verified = status == "answered"
-    if category == "combined" and expected.get("must_cite"):
-        score.notes.append("document citations not scored until M4")
+    if want == "answer" and (expected.get("must_cite") or expected.get("must_not_cite")):
+        score.citations_ok, notes = citations_match(expected, result.get("answer", ""), passages)
+        score.notes += notes
     return score
 
 
