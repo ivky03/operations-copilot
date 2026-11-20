@@ -1,7 +1,9 @@
 """The answer pipeline: a fixed sequence of steps, not an autonomous agent.
 
     question
-      → plan (LLM, ≤2 calls: one retry if the plan names something not in the catalog)
+      → plan (LLM, ≤2 calls: one retry if the plan names something not in the catalog);
+        in a conversation the planner also sees the last turns and restates a follow-up
+        ("And April?") as a complete question, used by every later step
       → ground filter values ("UK" → "United Kingdom"; ambiguous → ask the user)
       → compile + run each query (read-only, as M3a)
       → search documents the user can read (hybrid, permission-filtered, as M4a)
@@ -16,17 +18,19 @@ import re
 import time
 import uuid
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
 
 from sqlalchemy.orm import Session
 
 from app.answer.context import build_context
 from app.answer.evidence import EvidenceItem, build_evidence
+from app.answer.history import prior_turns, render
 from app.answer.passages import Passage, document_titles, retrieve_passages
 from app.answer.planner import AnswerPlan, plan_question
 from app.answer.verify import cited_ids, normalise_citations, verify
 from app.answer.writer import template_answer, write_answer
 from app.llm.client import CallRecord, LLMClient, LLMOutputError, LLMUnavailableError
-from app.models import AnswerRun, LlmCall, User
+from app.models import AnswerRun, Conversation, LlmCall, User
 from app.query.catalog import Catalog, PlanError
 from app.query.compiler import compile_plan
 from app.query.executor import QueryTimeoutError, execute
@@ -37,6 +41,7 @@ from app.query.plan import QueryPlan
 @dataclass
 class AnswerResult:
     run_id: str
+    question: str
     status: str  # answered | answered_fallback | clarification | unanswerable | error
     answer: str
     options: list[str] = field(default_factory=list)  # choices offered with a clarification
@@ -122,16 +127,17 @@ def _plan_with_retry(
     catalog: Catalog,
     question: str,
     calls: list[CallRecord],
+    history: str = "",
 ) -> AnswerPlan:
     context = build_context(db, catalog)
     documents = document_titles(db, user)
-    plan = plan_question(llm, question, context, calls, documents)
+    plan = plan_question(llm, question, context, calls, documents, history)
     for query in plan.queries:
         try:
             compile_plan(query, catalog)  # dry run: are all names in the catalog?
         except PlanError as e:
             retry_q = f"{question}\n\n(Your previous plan was invalid: {e} Use only listed names.)"
-            return plan_question(llm, retry_q, context, calls, documents)
+            return plan_question(llm, retry_q, context, calls, documents, history)
     return plan
 
 
@@ -139,7 +145,12 @@ NOT_IN_DOCUMENTS = "I couldn't find anything about that in the documents you hav
 
 
 def answer_question(
-    db: Session, user: User, question: str, planner: LLMClient, writer: LLMClient
+    db: Session,
+    user: User,
+    question: str,
+    planner: LLMClient,
+    writer: LLMClient,
+    conversation: Conversation | None = None,
 ) -> AnswerResult:
     start = time.monotonic()
     run_id = uuid.uuid4()
@@ -150,9 +161,13 @@ def answer_question(
     plan: AnswerPlan | None = None
     verification: dict = {}
     status, answer, options = "error", "", []
+    standalone = question
     try:
         catalog = Catalog.for_user(db, user)
-        plan = _plan_with_retry(planner, db, user, catalog, question, calls)
+        history = render(prior_turns(db, user, conversation.id)) if conversation else ""
+        plan = _plan_with_retry(planner, db, user, catalog, question, calls, history)
+        if history and plan.standalone_question:
+            standalone = plan.standalone_question  # "And April?" → "Net sales by country, April"
         if plan.kind == "clarify":
             raise _Stop("clarification", plan.clarification or "Could you clarify your question?")
         if plan.kind == "unanswerable":
@@ -162,9 +177,9 @@ def answer_question(
                 + (f": {plan.reason}" if plan.reason else "."),
             )
         queries = plan.queries if plan.kind == "data" else []
-        searches = plan.doc_searches or ([] if queries else [question])
+        searches = plan.doc_searches or ([] if queries else [standalone])
         for i, query in enumerate(queries, start=1):
-            grounded = _ground_plan(db, catalog, query, question, notes)
+            grounded = _ground_plan(db, catalog, query, standalone, notes)
             compiled = compile_plan(grounded, catalog)
             evidence.append(build_evidence(i, grounded, compiled, execute(compiled)))
         if searches:
@@ -172,23 +187,24 @@ def answer_question(
         if not evidence and not passages:
             raise _Stop("unanswerable", NOT_IN_DOCUMENTS)
 
-        draft = write_answer(writer, question, evidence, notes, calls, passages=passages)
+        draft = write_answer(writer, standalone, evidence, notes, calls, passages=passages)
         if not draft.answerable and not evidence:
             # The writer read the passages and found nothing relevant. Say so in our own words
             # rather than showing model text that can't be checked against a citation.
             verification = {"ok": True, "writer_found_no_answer": True}
             raise _Stop("unanswerable", NOT_IN_DOCUMENTS)
         text = normalise_citations(draft.answer)
-        check = verify(text, evidence, question, passages)
+        asked = f"{question} {standalone}"  # numbers the user typed, either way
+        check = verify(text, evidence, asked, passages)
         rejected = []
         if not check.ok:
             rejected.append({"draft": text, "problems": check.feedback()})
             text = normalise_citations(
                 write_answer(
-                    writer, question, evidence, notes, calls, check.feedback(), passages
+                    writer, standalone, evidence, notes, calls, check.feedback(), passages
                 ).answer
             )
-            check = verify(text, evidence, question, passages)
+            check = verify(text, evidence, asked, passages)
             if not check.ok:
                 rejected.append({"draft": text, "problems": check.feedback()})
         verification = {
@@ -221,6 +237,7 @@ def answer_question(
         AnswerRun(
             id=run_id,
             user_id=user.id,
+            conversation_id=conversation.id if conversation else None,
             question=question,
             status=status,
             answer=answer,
@@ -228,15 +245,18 @@ def answer_question(
             evidence=[e.as_dict() for e in evidence],
             passages=[p.as_dict() for p in passages],
             source_versions=[{"source": s, "version": v} for s, v in sources],
-            verification={**verification, "notes": notes},
+            verification={**verification, "notes": notes, "options": options},
             latency_ms=latency,
         )
     )
+    if conversation:
+        conversation.updated_at = datetime.now(UTC)
     db.flush()
     db.add_all(LlmCall(answer_run_id=run_id, **c.__dict__) for c in calls)
     db.commit()
     return AnswerResult(
         run_id=str(run_id),
+        question=question,
         status=status,
         answer=answer,
         options=options,
