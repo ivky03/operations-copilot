@@ -117,14 +117,43 @@ def test_asking_a_question_shows_a_verified_answer_with_evidence(live_app, page)
         url, passwords = live_app
         page.goto(url)
         sign_in(page, OPS, passwords[OPS])
-        page.get_by_label("Ask a question about your data").fill("Ireland net sales in March 2026?")
+        page.get_by_label("Ask a question about your data or policies").fill(
+            "Ireland net sales in March 2026?"
+        )
         page.get_by_role("button", name="Ask", exact=True).click()
-        page.get_by_text("Answered · numbers verified").wait_for()
+        page.get_by_text("Answered · numbers and citations verified").wait_for()
         assert "−€509.00" in page.locator(".markdown").inner_text()
         evidence = page.locator(".evidence").first
         assert "Net sales" in evidence.inner_text()
         assert "transactions v1" in evidence.inner_text()
         evidence.get_by_text("Show SQL").click()
         assert "WITH c0 AS" in evidence.locator("pre.sql").inner_text()
+    finally:
+        app.dependency_overrides.clear()
+
+
+def test_document_answer_shows_cited_passage_cards(live_app, page):
+    """Scripted model; real browser, real API, real permission-filtered document search."""
+    from app.api.ask import get_planner_llm, get_writer_llm
+    from app.main import app
+    from tests.test_answer_pipeline import fake
+
+    planner, _ = fake({"kind": "documents", "doc_searches": ["return window"]})
+    writer, _ = fake({"answer": "Customers have **30 days** to return unused products [C1]."})
+    app.dependency_overrides[get_planner_llm] = lambda: planner
+    app.dependency_overrides[get_writer_llm] = lambda: writer
+    try:
+        url, passwords = live_app
+        page.goto(url)
+        sign_in(page, OPS, passwords[OPS])
+        page.get_by_label("Ask a question about your data or policies").fill("Return window?")
+        page.get_by_role("button", name="Ask", exact=True).click()
+        page.get_by_text("Answered · numbers and citations verified").wait_for()
+        cited = page.locator(".passage.cited")
+        assert cited.count() == 1
+        text = cited.inner_text()
+        assert "Return window" in text and "returns-refund-policy v2" in text
+        assert "current" in text and "cited in the answer" in text
+        assert page.locator(".passage.uncited").count() >= 1  # retrieved, shown dimmed
     finally:
         app.dependency_overrides.clear()
