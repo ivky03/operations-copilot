@@ -17,7 +17,7 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from app.answer import planner, writer
@@ -158,6 +158,15 @@ def run(only: list[str] | None, delay: float) -> dict:
             _print(n, len(cases), turn_id, score, record)
             time.sleep(delay)
         scores.append(combine_turns(case["id"], case["category"], turn_scores))
+        # Don't leave evaluation chats in the persona's conversation list. The turns are kept,
+        # detached like single-question runs, so the report's run ids still lead to the trace.
+        db.execute(
+            update(AnswerRun)
+            .where(AnswerRun.conversation_id == conversation.id)
+            .values(conversation_id=None)
+        )
+        db.delete(conversation)
+        db.commit()
 
     return {
         "meta": {
