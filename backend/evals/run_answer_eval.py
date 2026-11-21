@@ -7,6 +7,7 @@ prompt versions and dataset so results are comparable over time.
 Usage (from backend/, with the reference data published in the dev database):
     uv run python -m evals.run_answer_eval                 # full run (~25 min on free tiers)
     uv run python -m evals.run_answer_eval --only calc-001 vg-001
+    uv run python -m evals.run_answer_eval --golden stage_a.heldout   # held-out questions
 """
 
 import argparse
@@ -117,9 +118,10 @@ def _run_turn(
     return record, score
 
 
-def run(only: list[str] | None, delay: float) -> dict:
-    golden = load_golden("stage_a")
-    expected_data = json.loads((GOLDEN_DIR / "stage_a.expected.json").read_text())
+def run(only: list[str] | None, delay: float, golden_name: str = "stage_a") -> dict:
+    golden = load_golden(golden_name)
+    expected_path = GOLDEN_DIR / f"{golden_name}.expected.json"
+    expected_data = json.loads(expected_path.read_text()) if expected_path.exists() else {}
     settings = get_settings()
     db = _session_factory()()
     users = {p: db.scalar(select(User).where(User.email == e)) for p, e in PERSONAS.items()}
@@ -171,7 +173,8 @@ def run(only: list[str] | None, delay: float) -> dict:
     return {
         "meta": {
             "kind": "model-quality evaluation (real language model; not a CI test)",
-            "dataset": "stage_a",
+            "dataset": golden.get("dataset", "stage_a"),
+            "golden": golden_name,
             "golden_version": golden["version"],
             "timestamp": datetime.now(UTC).isoformat(timespec="seconds"),
             "commit": _git("rev-parse", "--short", "HEAD"),
@@ -240,7 +243,7 @@ def render_markdown(report: dict, summary: dict) -> str:
     dirty = " (with uncommitted changes)" if m["uncommitted_changes"] else ""
     prompts = m["prompt_versions"]
     lines = [
-        f"# Answer evaluation: {m['dataset']} ({m['timestamp'][:10]})",
+        f"# Answer evaluation: {m.get('golden', m['dataset'])} ({m['timestamp'][:10]})",
         "",
         f"> **{m['kind']}.** Results vary between runs; with {m['cases_run']} cases, treat "
         "small differences as noise.",
@@ -310,12 +313,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--only", nargs="*", help="case ids to run")
     parser.add_argument("--delay", type=float, default=3.0, help="seconds between cases")
+    parser.add_argument("--golden", default="stage_a", help="golden set name in evals/golden")
     args = parser.parse_args()
-    report = run(args.only, args.delay)
+    report = run(args.only, args.delay, args.golden)
     summary = summarise(report)
     report["summary"] = summary
     REPORTS.mkdir(parents=True, exist_ok=True)
-    stem = f"{report['meta']['timestamp'][:10]}-{report['meta']['commit']}-stage_a"
+    stem = f"{report['meta']['timestamp'][:10]}-{report['meta']['commit']}-{args.golden}"
     if args.only:
         stem += "-partial"
     (REPORTS / f"{stem}.json").write_text(json.dumps(report, indent=2, default=str) + "\n")

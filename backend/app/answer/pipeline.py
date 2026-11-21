@@ -12,11 +12,16 @@
       → save the full trace (answer_runs, llm_calls)
 
 At most 4 model calls per question, so latency and cost are bounded and every step is testable.
+
+Progress events (`on_event`) report each step as it finishes, with the code-computed data and
+the passages as soon as they exist, so a streaming client can show them early. The answer text
+itself is only ever reported after verification: unchecked model text never leaves this module.
 """
 
 import re
 import time
 import uuid
+from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
@@ -152,7 +157,12 @@ def answer_question(
     planner: LLMClient,
     writer: LLMClient,
     conversation: Conversation | None = None,
+    on_event: Callable[[str, dict], None] | None = None,
 ) -> AnswerResult:
+    def emit(event: str, **data) -> None:
+        if on_event:
+            on_event(event, data)
+
     start = time.monotonic()
     run_id = uuid.uuid4()
     calls: list[CallRecord] = []
@@ -164,11 +174,19 @@ def answer_question(
     status, answer, options = "error", "", []
     standalone = question
     try:
+        emit("step", step="planning")
         catalog = Catalog.for_user(db, user)
         history = render(prior_turns(db, user, conversation.id)) if conversation else ""
         plan = _plan_with_retry(planner, db, user, catalog, question, calls, history)
         if history and plan.standalone_question:
             standalone = plan.standalone_question  # "And April?" → "Net sales by country, April"
+        emit(
+            "planned",
+            kind=plan.kind,
+            queries=len(plan.queries) if plan.kind == "data" else 0,
+            doc_searches=plan.doc_searches,
+            standalone_question=standalone if standalone != question else None,
+        )
         if plan.kind == "clarify":
             raise _Stop("clarification", plan.clarification or "Could you clarify your question?")
         if plan.kind == "unanswerable":
@@ -179,15 +197,22 @@ def answer_question(
             )
         queries = plan.queries if plan.kind == "data" else []
         searches = plan.doc_searches or ([] if queries else [standalone])
+        if queries:
+            emit("step", step="querying")
         for i, query in enumerate(queries, start=1):
             grounded = _ground_plan(db, catalog, query, standalone, notes)
             compiled = compile_plan(grounded, catalog)
             evidence.append(build_evidence(i, grounded, compiled, execute(compiled)))
+        if evidence:
+            emit("evidence", items=[e.as_dict() for e in evidence], notes=notes)
         if searches:
+            emit("step", step="searching")
             passages = retrieve_passages(db, user, searches, plan.include_history)
+            emit("passages", items=[p.as_dict() for p in passages])
         if not evidence and not passages:
             raise _Stop("unanswerable", NOT_IN_DOCUMENTS)
 
+        emit("step", step="writing")
         draft = write_answer(writer, standalone, evidence, notes, calls, passages=passages)
         if not draft.answerable and not evidence:
             # The writer read the passages and found nothing relevant. Say so in our own words
@@ -196,10 +221,12 @@ def answer_question(
             raise _Stop("unanswerable", NOT_IN_DOCUMENTS)
         text = normalise_citations(draft.answer)
         asked = f"{question} {standalone}"  # numbers the user typed, either way
+        emit("step", step="verifying")
         check = verify(text, evidence, asked, passages)
         rejected = []
         if not check.ok:
             rejected.append({"draft": text, "problems": check.feedback()})
+            emit("step", step="rewriting")  # the problems themselves stay in the trace
             text = normalise_citations(
                 write_answer(
                     writer, standalone, evidence, notes, calls, check.feedback(), passages

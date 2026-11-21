@@ -1,0 +1,2663 @@
+{
+  "meta": {
+    "kind": "model-quality evaluation (real language model; not a CI test)",
+    "dataset": "stage_a",
+    "golden": "stage_a.heldout",
+    "golden_version": 1,
+    "timestamp": "2026-11-21T16:28:57+00:00",
+    "commit": "93e75ca",
+    "uncommitted_changes": false,
+    "planner_model": "openai/gpt-oss-120b",
+    "writer_model": "openai/gpt-oss-120b",
+    "fallback_model": "gemini-3.5-flash-lite",
+    "prompt_versions": {
+      "planner": "planner-v6",
+      "writer": "writer-v3"
+    },
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "cases_run": 25
+  },
+  "results": [
+    {
+      "id": "h-pol-01",
+      "category": "policy",
+      "persona": "operations",
+      "question": "What time do our shops open on Sundays?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "store-operations-handbook"
+        ]
+      },
+      "standalone_question": "What time do our shops open on Sundays?",
+      "status": "answered",
+      "answer": "Our physical stores open at **11:00** on Sundays (closing at 17:00) [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Opening hours"
+        },
+        {
+          "id": "C2",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Escalation"
+        },
+        {
+          "id": "C3",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Store network"
+        },
+        {
+          "id": "C4",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Processing a return in store"
+        },
+        {
+          "id": "C5",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "End-of-day cash-up"
+        }
+      ],
+      "latency_ms": 2608,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 2239,
+          "completion_tokens": 83,
+          "latency_ms": 734
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1011,
+          "completion_tokens": 81,
+          "latency_ms": 457
+        }
+      ],
+      "run_id": "56e4684b-2c26-40f8-853a-109e67f948c1",
+      "score": {
+        "case_id": "h-pol-01",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-02",
+      "category": "policy",
+      "persona": "operations",
+      "question": "If someone orders \u20ac60 of goods online, do they pay for shipping?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "shipping-and-delivery"
+        ]
+      },
+      "standalone_question": "If someone orders \u20ac60 of goods online, do they pay for shipping?",
+      "status": "answered",
+      "answer": "They would pay a shipping charge of \u20ac5.95, because delivery is free only on web orders of \u20ac75 or more and a flat \u20ac5.95 charge applies to orders below that amount [C2].",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery times"
+        },
+        {
+          "id": "C2",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery charges"
+        },
+        {
+          "id": "C3",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Dispatch cut-off"
+        },
+        {
+          "id": "C4",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Supplier lead times"
+        }
+      ],
+      "latency_ms": 1238,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 2245,
+          "completion_tokens": 107,
+          "latency_ms": 543
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 932,
+          "completion_tokens": 109,
+          "latency_ms": 611
+        }
+      ],
+      "run_id": "44f3b3b2-b74d-4406-9c99-452b745b0fd8",
+      "score": {
+        "case_id": "h-pol-02",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-03",
+      "category": "policy",
+      "persona": "operations",
+      "question": "How far ahead do we need to reorder sofas and tables from suppliers?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "inventory-replenishment"
+        ]
+      },
+      "standalone_question": "How far ahead do we need to reorder sofas and tables from suppliers?",
+      "status": "answered",
+      "answer": "The evidence provides the following supplier lead time for furniture, which includes sofas and tables:\n\n* Furniture: 8 weeks [C3]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Discontinued products"
+        },
+        {
+          "id": "C2",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Range changes"
+        },
+        {
+          "id": "C3",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Supplier lead times"
+        },
+        {
+          "id": "C4",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Store network"
+        },
+        {
+          "id": "C5",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Reorder points"
+        },
+        {
+          "id": "C6",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "France web shop launch"
+        }
+      ],
+      "latency_ms": 1851,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 2244,
+          "completion_tokens": 83,
+          "latency_ms": 664
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 165
+        },
+        {
+          "purpose": "answer",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 1057,
+          "completion_tokens": 46,
+          "latency_ms": 852
+        }
+      ],
+      "run_id": "ffa08e15-d364-4764-a9fd-23dbedc833aa",
+      "score": {
+        "case_id": "h-pol-03",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-04",
+      "category": "policy",
+      "persona": "finance",
+      "question": "Can a customer use two discount codes on the same purchase?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "pricing-and-promotions"
+        ]
+      },
+      "standalone_question": "Can a customer use two discount codes on the same purchase?",
+      "status": "answered",
+      "answer": "**No** \u2013 promotions cannot be combined, so a customer cannot use two discount codes on the same purchase. [C2]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Current and recent promotions"
+        },
+        {
+          "id": "C2",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Promotions"
+        },
+        {
+          "id": "C3",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Recording prices on sales"
+        },
+        {
+          "id": "C4",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Partial returns"
+        },
+        {
+          "id": "C5",
+          "source": "finance-margin-targets",
+          "version": 1,
+          "heading": "Promotions"
+        },
+        {
+          "id": "C6",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Negative quantities"
+        }
+      ],
+      "latency_ms": 4935,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 137
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2318,
+          "completion_tokens": 63,
+          "latency_ms": 969
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 164
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1069,
+          "completion_tokens": 77,
+          "latency_ms": 440
+        }
+      ],
+      "run_id": "f3c94788-5e83-4676-a40f-920f8c117e81",
+      "score": {
+        "case_id": "h-pol-04",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-05",
+      "category": "policy",
+      "persona": "finance",
+      "question": "If a competitor sells the same lamp cheaper, will we match their price?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "pricing-and-promotions"
+        ]
+      },
+      "standalone_question": "If a competitor sells the same lamp cheaper, will we match their price?",
+      "status": "answered",
+      "answer": "Brindlewood Home does not price\u2011match competitors\u202f\u2014\u202fif a competitor sells the same lamp cheaper, we will not match their price. [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Price matching"
+        },
+        {
+          "id": "C2",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Recording prices on sales"
+        },
+        {
+          "id": "C3",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Promotions"
+        },
+        {
+          "id": "C4",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Current and recent promotions"
+        },
+        {
+          "id": "C5",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "List prices"
+        }
+      ],
+      "latency_ms": 5279,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 159
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2321,
+          "completion_tokens": 67,
+          "latency_ms": 1459
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 956
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 976,
+          "completion_tokens": 70,
+          "latency_ms": 454
+        }
+      ],
+      "run_id": "94cd8680-2173-4ab8-b7b8-e04e529ce882",
+      "score": {
+        "case_id": "h-pol-05",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-06",
+      "category": "policy",
+      "persona": "operations",
+      "question": "A web order comes in at 3pm on a Tuesday. When does it leave the warehouse?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "shipping-and-delivery"
+        ]
+      },
+      "standalone_question": "A web order comes in at 3pm on a Tuesday. When does it leave the warehouse?",
+      "status": "answered",
+      "answer": "The order is placed after the 14:00 same\u2011day dispatch cut\u2011off, so it will not be dispatched on Tuesday. It will leave the warehouse on the next business day, which is Wednesday. [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Dispatch cut-off"
+        },
+        {
+          "id": "C2",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "Refunds for cancelled orders"
+        },
+        {
+          "id": "C3",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery times"
+        },
+        {
+          "id": "C4",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Supplier lead times"
+        },
+        {
+          "id": "C5",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "Orders and average order value"
+        },
+        {
+          "id": "C6",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery charges"
+        }
+      ],
+      "latency_ms": 5995,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 186
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2327,
+          "completion_tokens": 73,
+          "latency_ms": 836
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 160
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1102,
+          "completion_tokens": 119,
+          "latency_ms": 576
+        }
+      ],
+      "run_id": "044844d5-a35a-4eff-8cee-c1d83abb9b9e",
+      "score": {
+        "case_id": "h-pol-06",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-07",
+      "category": "policy",
+      "persona": "operations",
+      "question": "Some returns don't say why the item came back. Is that a problem?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "data-quality-notes"
+        ]
+      },
+      "standalone_question": "Some returns don't say why the item came back. Is that a problem?",
+      "status": "answered",
+      "answer": "Missing return reasons are not considered a problem; such returns are still valid and are included in the refund value. [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Missing return reasons"
+        },
+        {
+          "id": "C2",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "What the data does not contain"
+        },
+        {
+          "id": "C3",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Introduction"
+        },
+        {
+          "id": "C4",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Processing a return in store"
+        },
+        {
+          "id": "C5",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Exceptions"
+        },
+        {
+          "id": "C6",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Coverage"
+        }
+      ],
+      "latency_ms": 5758,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 158
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2324,
+          "completion_tokens": 70,
+          "latency_ms": 834
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 152
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1089,
+          "completion_tokens": 74,
+          "latency_ms": 445
+        }
+      ],
+      "run_id": "e9ee38ef-cd14-446a-956e-c05b457c2b00",
+      "score": {
+        "case_id": "h-pol-07",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-08",
+      "category": "policy",
+      "persona": "finance",
+      "question": "Which time zone are order times recorded in?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "data-quality-notes"
+        ]
+      },
+      "standalone_question": "Which time zone are order times recorded in?",
+      "status": "answered",
+      "answer": "Order times are recorded in the local store time zone [C5]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C2",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Refund timing"
+        },
+        {
+          "id": "C3",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Introduction"
+        },
+        {
+          "id": "C4",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "Refunds for cancelled orders"
+        },
+        {
+          "id": "C5",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Timestamps"
+        },
+        {
+          "id": "C6",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "What the data does not contain"
+        }
+      ],
+      "latency_ms": 4708,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 191
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2315,
+          "completion_tokens": 63,
+          "latency_ms": 802
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 150
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1040,
+          "completion_tokens": 64,
+          "latency_ms": 437
+        }
+      ],
+      "run_id": "93fcbe13-e4c0-4cbf-9762-51043c49671a",
+      "score": {
+        "case_id": "h-pol-08",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-09",
+      "category": "policy",
+      "persona": "operations",
+      "question": "When a customer calls off an order before it ships, how fast do they get their money back?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "cancellation-policy"
+        ]
+      },
+      "standalone_question": "When a customer calls off an order before it ships, how fast do they get their money back?",
+      "status": "answered",
+      "answer": "When a customer cancels an order before it is dispatched, the refund is processed in full to the original payment method within **three business days** [C2][C3]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Refund timing"
+        },
+        {
+          "id": "C2",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "Refunds for cancelled orders"
+        },
+        {
+          "id": "C3",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C4",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Processing a return in store"
+        },
+        {
+          "id": "C5",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "How cancellations are recorded"
+        },
+        {
+          "id": "C6",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Reporting treatment"
+        }
+      ],
+      "latency_ms": 7093,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 204
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2327,
+          "completion_tokens": 66,
+          "latency_ms": 775
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 222
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1165,
+          "completion_tokens": 116,
+          "latency_ms": 781
+        }
+      ],
+      "run_id": "b75f4a50-612c-435f-a3cb-4e89342d96fb",
+      "score": {
+        "case_id": "h-pol-09",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-10",
+      "category": "policy",
+      "persona": "finance",
+      "question": "Which cities do we have physical stores in?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "market-launches"
+        ]
+      },
+      "standalone_question": "Which cities do we have physical stores in?",
+      "status": "answered",
+      "answer": "**Physical store locations:**\n\n- London\u202f[ C1 ]\n- Dublin\u202f[ C1 ]\n- Berlin\u202f[ C1 ]\n- Amsterdam\u202f[ C1 ]\n- Madrid\u202f[ C1 ]\n\nThere are no physical stores in France (as noted in C2).",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Store network"
+        },
+        {
+          "id": "C2",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "France web shop launch"
+        },
+        {
+          "id": "C3",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Current and recent promotions"
+        },
+        {
+          "id": "C4",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C5",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Timestamps"
+        }
+      ],
+      "latency_ms": 5893,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 186
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2315,
+          "completion_tokens": 53,
+          "latency_ms": 817
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 156
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1055,
+          "completion_tokens": 133,
+          "latency_ms": 582
+        }
+      ],
+      "run_id": "bf08e516-bf34-4eaf-a2dd-c7a720e73e17",
+      "score": {
+        "case_id": "h-pol-10",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-11",
+      "category": "policy",
+      "persona": "operations",
+      "question": "When did we stop selling the glass vase?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "market-launches"
+        ]
+      },
+      "standalone_question": "When did we stop selling the glass vase?",
+      "status": "answered",
+      "answer": "The Glass Vase was discontinued on **28\u202fFebruary\u202f2026** and had no sales from **March\u202f2026 onward** [C2].",
+      "notes": [],
+      "options": [],
+      "evidence": [
+        {
+          "metric": "gross_sales",
+          "description": "gross_sales; by month, product_name; where product_name = Glass Vase",
+          "rows": [
+            {
+              "month": "2026-01",
+              "product_name": "Glass Vase",
+              "gross_sales": 476.0
+            },
+            {
+              "month": "2026-02",
+              "product_name": "Glass Vase",
+              "gross_sales": 238.0
+            }
+          ]
+        }
+      ],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Discontinued products"
+        },
+        {
+          "id": "C2",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Range changes"
+        },
+        {
+          "id": "C3",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Store network"
+        },
+        {
+          "id": "C4",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Condition of returned goods"
+        },
+        {
+          "id": "C5",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "France web shop launch"
+        },
+        {
+          "id": "C6",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Reorder points"
+        }
+      ],
+      "latency_ms": 2236,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 203
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2316,
+          "completion_tokens": 168,
+          "latency_ms": 950
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1283,
+          "completion_tokens": 144,
+          "latency_ms": 898
+        }
+      ],
+      "run_id": "655fd27f-767f-40ec-8b3b-71d5aecebc44",
+      "score": {
+        "case_id": "h-pol-11",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-pol-12",
+      "category": "policy",
+      "persona": "operations",
+      "question": "Who deals with customer complaints that a store can't sort out itself?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "store-operations-handbook"
+        ]
+      },
+      "standalone_question": "Who deals with customer complaints that a store can't sort out itself?",
+      "status": "answered",
+      "answer": "Customer Operations handles customer complaints that a store cannot resolve itself [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Escalation"
+        },
+        {
+          "id": "C2",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Missing customer IDs"
+        },
+        {
+          "id": "C3",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "Cancelled orders and returns"
+        },
+        {
+          "id": "C4",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Opening hours"
+        },
+        {
+          "id": "C5",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C6",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "End-of-day cash-up"
+        }
+      ],
+      "latency_ms": 1859,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 193
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2322,
+          "completion_tokens": 64,
+          "latency_ms": 933
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1062,
+          "completion_tokens": 82,
+          "latency_ms": 604
+        }
+      ],
+      "run_id": "3fafb8e8-f49d-4387-8744-6bed85e7f215",
+      "score": {
+        "case_id": "h-pol-12",
+        "category": "policy",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-comb-01",
+      "category": "combined",
+      "persona": "operations",
+      "question": "Why does the Glass Vase have no sales in April 2026?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "market-launches"
+        ]
+      },
+      "standalone_question": "Why does the Glass Vase have no sales in April 2026?",
+      "status": "answered",
+      "answer": "The Glass Vase shows no sales in April\u202f2026 because it was discontinued on 28\u202fFebruary\u202f2026 after the supplier ended production, and the evidence states it has no sales from March\u202f2026 onward. [C1][D1][D2]",
+      "notes": [],
+      "options": [],
+      "evidence": [
+        {
+          "metric": "gross_sales",
+          "description": "gross_sales; by product_name; where product_name = Glass Vase; from 2026-04-01 up to (not including) 2026-05-01",
+          "rows": []
+        },
+        {
+          "metric": "units_sold",
+          "description": "units_sold; by product_name; where product_name = Glass Vase; from 2026-04-01 up to (not including) 2026-05-01",
+          "rows": []
+        }
+      ],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Range changes"
+        },
+        {
+          "id": "C2",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Discontinued products"
+        },
+        {
+          "id": "C3",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Store network"
+        },
+        {
+          "id": "C4",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Supplier lead times"
+        },
+        {
+          "id": "C5",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "France web shop launch"
+        },
+        {
+          "id": "C6",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Reorder points"
+        }
+      ],
+      "latency_ms": 8335,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 167
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2323,
+          "completion_tokens": 320,
+          "latency_ms": 1156
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 339
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1269,
+          "completion_tokens": 117,
+          "latency_ms": 553
+        }
+      ],
+      "run_id": "83fff92c-877f-4815-baff-7bbeb8ef2c16",
+      "score": {
+        "case_id": "h-comb-01",
+        "category": "combined",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-comb-02",
+      "category": "combined",
+      "persona": "finance",
+      "question": "What were Textiles gross sales in April 2026, and was a promotion running on them?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "pricing-and-promotions"
+        ]
+      },
+      "standalone_question": "What were Textiles gross sales in April 2026, and was a promotion running on them?",
+      "status": "answered",
+      "answer": "- Gross sales for Textiles in April\u202f2026 were \u20ac2,518.40 [D1].\n- A promotion was running on Textiles during that period: **SPRING10**, 10\u202f% off all Textiles products from 1\u202fApril to 30\u202fApril\u202f2026 [C5].",
+      "notes": [],
+      "options": [],
+      "evidence": [
+        {
+          "metric": "gross_sales",
+          "description": "gross_sales; by category; where category = Textiles; from 2026-04-01 up to (not including) 2026-05-01",
+          "rows": [
+            {
+              "category": "Textiles",
+              "gross_sales": 2518.4
+            }
+          ]
+        }
+      ],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Promotions"
+        },
+        {
+          "id": "C2",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "Net sales"
+        },
+        {
+          "id": "C3",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Recording prices on sales"
+        },
+        {
+          "id": "C4",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "Gross sales"
+        },
+        {
+          "id": "C5",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "Current and recent promotions"
+        },
+        {
+          "id": "C6",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "What these metrics do not include"
+        }
+      ],
+      "latency_ms": 7359,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 166
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2327,
+          "completion_tokens": 195,
+          "latency_ms": 972
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 138
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1206,
+          "completion_tokens": 149,
+          "latency_ms": 874
+        }
+      ],
+      "run_id": "25364492-6e2d-49db-8379-1e70b9cef4a6",
+      "score": {
+        "case_id": "h-comb-02",
+        "category": "combined",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-comb-03",
+      "category": "combined",
+      "persona": "operations",
+      "question": "How many orders did France have in February 2026, and why?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "market-launches"
+        ]
+      },
+      "standalone_question": "How many orders did France have in February 2026, and why?",
+      "status": "answered",
+      "answer": "**0 orders** in France for February\u202f2026. The French web shop launched on\u202f2\u202fMarch\u202f2026 and there were no physical stores, so sales (and thus orders) for January and February\u202f2026 are zero by design [C1].",
+      "notes": [],
+      "options": [],
+      "evidence": [
+        {
+          "metric": "order_count",
+          "description": "order_count; where country = France; from 2026-02-01 up to (not including) 2026-03-01",
+          "rows": []
+        }
+      ],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "France web shop launch"
+        },
+        {
+          "id": "C2",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Escalation"
+        },
+        {
+          "id": "C3",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Introduction"
+        },
+        {
+          "id": "C4",
+          "source": "market-launches",
+          "version": 1,
+          "heading": "Range changes"
+        },
+        {
+          "id": "C5",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Opening hours"
+        },
+        {
+          "id": "C6",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "What the data does not contain"
+        }
+      ],
+      "latency_ms": 6221,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 157
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2324,
+          "completion_tokens": 194,
+          "latency_ms": 965
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 151
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1153,
+          "completion_tokens": 126,
+          "latency_ms": 526
+        }
+      ],
+      "run_id": "40045de4-d55e-4b3f-9143-b9d6d12f2392",
+      "score": {
+        "case_id": "h-comb-03",
+        "category": "combined",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-una-01",
+      "category": "unanswerable",
+      "persona": "operations",
+      "question": "What is our policy on staff parking?",
+      "expected": {
+        "answer": "abstain"
+      },
+      "standalone_question": "What is our policy on staff parking?",
+      "status": "unanswerable",
+      "answer": "I can't answer that from the data you have access to: There is no information about staff parking in the available data or documents.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [],
+      "latency_ms": 1010,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 154
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2315,
+          "completion_tokens": 49,
+          "latency_ms": 800
+        }
+      ],
+      "run_id": "e20311ee-34c3-4a6c-8884-068ec7e7794c",
+      "score": {
+        "case_id": "h-una-01",
+        "category": "unanswerable",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-una-02",
+      "category": "unanswerable",
+      "persona": "finance",
+      "question": "How many employees work in the Berlin store?",
+      "expected": {
+        "answer": "abstain"
+      },
+      "standalone_question": "How many employees work in the Berlin store?",
+      "status": "unanswerable",
+      "answer": "I can't answer that from the data you have access to: No metric or document covers employee counts for stores",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [],
+      "latency_ms": 6917,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 147
+        },
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 2235,
+          "completion_tokens": 67,
+          "latency_ms": 654
+        }
+      ],
+      "run_id": "b9185836-7073-491b-8b68-cc89bf7c4e53",
+      "score": {
+        "case_id": "h-una-02",
+        "category": "unanswerable",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-una-03",
+      "category": "unanswerable",
+      "persona": "operations",
+      "question": "What is our carbon emissions target for 2026?",
+      "expected": {
+        "answer": "abstain"
+      },
+      "standalone_question": "What is our carbon emissions target for 2026?",
+      "status": "unanswerable",
+      "answer": "I can't answer that from the data you have access to: Carbon emissions data and targets are not covered by the listed datasets or documents.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [],
+      "latency_ms": 1073,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 173
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2320,
+          "completion_tokens": 55,
+          "latency_ms": 682
+        }
+      ],
+      "run_id": "e38e277c-8ebd-4c3c-a51b-e4e7269dbd3c",
+      "score": {
+        "case_id": "h-una-03",
+        "category": "unanswerable",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-una-04",
+      "category": "unanswerable",
+      "persona": "finance",
+      "question": "What interest rate do we pay on our bank loan?",
+      "expected": {
+        "answer": "abstain"
+      },
+      "standalone_question": "What interest rate do we pay on our bank loan?",
+      "status": "unanswerable",
+      "answer": "I can't answer that from the data you have access to: Bank loans and interest rates are not covered by the available data or documents.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [],
+      "latency_ms": 1028,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 142
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2317,
+          "completion_tokens": 53,
+          "latency_ms": 805
+        }
+      ],
+      "run_id": "29097c36-ca55-4696-bfde-bdd9807a5050",
+      "score": {
+        "case_id": "h-una-04",
+        "category": "unanswerable",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-01",
+      "category": "permission",
+      "persona": "operations",
+      "question": "How many working days after month end is the management pack issued?",
+      "expected": {
+        "answer": "restricted",
+        "must_not_cite": [
+          "month-end-close"
+        ]
+      },
+      "standalone_question": "How many working days after month end is the management pack issued?",
+      "status": "unanswerable",
+      "answer": "I couldn't find anything about that in the documents you have access to.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "End-of-day cash-up"
+        },
+        {
+          "id": "C2",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Processing a return in store"
+        },
+        {
+          "id": "C3",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Exceptions"
+        },
+        {
+          "id": "C4",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Escalation"
+        },
+        {
+          "id": "C5",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Coverage"
+        }
+      ],
+      "latency_ms": 7892,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 173
+        },
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 2243,
+          "completion_tokens": 104,
+          "latency_ms": 640
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 151
+        },
+        {
+          "purpose": "answer",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 971,
+          "completion_tokens": 32,
+          "latency_ms": 704
+        }
+      ],
+      "run_id": "32056e69-6fd1-4c17-a621-338bfea028bb",
+      "score": {
+        "case_id": "h-perm-01",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-02",
+      "category": "permission",
+      "persona": "operations",
+      "question": "What margin are we aiming for on Furniture this year?",
+      "expected": {
+        "answer": "restricted",
+        "must_not_cite": [
+          "finance-margin-targets"
+        ]
+      },
+      "standalone_question": "What margin are we aiming for on Furniture this year?",
+      "status": "unanswerable",
+      "answer": "I couldn't find anything about that in the documents you have access to.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Supplier lead times"
+        },
+        {
+          "id": "C2",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "What these metrics do not include"
+        },
+        {
+          "id": "C3",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery charges"
+        },
+        {
+          "id": "C4",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "What the data does not contain"
+        },
+        {
+          "id": "C5",
+          "source": "shipping-and-delivery",
+          "version": 1,
+          "heading": "Delivery times"
+        },
+        {
+          "id": "C6",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Cycle counts"
+        }
+      ],
+      "latency_ms": 5897,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 194
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2318,
+          "completion_tokens": 65,
+          "latency_ms": 830
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 155
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1088,
+          "completion_tokens": 80,
+          "latency_ms": 596
+        }
+      ],
+      "run_id": "4f7d4142-7db1-434c-aecf-900ef1231907",
+      "score": {
+        "case_id": "h-perm-02",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-03",
+      "category": "permission",
+      "persona": "finance",
+      "question": "How long does furniture delivery take to Spain?",
+      "expected": {
+        "answer": "restricted",
+        "must_not_cite": [
+          "shipping-and-delivery"
+        ]
+      },
+      "standalone_question": "How long does furniture delivery take to Spain?",
+      "status": "unanswerable",
+      "answer": "I couldn't find anything about that in the documents you have access to.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Refund timing"
+        },
+        {
+          "id": "C2",
+          "source": "data-quality-notes",
+          "version": 1,
+          "heading": "Timestamps"
+        },
+        {
+          "id": "C3",
+          "source": "returns-refund-policy",
+          "version": 2,
+          "heading": "Return window"
+        },
+        {
+          "id": "C4",
+          "source": "pricing-and-promotions",
+          "version": 1,
+          "heading": "List prices"
+        },
+        {
+          "id": "C5",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C6",
+          "source": "month-end-close",
+          "version": 1,
+          "heading": "Timeline"
+        }
+      ],
+      "latency_ms": 1660,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 167
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2315,
+          "completion_tokens": 63,
+          "latency_ms": 877
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1089,
+          "completion_tokens": 50,
+          "latency_ms": 474
+        }
+      ],
+      "run_id": "08ce5856-e36e-4555-83dd-58e02087e125",
+      "score": {
+        "case_id": "h-perm-03",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-04",
+      "category": "permission",
+      "persona": "finance",
+      "question": "What is the safety-stock rule behind our reorder points?",
+      "expected": {
+        "answer": "restricted",
+        "must_not_cite": [
+          "inventory-replenishment"
+        ]
+      },
+      "standalone_question": "What is the safety-stock rule behind our reorder points?",
+      "status": "unanswerable",
+      "answer": "I can't answer that from the data you have access to: There is no information about inventory, safety stock, or reorder points in the provided datasets or documents.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [],
+      "latency_ms": 1029,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 176
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2319,
+          "completion_tokens": 61,
+          "latency_ms": 796
+        }
+      ],
+      "run_id": "0bdfd168-e77a-4104-aa07-6058c78d336e",
+      "score": {
+        "case_id": "h-perm-04",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-05",
+      "category": "permission",
+      "persona": "operations",
+      "question": "Who signs off the monthly close?",
+      "expected": {
+        "answer": "restricted",
+        "must_not_cite": [
+          "month-end-close"
+        ]
+      },
+      "standalone_question": "Who signs off the monthly close?",
+      "status": "unanswerable",
+      "answer": "I couldn't find anything about that in the documents you have access to.",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "End-of-day cash-up"
+        },
+        {
+          "id": "C2",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Escalation"
+        },
+        {
+          "id": "C3",
+          "source": "metric-definitions",
+          "version": 1,
+          "heading": "Cancellation value"
+        },
+        {
+          "id": "C4",
+          "source": "cancellation-policy",
+          "version": 1,
+          "heading": "When customers can cancel"
+        },
+        {
+          "id": "C5",
+          "source": "store-operations-handbook",
+          "version": 1,
+          "heading": "Opening hours"
+        },
+        {
+          "id": "C6",
+          "source": "inventory-replenishment",
+          "version": 1,
+          "heading": "Reorder points"
+        }
+      ],
+      "latency_ms": 1570,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 172
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2314,
+          "completion_tokens": 57,
+          "latency_ms": 778
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 1096,
+          "completion_tokens": 54,
+          "latency_ms": 512
+        }
+      ],
+      "run_id": "b37f7577-4220-409d-926f-8ff00905aded",
+      "score": {
+        "case_id": "h-perm-05",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": null,
+        "citations_ok": null,
+        "notes": [],
+        "passed": true
+      }
+    },
+    {
+      "id": "h-perm-06",
+      "category": "permission",
+      "persona": "finance",
+      "question": "Who signs off the monthly close?",
+      "expected": {
+        "answer": "answer",
+        "must_cite": [
+          "month-end-close"
+        ]
+      },
+      "standalone_question": "Who signs off the monthly close?",
+      "status": "answered",
+      "answer": "The Finance Controller signs off the monthly close. [C1]",
+      "notes": [],
+      "options": [],
+      "evidence": [],
+      "passages": [
+        {
+          "id": "C1",
+          "source": "month-end-close",
+          "version": 1,
+          "heading": "Sign-off"
+        },
+        {
+          "id": "C2",
+          "source": "month-end-close",
+          "version": 1,
+          "heading": "Late adjustments"
+        },
+        {
+          "id": "C3",
+          "source": "month-end-close",
+          "version": 1,
+          "heading": "Introduction"
+        },
+        {
+          "id": "C4",
+          "source": "month-end-close",
+          "version": 1,
+          "heading": "Timeline"
+        }
+      ],
+      "latency_ms": 1465,
+      "calls": [
+        {
+          "purpose": "plan",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "error",
+          "prompt_tokens": null,
+          "completion_tokens": null,
+          "latency_ms": 161
+        },
+        {
+          "purpose": "plan",
+          "provider": "gemini",
+          "model": "gemini-3.5-flash-lite",
+          "status": "ok",
+          "prompt_tokens": 2313,
+          "completion_tokens": 55,
+          "latency_ms": 741
+        },
+        {
+          "purpose": "answer",
+          "provider": "groq",
+          "model": "openai/gpt-oss-120b",
+          "status": "ok",
+          "prompt_tokens": 874,
+          "completion_tokens": 56,
+          "latency_ms": 414
+        }
+      ],
+      "run_id": "95f974a2-3a32-4104-bbfd-e30d17a3abb3",
+      "score": {
+        "case_id": "h-perm-06",
+        "category": "permission",
+        "scored": true,
+        "behaviour_ok": true,
+        "data_ok": null,
+        "verified": true,
+        "citations_ok": true,
+        "notes": [],
+        "passed": true
+      }
+    }
+  ],
+  "scores": [
+    {
+      "case_id": "h-pol-01",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-02",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-03",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-04",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-05",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-06",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-07",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-08",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-09",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-10",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-11",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-pol-12",
+      "category": "policy",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-comb-01",
+      "category": "combined",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-comb-02",
+      "category": "combined",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-comb-03",
+      "category": "combined",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-una-01",
+      "category": "unanswerable",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-una-02",
+      "category": "unanswerable",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-una-03",
+      "category": "unanswerable",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-una-04",
+      "category": "unanswerable",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-01",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-02",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-03",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-04",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-05",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": null,
+      "citations_ok": null,
+      "notes": [],
+      "passed": true
+    },
+    {
+      "case_id": "h-perm-06",
+      "category": "permission",
+      "scored": true,
+      "behaviour_ok": true,
+      "data_ok": null,
+      "verified": true,
+      "citations_ok": true,
+      "notes": [],
+      "passed": true
+    }
+  ],
+  "summary": {
+    "overall": {
+      "scored": 25,
+      "passed": 25
+    },
+    "categories": {
+      "combined": {
+        "cases": 3,
+        "scored": 3,
+        "passed": 3,
+        "behaviour_ok": 3,
+        "data_checked": 0,
+        "data_ok": 0,
+        "citations_checked": 3,
+        "citations_ok": 3,
+        "not_scored_reason": null
+      },
+      "permission": {
+        "cases": 6,
+        "scored": 6,
+        "passed": 6,
+        "behaviour_ok": 6,
+        "data_checked": 0,
+        "data_ok": 0,
+        "citations_checked": 1,
+        "citations_ok": 1,
+        "not_scored_reason": null
+      },
+      "policy": {
+        "cases": 12,
+        "scored": 12,
+        "passed": 12,
+        "behaviour_ok": 12,
+        "data_checked": 0,
+        "data_ok": 0,
+        "citations_checked": 12,
+        "citations_ok": 12,
+        "not_scored_reason": null
+      },
+      "unanswerable": {
+        "cases": 4,
+        "scored": 4,
+        "passed": 4,
+        "behaviour_ok": 4,
+        "data_checked": 0,
+        "data_ok": 0,
+        "citations_checked": 0,
+        "citations_ok": 0,
+        "not_scored_reason": null
+      }
+    },
+    "answers_verified": 16,
+    "answers_fallback": 0,
+    "latency_ms": {
+      "p50": 4708,
+      "p95": 7892
+    },
+    "tokens_per_question": {
+      "p50": 3517,
+      "max": 4029
+    },
+    "successful_calls_by_provider": {
+      "groq": 23,
+      "gemini": 22
+    },
+    "failed_calls_by_status": {
+      "error": 35
+    }
+  }
+}
