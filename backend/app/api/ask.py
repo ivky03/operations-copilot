@@ -1,6 +1,8 @@
 """Asking questions and keeping conversations.
 
 POST /api/ask                      ask; starts a new conversation unless conversation_id is given
+POST /api/ask/stream               the same, as server-sent events: progress, data and passages
+                                   as soon as they exist, then the verified answer
 GET  /api/conversations            your conversations, most recent first
 GET  /api/conversations/{id}       one conversation with every turn's answer and evidence
 PATCH/DELETE /api/conversations/{id}
@@ -10,11 +12,15 @@ A saved turn that used a source the viewer can no longer read is redacted when s
 The language-model clients are FastAPI dependencies so tests can replace them with a fake.
 """
 
+import asyncio
+import json
+import logging
 import uuid
 from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from fastapi.concurrency import run_in_threadpool
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -23,11 +29,12 @@ from app.answer.history import readable_slugs, visible
 from app.answer.pipeline import AnswerResult, answer_question
 from app.auth import current_user
 from app.config import get_settings
-from app.db import get_db
+from app.db import _session_factory, get_db
 from app.llm.client import LLMClient, build_client
 from app.models import AnswerRun, Conversation, User
 
 router = APIRouter(prefix="/api", tags=["ask"])
+log = logging.getLogger(__name__)
 
 REDACTED = "This answer used a source you no longer have access to, so it's hidden."
 TITLE_LENGTH = 80
@@ -156,6 +163,76 @@ def _from_run(run: AnswerRun, readable: set[str]) -> AskResponse:
     )
 
 
+def _conversation_for(db: Session, user: User, body: AskRequest) -> Conversation:
+    if body.conversation_id:
+        return _own_conversation(db, user, body.conversation_id)
+    conversation = Conversation(user_id=user.id, title=_title(body.question))
+    db.add(conversation)
+    db.flush()
+    return conversation
+
+
+def _public(event: str, data: dict) -> dict:
+    """Event payloads use the same shapes as the API's responses (no internal fields)."""
+    if event == "evidence":
+        return {**data, "items": [EvidenceOut(**i).model_dump() for i in data["items"]]}
+    if event == "passages":
+        return {"items": [PassageOut(**i).model_dump() for i in data["items"]]}
+    return data
+
+
+def _sse(event: str, data: dict) -> str:
+    return f"event: {event}\ndata: {json.dumps(data, default=str, ensure_ascii=False)}\n\n"
+
+
+@router.post("/ask/stream")
+async def ask_stream(
+    body: AskRequest,
+    user: User = Depends(current_user),
+    db: Session = Depends(get_db),
+    planner: LLMClient = Depends(get_planner_llm),
+    writer: LLMClient = Depends(get_writer_llm),
+) -> StreamingResponse:
+    """Server-sent events: `step`, `planned`, `evidence`, `passages`, then `answer` (the same
+    object /api/ask returns) or `error`. The answer text arrives only after verification."""
+    conversation = _conversation_for(db, user, body)
+    db.commit()  # the worker uses its own session, so the conversation must be committed
+    user_id, conversation_id = user.id, conversation.id
+    loop = asyncio.get_running_loop()
+    queue: asyncio.Queue[tuple[str, dict] | None] = asyncio.Queue()
+
+    def put(item: tuple[str, dict] | None) -> None:
+        loop.call_soon_threadsafe(queue.put_nowait, item)
+
+    def work() -> None:
+        # Its own database session: the request's session belongs to the request's lifetime,
+        # while this thread keeps working until the answer is saved (even if the client left).
+        with _session_factory()() as own:
+            try:
+                me, convo = own.get(User, user_id), own.get(Conversation, conversation_id)
+                result = answer_question(
+                    own, me, body.question, planner, writer, convo,
+                    on_event=lambda event, data: put((event, _public(event, data))),
+                )  # fmt: skip
+                put(("answer", _from_result(result, convo).model_dump(mode="json")))
+            except Exception:
+                log.exception("streamed answer failed")
+                put(("error", {"message": "Something went wrong. Please try again."}))
+            finally:
+                put(None)
+
+    async def events():
+        loop.run_in_executor(None, work)
+        while (item := await queue.get()) is not None:
+            yield _sse(*item)
+
+    return StreamingResponse(
+        events(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
 @router.post("/ask")
 async def ask(
     body: AskRequest,
@@ -164,12 +241,7 @@ async def ask(
     planner: LLMClient = Depends(get_planner_llm),
     writer: LLMClient = Depends(get_writer_llm),
 ) -> AskResponse:
-    if body.conversation_id:
-        conversation = _own_conversation(db, user, body.conversation_id)
-    else:
-        conversation = Conversation(user_id=user.id, title=_title(body.question))
-        db.add(conversation)
-        db.flush()
+    conversation = _conversation_for(db, user, body)
     # The pipeline makes blocking network and database calls: keep them off the event loop.
     result = await run_in_threadpool(
         answer_question, db, user, body.question, planner, writer, conversation
