@@ -17,15 +17,16 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 
-from sqlalchemy import select
+from sqlalchemy import select, update
+from sqlalchemy.orm import Session
 
 from app.answer import planner, writer
 from app.answer.pipeline import answer_question
 from app.api.ask import get_planner_llm, get_writer_llm
 from app.config import get_settings
 from app.db import _session_factory
-from app.models import LlmCall, User
-from evals.answer_eval import CaseScore, percentile, score_case
+from app.models import AnswerRun, Conversation, LlmCall, User
+from evals.answer_eval import CaseScore, combine_turns, percentile, score_case
 from evals.golden import GOLDEN_DIR, load_golden
 
 REPORTS = Path(__file__).resolve().parents[2] / "evals" / "reports"
@@ -39,6 +40,81 @@ def _git(*args: str) -> str:
     """Read commit info for the report. Fixed command, no user input."""
     cmd = ["git", *args]
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout.strip()  # noqa: S603
+
+
+def _print(n: int, total: int, label: str, score: CaseScore, record: dict) -> None:
+    mark = {True: "PASS", False: "FAIL", None: "n/a "}[score.passed]
+    detail = "; ".join(score.notes)[:90]
+    print(
+        f"[{n:>2}/{total}] {label:<9} {mark}  {record['status']:<18} "
+        f"{record['latency_ms']:>6} ms  {detail}"
+    )
+
+
+def _run_turn(
+    db: Session,
+    user: User,
+    case: dict,
+    turn_id: str,
+    question: str,
+    expected: dict,
+    oracle: list | None,
+    conversation: Conversation | None,
+) -> tuple[dict, CaseScore]:
+    base = {
+        "id": turn_id,
+        "category": case["category"],
+        "persona": case["persona"],
+        "question": question,
+        "expected": expected,
+    }
+    started = time.monotonic()
+    try:
+        r = answer_question(db, user, question, get_planner_llm(), get_writer_llm(), conversation)
+    except Exception as e:  # a crash is a failed case, not a failed run
+        db.rollback()
+        note = f"pipeline crashed: {type(e).__name__}: {str(e)[:150]}"
+        score = CaseScore(turn_id, case["category"], scored=True, behaviour_ok=False, notes=[note])
+        record = base | {
+            "status": "crashed", "answer": "", "notes": [], "options": [], "evidence": [],
+            "passages": [], "calls": [], "run_id": None,
+            "latency_ms": int((time.monotonic() - started) * 1000),
+            "score": score.__dict__ | {"passed": False},
+        }  # fmt: skip
+        return record, score
+    calls = db.scalars(select(LlmCall).where(LlmCall.answer_run_id == r.run_id)).all()
+    run = db.get(AnswerRun, r.run_id)
+    record = base | {
+        "standalone_question": run.plan.get("standalone_question") if run else None,
+        "status": r.status,
+        "answer": r.answer,
+        "notes": r.notes,
+        "options": r.options,
+        "evidence": [
+            {"metric": e.metric, "description": e.description, "rows": e.rows} for e in r.evidence
+        ],
+        "passages": [
+            {"id": p.id, "source": p.source, "version": p.version, "heading": p.heading}
+            for p in r.passages
+        ],
+        "latency_ms": int((time.monotonic() - started) * 1000),
+        "calls": [
+            {
+                "purpose": c.purpose,
+                "provider": c.provider,
+                "model": c.model,
+                "status": c.status,
+                "prompt_tokens": c.prompt_tokens,
+                "completion_tokens": c.completion_tokens,
+                "latency_ms": c.latency_ms,
+            }
+            for c in calls
+        ],
+        "run_id": r.run_id,
+    }
+    score = score_case(turn_id, case["category"], expected, record, oracle)
+    record["score"] = score.__dict__ | {"passed": score.passed}
+    return record, score
 
 
 def run(only: list[str] | None, delay: float) -> dict:
@@ -55,90 +131,42 @@ def run(only: list[str] | None, delay: float) -> dict:
     results, scores = [], []
     cases = [c for c in golden["cases"] if not only or c["id"] in only]
     for n, case in enumerate(cases, start=1):
-        if "turns" in case:  # follow-ups need conversations (M5): scored as not-yet
-            scores.append(score_case(case["id"], case["category"], {}, {}, None))
-            print(f"[{n:>2}/{len(cases)}] {case['id']:<9} skipped (needs conversations)")
-            continue
         user = users[case["persona"]]
-        started = time.monotonic()
-        try:
-            r = answer_question(db, user, case["question"], get_planner_llm(), get_writer_llm())
-        except Exception as e:  # a crash is a failed case, not a failed run
-            db.rollback()
-            note = f"pipeline crashed: {type(e).__name__}: {str(e)[:150]}"
-            scores.append(
-                CaseScore(
-                    case["id"], case["category"], scored=True, behaviour_ok=False, notes=[note]
-                )
-            )
-            results.append(
-                {
-                    "id": case["id"],
-                    "category": case["category"],
-                    "persona": case["persona"],
-                    "question": case["question"],
-                    "expected": case["expected"],
-                    "status": "crashed",
-                    "answer": "",
-                    "notes": [],
-                    "options": [],
-                    "evidence": [],
-                    "passages": [],
-                    "calls": [],
-                    "latency_ms": int((time.monotonic() - started) * 1000),
-                    "run_id": None,
-                    "score": scores[-1].__dict__ | {"passed": False},
-                }
-            )
-            print(f"[{n:>2}/{len(cases)}] {case['id']:<9} FAIL  crashed  {note[:90]}")
+        if "turns" not in case:
+            record, score = _run_turn(
+                db, user, case, case["id"], case["question"], case["expected"],
+                expected_data.get(case["id"]), None,
+            )  # fmt: skip
+            results.append(record)
+            scores.append(score)
+            _print(n, len(cases), case["id"], score, record)
+            time.sleep(delay)
             continue
-        calls = db.scalars(select(LlmCall).where(LlmCall.answer_run_id == r.run_id)).all()
-        record = {
-            "id": case["id"],
-            "category": case["category"],
-            "persona": case["persona"],
-            "question": case["question"],
-            "expected": case["expected"],
-            "status": r.status,
-            "answer": r.answer,
-            "notes": r.notes,
-            "options": r.options,
-            "evidence": [
-                {"metric": e.metric, "description": e.description, "rows": e.rows}
-                for e in r.evidence
-            ],
-            "passages": [
-                {"id": p.id, "source": p.source, "version": p.version, "heading": p.heading}
-                for p in r.passages
-            ],
-            "latency_ms": int((time.monotonic() - started) * 1000),
-            "calls": [
-                {
-                    "purpose": c.purpose,
-                    "provider": c.provider,
-                    "model": c.model,
-                    "status": c.status,
-                    "prompt_tokens": c.prompt_tokens,
-                    "completion_tokens": c.completion_tokens,
-                    "latency_ms": c.latency_ms,
-                }
-                for c in calls
-            ],
-            "run_id": r.run_id,
-        }
-        score = score_case(
-            case["id"], case["category"], case["expected"], record, expected_data.get(case["id"])
+        # A follow-up case is one conversation; it passes only if every turn passes.
+        conversation = Conversation(user_id=user.id, title=f"eval {case['id']}")
+        db.add(conversation)
+        db.commit()
+        turn_scores = []
+        for t, step in enumerate(case["turns"], start=1):
+            turn_id = f"{case['id']}#{t}"
+            record, score = _run_turn(
+                db, user, case, turn_id, step["question"], step["expected"],
+                expected_data.get(turn_id), conversation,
+            )  # fmt: skip
+            results.append(record)
+            turn_scores.append(score)
+            _print(n, len(cases), turn_id, score, record)
+            time.sleep(delay)
+        scores.append(combine_turns(case["id"], case["category"], turn_scores))
+        # Don't leave evaluation chats in the persona's conversation list. The turns are kept,
+        # detached like single-question runs, so the report's run ids still lead to the trace.
+        db.execute(
+            update(AnswerRun)
+            .where(AnswerRun.conversation_id == conversation.id)
+            .values(conversation_id=None)
         )
-        record["score"] = score.__dict__ | {"passed": score.passed}
-        results.append(record)
-        scores.append(score)
-        mark = {True: "PASS", False: "FAIL", None: "n/a "}[score.passed]
-        detail = "; ".join(score.notes)[:90]
-        print(
-            f"[{n:>2}/{len(cases)}] {case['id']:<9} {mark}  {r.status:<18} "
-            f"{record['latency_ms']:>6} ms  {detail}"
-        )
-        time.sleep(delay)
+        db.delete(conversation)
+        db.commit()
 
     return {
         "meta": {

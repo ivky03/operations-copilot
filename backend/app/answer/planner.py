@@ -14,13 +14,14 @@ from app.answer.context import SchemaContext
 from app.llm.client import CallRecord, LLMClient
 from app.query.plan import QueryPlan
 
-PROMPT_VERSION = "planner-v5"
+PROMPT_VERSION = "planner-v6"
 
 
 class AnswerPlan(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     kind: Literal["data", "clarify", "unanswerable", "documents"]
+    standalone_question: str | None = None  # the question made complete without the chat
     queries: list[QueryPlan] = Field(default=[], max_length=3)
     doc_searches: list[str] = Field(default=[], max_length=3)  # short document search phrases
     include_history: bool = False  # also search superseded document versions
@@ -34,6 +35,10 @@ answer it, using only the metrics and columns listed in the data description and
 documents listed under "Documents".
 
 JSON fields:
+- "standalone_question": the question rewritten so it is complete without the conversation:
+    resolve "that", "it", "they", "and April?", "break that down by X", "before that", and
+    replies to a question we asked (e.g. "the blue one"). Keep the user's own words for
+    values. Without a conversation, repeat the question. Plan THIS question.
 - "kind": one of
     "data"          the question can be answered with the listed metrics
     "clarify"       the question is too vague (no metric, or no idea what period/scope is meant)
@@ -95,6 +100,7 @@ def plan_question(
     context: SchemaContext,
     calls: list[CallRecord],
     documents: list[str] | None = None,
+    history: str = "",
 ) -> AnswerPlan:
     data_range = (
         f"The data covers {context.data_start} to {context.data_end}. "
@@ -108,7 +114,13 @@ def plan_question(
         {
             "role": "user",
             "content": f"# Data description\n{context.text}\n\n{data_range}\n\n"
-            f"# Documents\n{docs}\n\n# Question\n{question}",
+            f"# Documents\n{docs}\n\n"
+            + (
+                f"# Conversation so far\n{history}\n\n# New question\n"
+                if history
+                else "# Question\n"
+            )
+            + question,
         },
     ]
     return llm.complete_json("plan", messages, AnswerPlan, calls)

@@ -157,3 +157,68 @@ def test_document_answer_shows_cited_passage_cards(live_app, page):
         assert page.locator(".passage.uncited").count() >= 1  # retrieved, shown dimmed
     finally:
         app.dependency_overrides.clear()
+
+
+def test_conversation_follow_up_reopen_rename_delete(live_app, page):
+    """A whole chat in a real browser: ask, follow up, start another, reopen, rename, delete."""
+    from app.api.ask import get_planner_llm, get_writer_llm
+    from app.main import app
+    from tests.test_answer_pipeline import IRELAND_MARCH, fake
+
+    april = {
+        **IRELAND_MARCH,
+        "standalone_question": "Ireland net sales in April 2026",
+        "queries": [
+            {
+                **IRELAND_MARCH["queries"][0],
+                "time_range": {"start": "2026-04-01", "end": "2026-05-01"},
+            }
+        ],
+    }
+    planner, _ = fake(IRELAND_MARCH, april, {"kind": "clarify", "clarification": "Which metric?"})
+    writer, _ = fake({"answer": "March: −€509.00 [D1]."}, {"answer": "No April data [D1]."})
+    app.dependency_overrides[get_planner_llm] = lambda: planner
+    app.dependency_overrides[get_writer_llm] = lambda: writer
+    page.on("dialog", lambda d: d.accept())  # confirm the delete
+    try:
+        url, passwords = live_app
+        page.goto(url)
+        sign_in(page, OPS, passwords[OPS])
+        box = page.get_by_label("Ask a question about your data or policies")
+        box.fill("Ireland net sales in March 2026?")
+        box.press("Enter")
+        page.get_by_text("March: −€509.00").wait_for()
+        box.fill("And April?")
+        box.press("Enter")
+        page.get_by_text("No April data").wait_for()
+        assert page.locator(".turn").count() == 2
+        assert page.locator(".understood").inner_text() == (
+            "Understood as: “Ireland net sales in April 2026”"
+        )
+        assert (
+            page.locator(".turn").first.locator(".evidence-details").get_attribute("open") is None
+        )
+
+        sidebar = page.locator(".sidebar")
+        sidebar.get_by_text("Ireland net sales in March 2026?").wait_for()
+        sidebar.get_by_role("button", name="+ New chat").click()
+        assert page.locator(".turn").count() == 0
+        box.fill("Something vague")
+        box.press("Enter")
+        page.get_by_text("Which metric?").wait_for()
+        assert sidebar.locator("li").count() == 2
+
+        sidebar.get_by_text("Ireland net sales in March 2026?").click()  # reopen the first chat
+        page.get_by_text("No April data").wait_for()
+        assert page.locator(".turn").count() == 2
+
+        sidebar.get_by_role("button", name="Rename “Ireland net sales in March 2026?”").click()
+        sidebar.get_by_label("Conversation title").fill("Ireland")
+        sidebar.get_by_label("Conversation title").press("Enter")
+        sidebar.get_by_role("button", name="Ireland", exact=True).wait_for()
+
+        sidebar.get_by_role("button", name="Delete “Ireland”").click()
+        page.wait_for_function("document.querySelectorAll('.sidebar li').length === 1")
+        assert page.locator(".turn").count() == 0  # the open chat was the deleted one
+    finally:
+        app.dependency_overrides.clear()

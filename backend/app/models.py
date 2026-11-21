@@ -282,6 +282,24 @@ class DocChunk(Base):
     )
 
 
+class Conversation(Base):
+    """A chat: a titled sequence of questions by one user. Each turn is an AnswerRun, so the
+    whole trace of every answer stays with the conversation, and deleting the conversation
+    deletes its turns (and their model-call logs) by cascade."""
+
+    __tablename__ = "conversations"
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    title: Mapped[str] = mapped_column(String(200), nullable=False)
+    created_at: Mapped[datetime] = _created_at()
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+
+
 class AnswerRun(Base):
     """One question and everything needed to explain its answer later: the plan, groundings,
     SQL and rows, document passages, the answer text, the source versions used, and how it
@@ -294,6 +312,9 @@ class AnswerRun(Base):
     user_id: Mapped[uuid.UUID | None] = mapped_column(
         ForeignKey("users.id", ondelete="SET NULL"), index=True
     )
+    conversation_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE"), index=True
+    )  # None for single questions (e.g. evaluation runs)
     question: Mapped[str] = mapped_column(Text, nullable=False)
     status: Mapped[str] = mapped_column(String(30), nullable=False)
     answer: Mapped[str | None] = mapped_column(Text)

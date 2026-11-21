@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ApiError, listSources, type Session, type SourceItem } from "./api/client";
-import { AskPanel } from "./AskPanel";
+import { Chat } from "./Chat";
 
 type Props = { session: Session; onSignOut: () => void; onSessionExpired: () => void };
 
@@ -88,7 +88,7 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
             <span className="badge">none</span>
           )}
         </p>
-        <AskPanel onSessionExpired={onSessionExpired} />
+        <Chat onSessionExpired={onSessionExpired} />
 
         <details className="sources-panel">
           <summary>
