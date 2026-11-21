@@ -9,8 +9,11 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
   ApiError,
-  ask,
+  askStream,
   type AskResponse,
+  type Evidence,
+  type Passage,
+  type StreamEvent,
   type ConversationSummary,
   deleteConversation,
   getConversation,
@@ -35,6 +38,76 @@ const STATUS_LABEL: Record<string, { label: string; tone: string }> = {
   redacted: { label: "Hidden · uses a source you no longer have access to", tone: "info" },
   error: { label: "Something went wrong", tone: "error" },
 };
+
+const STEP_LABEL: Record<string, string> = {
+  planning: "Understanding the question",
+  querying: "Running queries on the data",
+  searching: "Searching documents you can access",
+  writing: "Writing the answer",
+  verifying: "Checking every number and citation",
+  rewriting: "A draft failed the checks; rewriting",
+};
+
+type Progress = {
+  question: string;
+  steps: string[]; // in order; the last one is in progress
+  understood: string | null;
+  evidence: Evidence[];
+  passages: Passage[];
+};
+
+function apply(progress: Progress, e: StreamEvent): Progress {
+  switch (e.event) {
+    case "step":
+      return { ...progress, steps: [...progress.steps, e.data.step] };
+    case "planned":
+      return { ...progress, understood: e.data.standalone_question };
+    case "evidence":
+      return { ...progress, evidence: e.data.items };
+    case "passages":
+      return { ...progress, passages: e.data.items };
+    default:
+      return progress;
+  }
+}
+
+/** The turn being answered: live steps, then data and passages as soon as they exist.
+ *  No answer text appears here; it's only shown once verified. */
+function PendingTurn({ progress }: { progress: Progress }) {
+  return (
+    <article className="turn">
+      <p className="question">{progress.question}</p>
+      {progress.understood && <p className="understood small">Understood as: “{progress.understood}”</p>}
+      <ol className="steps" role="status" aria-live="polite">
+        {progress.steps.map((step, i) => {
+          const done = i < progress.steps.length - 1;
+          return (
+            <li key={`${step}-${i}`} className={done ? "done" : "active"}>
+              <span aria-hidden="true">{done ? "✓" : "…"}</span> {STEP_LABEL[step] ?? step}
+            </li>
+          );
+        })}
+        {progress.steps.length === 0 && <li className="active">… Sending</li>}
+      </ol>
+      {progress.evidence.length > 0 && (
+        <div className="evidence-list">
+          <h2>Computed data</h2>
+          {progress.evidence.map((e) => (
+            <EvidenceCard key={e.id} evidence={e} />
+          ))}
+        </div>
+      )}
+      {progress.passages.length > 0 && (
+        <div className="evidence-list">
+          <h2>Document passages</h2>
+          {progress.passages.map((p) => (
+            <PassageCard key={p.id} passage={p} cited={null} />
+          ))}
+        </div>
+      )}
+    </article>
+  );
+}
 
 function Turn({
   turn,
@@ -200,7 +273,7 @@ export function Chat({ onSessionExpired }: { onSessionExpired: () => void }) {
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
   const [turns, setTurns] = useState<AskResponse[]>([]);
-  const [pending, setPending] = useState<string | null>(null); // question being answered
+  const [pending, setPending] = useState<Progress | null>(null); // the turn being answered
   const [question, setQuestion] = useState("");
   const [error, setError] = useState<string | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
@@ -244,11 +317,11 @@ export function Chat({ onSessionExpired }: { onSessionExpired: () => void }) {
   async function submit(text: string) {
     const q = text.trim();
     if (q.length < 3 || pending) return;
-    setPending(q);
+    setPending({ question: q, steps: [], understood: null, evidence: [], passages: [] });
     setError(null);
     setQuestion("");
     try {
-      const result = await ask(q, selected);
+      const result = await askStream(q, selected, (e) => setPending((p) => (p ? apply(p, e) : p)));
       setTurns((t) => [...t, result]);
       if (!selected && result.conversation_id) setSelected(result.conversation_id);
       void refreshList();
@@ -317,14 +390,7 @@ export function Chat({ onSessionExpired }: { onSessionExpired: () => void }) {
         {turns.map((t, i) => (
           <Turn key={t.run_id} turn={t} latest={i === turns.length - 1 && !pending} onChoose={(o) => void submit(o)} />
         ))}
-        {pending && (
-          <article className="turn">
-            <p className="question">{pending}</p>
-            <p className="muted" role="status">
-              Planning, computing results, searching documents and verifying the answer…
-            </p>
-          </article>
-        )}
+        {pending && <PendingTurn progress={pending} />}
         {error && (
           <p className="error" role="alert">
             {error}

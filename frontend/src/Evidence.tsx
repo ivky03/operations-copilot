@@ -77,9 +77,11 @@ export function citedIds(answer: string): Set<string> {
   return ids;
 }
 
-export function PassageCard({ passage, cited }: { passage: Passage; cited: boolean }) {
+/** `cited` is null while the answer is still being written. */
+export function PassageCard({ passage, cited }: { passage: Passage; cited: boolean | null }) {
+  const state = cited === null ? "" : cited ? " cited" : " uncited";
   return (
-    <section className={`evidence passage${cited ? " cited" : " uncited"}`}>
+    <section className={`evidence passage${state}`}>
       <h3>
         <span className="evidence-id">{passage.id}</span> {passage.doc_title}{" "}
         <span className="muted">› {passage.heading}</span>
@@ -94,7 +96,10 @@ export function PassageCard({ passage, cited }: { passage: Passage; cited: boole
           <span className="badge warn">superseded</span>
         )}
         {passage.effective_date && <span className="muted"> effective {passage.effective_date}</span>}
-        <span className="muted"> · {cited ? "cited in the answer" : "retrieved, not cited"}</span>
+        <span className="muted">
+          {" · "}
+          {cited === null ? "retrieved" : cited ? "cited in the answer" : "retrieved, not cited"}
+        </span>
       </p>
       <blockquote className="markdown">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{passage.content}</ReactMarkdown>

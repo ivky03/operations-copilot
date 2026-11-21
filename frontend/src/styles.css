@@ -212,3 +212,7 @@ button.icon:hover { color: var(--text); }
 .evidence-details > summary { cursor: pointer; color: var(--muted); font-size: 0.9rem; }
 .composer { position: sticky; bottom: 0; background: var(--surface); padding-top: 0.5rem; }
 .understood { align-self: flex-end; margin: -0.2rem 0 0; color: var(--muted); font-style: italic; max-width: 85%; text-align: right; }
+.steps { list-style: none; margin: 0.2rem 0; padding: 0; font-size: 0.9rem; }
+.steps li { padding: 0.1rem 0; }
+.steps li.done { color: var(--muted); }
+.steps li.active { font-weight: 600; }

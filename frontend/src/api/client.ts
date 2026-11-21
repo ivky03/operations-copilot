@@ -97,6 +97,70 @@ export const ask = (question: string, conversationId?: string | null) =>
     ...(conversationId ? { conversation_id: conversationId } : {}),
   });
 
+export type StreamEvent =
+  | { event: "step"; data: { step: string } }
+  | { event: "planned"; data: { kind: string; queries: number; doc_searches: string[]; standalone_question: string | null } }
+  | { event: "evidence"; data: { items: Evidence[]; notes: string[] } }
+  | { event: "passages"; data: { items: Passage[] } }
+  | { event: "answer"; data: AskResponse }
+  | { event: "error"; data: { message: string } };
+
+/**
+ * Ask with live progress. The server sends server-sent events over a POST response
+ * (EventSource only supports GET, and asking needs a body and the CSRF token), so this reads
+ * the stream with fetch and splits it into events. Resolves with the final, verified answer.
+ */
+export async function askStream(
+  question: string,
+  conversationId: string | null,
+  onEvent: (e: StreamEvent) => void,
+): Promise<AskResponse> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (csrfToken) headers["X-CSRF-Token"] = csrfToken;
+  let response: Response;
+  try {
+    response = await fetch("/api/ask/stream", {
+      method: "POST",
+      headers,
+      credentials: "same-origin",
+      body: JSON.stringify({ question, ...(conversationId ? { conversation_id: conversationId } : {}) }),
+    });
+  } catch {
+    throw new ApiError(0, "Can't reach the server. Is the backend running?");
+  }
+  if (!response.ok || !response.body) {
+    let message = `Request failed (${response.status})`;
+    try {
+      const data = await response.json();
+      if (typeof data.detail === "string") message = data.detail;
+    } catch {
+      /* keep the generic message */
+    }
+    throw new ApiError(response.status, message);
+  }
+
+  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += value;
+    let end: number;
+    while ((end = buffer.indexOf("\n\n")) !== -1) {  // events are separated by a blank line
+      const block = buffer.slice(0, end);
+      buffer = buffer.slice(end + 2);
+      const name = block.match(/^event: (.*)$/m)?.[1];
+      const data = block.match(/^data: (.*)$/m)?.[1];
+      if (!name || data === undefined) continue;
+      const event = { event: name, data: JSON.parse(data) } as StreamEvent;
+      if (event.event === "answer") return event.data;
+      if (event.event === "error") throw new ApiError(500, event.data.message);
+      onEvent(event);
+    }
+  }
+  throw new ApiError(0, "The connection closed before the answer arrived. Please try again.");
+}
+
 export const listConversations = () => request<ConversationSummary[]>("GET", "/api/conversations");
 export const getConversation = (id: string) => request<Conversation>("GET", `/api/conversations/${id}`);
 export const renameConversation = (id: string, title: string) =>

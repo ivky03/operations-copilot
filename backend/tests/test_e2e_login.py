@@ -222,3 +222,38 @@ def test_conversation_follow_up_reopen_rename_delete(live_app, page):
         assert page.locator(".turn").count() == 0  # the open chat was the deleted one
     finally:
         app.dependency_overrides.clear()
+
+
+def test_progress_and_data_show_while_the_answer_is_still_being_written(live_app, page):
+    """Proves the stream is incremental in a real browser (not buffered until the end)."""
+    import time as _time
+
+    from app.api.ask import get_planner_llm, get_writer_llm
+    from app.llm.client import LLMClient
+    from app.main import app
+    from tests.test_answer_pipeline import IRELAND_MARCH, FakeProvider, fake
+
+    class SlowProvider(FakeProvider):
+        def complete(self, messages, timeout):
+            _time.sleep(2.5)  # a slow model: the page must not sit blank meanwhile
+            return super().complete(messages, timeout)
+
+    planner, _ = fake(IRELAND_MARCH)
+    writer = LLMClient([SlowProvider([{"answer": "Ireland: −€509.00 [D1]."}])], retry_delay=0)
+    app.dependency_overrides[get_planner_llm] = lambda: planner
+    app.dependency_overrides[get_writer_llm] = lambda: writer
+    try:
+        url, passwords = live_app
+        page.goto(url)
+        sign_in(page, OPS, passwords[OPS])
+        box = page.get_by_label("Ask a question about your data or policies")
+        box.fill("Ireland net sales in March 2026?")
+        box.press("Enter")
+        page.locator(".steps li.active", has_text="Writing the answer").wait_for(timeout=2000)
+        assert page.locator(".steps li.done", has_text="Running queries").count() == 1
+        assert "−€509.00" in page.locator(".evidence").first.inner_text()  # data already shown
+        assert page.locator(".status").count() == 0  # but no answer yet
+        page.get_by_text("Answered · numbers and citations verified").wait_for(timeout=10_000)
+        assert page.locator(".steps").count() == 0
+    finally:
+        app.dependency_overrides.clear()
