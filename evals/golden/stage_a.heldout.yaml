@@ -1,0 +1,166 @@
+# Held-out questions: written 2026-11-21 BEFORE the M5b planner change, and committed before
+# it, so the change can't be tuned to them. Same format and rules as stage_a.yaml.
+#
+# Purpose: measure the planner's document routing on wording it hasn't been adjusted for.
+# Policy questions deliberately avoid the documents' titles and headings; "unanswerable"
+# questions are ones no document addresses at all (not even "we don't hold that data"), so
+# both refusing and answering-with-a-citation can't both be right.
+# Written by the system's author: less biased than the tuning set, not independent.
+version: 1
+dataset: stage_a
+
+cases:
+  # ---------------------------------------------------------------- policy (paraphrased)
+  - id: h-pol-01
+    category: policy
+    persona: operations
+    question: What time do our shops open on Sundays?
+    expected: {answer: answer, must_cite: [store-operations-handbook]}
+
+  - id: h-pol-02
+    category: policy
+    persona: operations
+    question: If someone orders €60 of goods online, do they pay for shipping?
+    expected: {answer: answer, must_cite: [shipping-and-delivery]}
+
+  - id: h-pol-03
+    category: policy
+    persona: operations
+    question: How far ahead do we need to reorder sofas and tables from suppliers?
+    expected: {answer: answer, must_cite: [inventory-replenishment]}
+
+  - id: h-pol-04
+    category: policy
+    persona: finance
+    question: Can a customer use two discount codes on the same purchase?
+    expected: {answer: answer, must_cite: [pricing-and-promotions]}
+
+  - id: h-pol-05
+    category: policy
+    persona: finance
+    question: If a competitor sells the same lamp cheaper, will we match their price?
+    expected: {answer: answer, must_cite: [pricing-and-promotions]}
+
+  - id: h-pol-06
+    category: policy
+    persona: operations
+    question: A web order comes in at 3pm on a Tuesday. When does it leave the warehouse?
+    expected: {answer: answer, must_cite: [shipping-and-delivery]}
+
+  - id: h-pol-07
+    category: policy
+    persona: operations
+    question: Some returns don't say why the item came back. Is that a problem?
+    expected: {answer: answer, must_cite: [data-quality-notes]}
+
+  - id: h-pol-08
+    category: policy
+    persona: finance
+    question: Which time zone are order times recorded in?
+    expected: {answer: answer, must_cite: [data-quality-notes]}
+
+  - id: h-pol-09
+    category: policy
+    persona: operations
+    question: When a customer calls off an order before it ships, how fast do they get their money back?
+    expected: {answer: answer, must_cite: [cancellation-policy]}
+
+  - id: h-pol-10
+    category: policy
+    persona: finance
+    question: Which cities do we have physical stores in?
+    expected: {answer: answer, must_cite: [market-launches]}
+
+  - id: h-pol-11
+    category: policy
+    persona: operations
+    question: When did we stop selling the glass vase?
+    expected: {answer: answer, must_cite: [market-launches]}
+
+  - id: h-pol-12
+    category: policy
+    persona: operations
+    question: Who deals with customer complaints that a store can't sort out itself?
+    expected: {answer: answer, must_cite: [store-operations-handbook]}
+
+  # ---------------------------------------------------------------- combined "why"
+  - id: h-comb-01
+    category: combined
+    persona: operations
+    question: Why does the Glass Vase have no sales in April 2026?
+    expected: {answer: answer, must_cite: [market-launches]}
+
+  - id: h-comb-02
+    category: combined
+    persona: finance
+    question: What were Textiles gross sales in April 2026, and was a promotion running on them?
+    expected: {answer: answer, must_cite: [pricing-and-promotions]}
+
+  - id: h-comb-03
+    category: combined
+    persona: operations
+    question: How many orders did France have in February 2026, and why?
+    expected: {answer: answer, must_cite: [market-launches]}
+
+  # ---------------------------------------------------------------- unanswerable (no document covers it)
+  - id: h-una-01
+    category: unanswerable
+    persona: operations
+    question: What is our policy on staff parking?
+    expected: {answer: abstain}
+
+  - id: h-una-02
+    category: unanswerable
+    persona: finance
+    question: How many employees work in the Berlin store?
+    expected: {answer: abstain}
+
+  - id: h-una-03
+    category: unanswerable
+    persona: operations
+    question: What is our carbon emissions target for 2026?
+    expected: {answer: abstain}
+
+  - id: h-una-04
+    category: unanswerable
+    persona: finance
+    question: What interest rate do we pay on our bank loan?
+    expected: {answer: abstain}
+
+  # ---------------------------------------------------------------- permission
+  - id: h-perm-01
+    category: permission
+    persona: operations
+    question: How many working days after month end is the management pack issued?
+    expected: {answer: restricted, must_not_cite: [month-end-close]}
+
+  - id: h-perm-02
+    category: permission
+    persona: operations
+    question: What margin are we aiming for on Furniture this year?
+    expected: {answer: restricted, must_not_cite: [finance-margin-targets]}
+
+  - id: h-perm-03
+    category: permission
+    persona: finance
+    question: How long does furniture delivery take to Spain?
+    expected: {answer: restricted, must_not_cite: [shipping-and-delivery]}
+
+  - id: h-perm-04
+    category: permission
+    persona: finance
+    question: What is the safety-stock rule behind our reorder points?
+    expected: {answer: restricted, must_not_cite: [inventory-replenishment]}
+
+  - id: h-perm-05
+    category: permission
+    persona: operations
+    question: Who signs off the monthly close?
+    expected: {answer: restricted, must_not_cite: [month-end-close]}
+
+  - id: h-perm-06
+    category: permission
+    persona: finance
+    question: Who signs off the monthly close?
+    expected: {answer: answer, must_cite: [month-end-close]}
+    notes: Positive control for h-perm-05. Finance may read it.

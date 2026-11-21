@@ -107,7 +107,9 @@ Deterministic tests (unit, integration, and mocked-model workflow tests) run in 
 cd backend
 uv run python -m evals.run_retrieval_eval   # seconds; deterministic
 uv run python -m evals.run_answer_eval      # ~25 min on free tiers; results vary between runs
+uv run python -m evals.run_answer_eval --golden stage_a.heldout   # questions never used for tuning
 ```
+Held-out questions (`evals/golden/stage_a.heldout.yaml`) are committed before the change they measure, so a change can't be tuned to them.
  **No result is claimed before it has been measured.**
 
 ## Running locally

@@ -30,6 +30,13 @@ def test_golden_set_is_valid(golden):
     assert validate(golden) == []
 
 
+def test_held_out_set_is_valid():
+    held_out = load_golden("stage_a.heldout")
+    assert validate(held_out) == []
+    tuning_ids = {c["id"] for c in load_golden("stage_a")["cases"]}
+    assert not tuning_ids & {c["id"] for c in held_out["cases"]}
+
+
 def test_committed_expected_answers_are_current(golden):
     """Drift guard: data or golden changes must be followed by `python -m evals.build_expected`."""
     fresh = render_expected(build_expected(golden, Oracle()))
