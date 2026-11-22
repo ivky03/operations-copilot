@@ -1,8 +1,10 @@
-"""Administrator endpoints: users, group membership and source grants.
+"""Administrator endpoints: users, group membership, source registration and grants.
 
 Every route depends on `require_admin`, so non-admins get 403 and anonymous callers get 401.
 Every change is written to the audit log in the same transaction.
 """
+
+import re
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, Field
@@ -13,7 +15,17 @@ from app import audit
 from app.auth import UserOut
 from app.authz import require_admin
 from app.db import get_db
-from app.models import Group, Role, Source, SourceGrant, User
+from app.ingest.manifest import DATASET_SLUG, SLUG
+from app.models import (
+    Group,
+    Role,
+    Source,
+    SourceGrant,
+    SourceKind,
+    SourceVersion,
+    User,
+    VersionStatus,
+)
 from app.security import MIN_PASSWORD_LENGTH, hash_password
 
 router = APIRouter(prefix="/api/admin", tags=["admin"], dependencies=[Depends(require_admin)])
@@ -33,6 +45,29 @@ class SetActive(BaseModel):
 
 class SetGrants(BaseModel):
     groups: list[str]
+
+
+class RegisterSource(BaseModel):
+    slug: str = Field(pattern=f"{SLUG}|{DATASET_SLUG}", max_length=100)
+    kind: SourceKind
+    title: str = Field(min_length=1, max_length=300)
+    groups: list[str] = Field(min_length=1)  # who may read it; a source nobody can read is useless
+
+
+class GroupOut(BaseModel):
+    slug: str
+    name: str
+
+
+class AdminSourceOut(BaseModel):
+    """Admins see every source and who can read it, but not its content (no data access)."""
+
+    slug: str
+    kind: str
+    title: str
+    status: str
+    groups: list[str]
+    published_version: int | None
 
 
 def _groups_by_slug(db: Session, slugs: list[str]) -> list[Group]:
@@ -115,3 +150,56 @@ def set_source_grants(
     audit.record(db, admin, "source.set_grants", slug, before=before, after=sorted(body.groups))
     db.commit()
     return {"source": slug, "groups": sorted(body.groups)}
+
+
+@router.get("/groups")
+def list_groups(db: Session = Depends(get_db)) -> list[GroupOut]:
+    return [
+        GroupOut(slug=g.slug, name=g.name) for g in db.scalars(select(Group).order_by(Group.slug))
+    ]
+
+
+def _admin_source(db: Session, source: Source) -> AdminSourceOut:
+    published = db.scalar(
+        select(SourceVersion.version).where(
+            SourceVersion.source_id == source.id, SourceVersion.status == VersionStatus.PUBLISHED
+        )
+    )
+    return AdminSourceOut(
+        slug=source.slug,
+        kind=source.kind.value,
+        title=source.title,
+        status=source.status.value,
+        groups=sorted(g.slug for g in source.granted_groups),
+        published_version=published,
+    )
+
+
+@router.get("/sources")
+def list_all_sources(db: Session = Depends(get_db)) -> list[AdminSourceOut]:
+    return [_admin_source(db, s) for s in db.scalars(select(Source).order_by(Source.slug))]
+
+
+@router.post("/sources", status_code=status.HTTP_201_CREATED)
+def register_source(
+    body: RegisterSource, admin: User = Depends(require_admin), db: Session = Depends(get_db)
+) -> AdminSourceOut:
+    """Register a new dataset or document and decide who may read it. It has no content until
+    a steward in one of those groups uploads a first version, which is then reviewed and
+    published like any other."""
+    if body.kind == SourceKind.DATASET and not re.match(DATASET_SLUG, body.slug):
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            "Dataset names may use lowercase letters, digits and underscores "
+            "(e.g. purchase_orders): queries refer to them as dataset.column.",
+        )
+    if db.scalar(select(Source).where(Source.slug == body.slug)):
+        raise HTTPException(status.HTTP_409_CONFLICT, f"A source called {body.slug!r} exists.")
+    groups = _groups_by_slug(db, body.groups)
+    source = Source(slug=body.slug, kind=body.kind, title=body.title, granted_groups=groups)
+    db.add(source)
+    audit.record(
+        db, admin, "source.register", body.slug, kind=body.kind.value, grants=sorted(body.groups)
+    )
+    db.commit()
+    return _admin_source(db, source)

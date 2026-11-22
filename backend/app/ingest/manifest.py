@@ -15,7 +15,10 @@ from app.ingest.expressions import ExpressionError, names, parse
 
 # Safe as an unquoted Postgres identifier, and short enough (Postgres limit is 63 bytes).
 IDENTIFIER = r"^[a-z][a-z0-9_]{0,62}$"
-SLUG = r"^[a-z][a-z0-9-]{0,99}$"
+SLUG = r"^[a-z][a-z0-9-]{0,99}$"  # documents, e.g. returns-refund-policy
+# Datasets are named in query plans as "dataset.column", so their names must be identifiers:
+# purchase_orders, not purchase-orders.
+DATASET_SLUG = r"^[a-z][a-z0-9_]{0,62}$"
 MAX_COLUMNS = 200
 
 ColumnType = Literal["string", "integer", "decimal", "boolean", "date", "timestamp"]
@@ -76,7 +79,7 @@ class DerivedMetric(_Strict):
 
 
 class Manifest(_Strict):
-    source: str = Field(pattern=SLUG)
+    source: str = Field(pattern=DATASET_SLUG)
     title: str
     description: str
     grain: str
