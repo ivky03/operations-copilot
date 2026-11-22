@@ -12,7 +12,7 @@
 #
 # Dimensions written as month/day refer to the metric's own date column (orders: order date;
 # shifts: shift date; tickets: opened date; stock: snapshot day).
-version: 1
+version: 2
 dataset: stage_b
 reference_date: "2026-04-30"
 
@@ -245,7 +245,12 @@ cases:
       answer: answer
       grounding: {no-shows: {column: shifts.absence_reason, value: no_show}}
       data:
-        - {metric: shift_count, filters: {month: ["2026-04"], absence_reason: [no_show]}}
+        - any_of:
+            - {metric: shift_count, filters: {month: ["2026-04"], absence_reason: [no_show]}}
+            - {metric: absence_count, filters: {month: ["2026-04"], absence_reason: [no_show]}}
+      notes: >
+        Either metric is right. (v2: v1 accepted only shift_count, and the first real run's
+        correct absence_count answer was scored as a failure.)
 
   - id: vg-b04
     category: value_grounding

@@ -142,3 +142,19 @@ def test_manifest_matches_its_csv(manifest_path):
     for metric in m.get("metrics", []):
         for f in metric.get("filters", []):
             assert f["column"] in columns
+
+
+def test_rescoring_a_saved_run_applies_the_corrected_answer_key():
+    """The first real Stage B run scored a correct answer (no-shows as absence_count) as a
+    failure; golden v2 accepts either metric. Rescoring reuses the saved answers, no model."""
+    import json
+
+    from evals.run_answer_eval import rescore, summarise
+
+    saved = json.loads(
+        (GOLDEN_DIR.parent / "reports" / "2026-11-22-209c31e-stage_b.json").read_text()
+    )
+    assert saved["summary"]["overall"] == {"scored": 51, "passed": 47}
+    report = rescore(saved, "stage_b")
+    assert summarise(report)["overall"] == {"scored": 51, "passed": 48}
+    assert next(s for s in report["scores"] if s["case_id"] == "vg-b03")["passed"]

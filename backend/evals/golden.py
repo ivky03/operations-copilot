@@ -142,7 +142,7 @@ def validate(golden: dict) -> list[str]:
                     table, column = target["column"].split(".")
                     if target["value"] not in set(tables[table][column]):
                         problems.append(f"{step}: grounding {phrase!r} -> missing value")
-            for spec in exp.get("data", []):
+            for spec in (s for item in exp.get("data", []) for s in alternatives(item)):
                 try:
                     rows = oracle.run(Query(**spec))
                 except (TypeError, ValueError, KeyError) as e:
@@ -158,14 +158,27 @@ def validate(golden: dict) -> list[str]:
     return problems
 
 
+def alternatives(item: dict) -> list[dict]:
+    """A data item is one query, or {"any_of": [...]} when several queries are equally right
+    (no-shows counted as shifts or as absences with reason no_show)."""
+    return item.get("any_of", [item])
+
+
 def build_expected(golden: dict, oracle: Oracle) -> dict:
-    """step_id -> list of oracle results, one per data query, in order."""
+    """step_id -> list of oracle results, one per data item, in order."""
+
+    def result(spec: dict) -> dict:
+        return {"query": spec, "rows": oracle.run(Query(**spec))}
+
     expected: dict[str, list] = {}
     for case in golden["cases"]:
         for step, _question, exp in iter_steps(case):
             if exp.get("data"):
                 expected[step] = [
-                    {"query": spec, "rows": oracle.run(Query(**spec))} for spec in exp["data"]
+                    {"any_of": [result(s) for s in item["any_of"]]}
+                    if "any_of" in item
+                    else result(item)
+                    for item in exp["data"]
                 ]
     return expected
 

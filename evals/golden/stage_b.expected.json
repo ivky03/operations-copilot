@@ -898,20 +898,42 @@
   ],
   "vg-b03": [
     {
-      "query": {
-        "filters": {
-          "absence_reason": [
-            "no_show"
-          ],
-          "month": [
-            "2026-04"
+      "any_of": [
+        {
+          "query": {
+            "filters": {
+              "absence_reason": [
+                "no_show"
+              ],
+              "month": [
+                "2026-04"
+              ]
+            },
+            "metric": "shift_count"
+          },
+          "rows": [
+            {
+              "shift_count": 7
+            }
           ]
         },
-        "metric": "shift_count"
-      },
-      "rows": [
         {
-          "shift_count": 7
+          "query": {
+            "filters": {
+              "absence_reason": [
+                "no_show"
+              ],
+              "month": [
+                "2026-04"
+              ]
+            },
+            "metric": "absence_count"
+          },
+          "rows": [
+            {
+              "absence_count": 7
+            }
+          ]
         }
       ]
     }

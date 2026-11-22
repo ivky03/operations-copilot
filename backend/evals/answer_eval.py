@@ -102,16 +102,21 @@ def data_matches(expected_items: list[dict], evidence: list[dict]) -> tuple[bool
     """Every expected oracle result must be matched by some evidence item."""
     notes = []
     for item in expected_items:
-        spec, rows = item["query"], item["rows"]
-        metric = spec["metric"]
-        ordered = bool(spec.get("order_by_value"))
-        if not any(
-            _bare(e["metric"]) == metric and rows_match(rows, e["rows"], metric, ordered)
-            for e in evidence
-        ):
+        options = item.get("any_of", [item])  # several equally right queries: any one will do
+        if not any(_matched(option, evidence) for option in options):
+            want = " or ".join(f"{o['query']['metric']} ({len(o['rows'])} rows)" for o in options)
             got = [(e["metric"], len(e["rows"])) for e in evidence]
-            notes.append(f"expected {metric} ({len(rows)} rows) not matched; got {got}")
+            notes.append(f"expected {want} not matched; got {got}")
     return not notes, notes
+
+
+def _matched(option: dict, evidence: list[dict]) -> bool:
+    spec, rows = option["query"], option["rows"]
+    metric, ordered = spec["metric"], bool(spec.get("order_by_value"))
+    return any(
+        _bare(e["metric"]) == metric and rows_match(rows, e["rows"], metric, ordered)
+        for e in evidence
+    )
 
 
 def _matches(label: str, passage: dict) -> bool:

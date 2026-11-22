@@ -174,7 +174,8 @@ def test_the_engine_agrees_with_the_answer_key_on_every_stage_b_question(db, sta
     checked = 0
     for case in load_golden("stage_b")["cases"]:
         for step, _question, _exp in iter_steps(case):
-            for item in expected.get(step, []):
+            options = [o for i in expected.get(step, []) for o in i.get("any_of", [i])]
+            for item in options:
                 spec = item["query"]
                 rows = run(db, users[case["persona"]], **plan_from_oracle_spec(spec))
                 ordered = bool(spec.get("order_by_value"))
@@ -184,7 +185,7 @@ def test_the_engine_agrees_with_the_answer_key_on_every_stage_b_question(db, sta
                     rows,
                 )
                 checked += 1
-    assert checked == 38
+    assert checked == 39
 
 
 def test_the_evaluation_refuses_a_database_from_another_stage(db, stage_b):

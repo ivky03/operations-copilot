@@ -343,12 +343,58 @@ def _passage_labels(record: dict) -> str:
     )
 
 
+def rescore(report: dict, golden_name: str) -> dict:
+    """Re-apply the current golden set to a saved report's answers (no model calls). For
+    correcting a mistake in the answer key; the original report stays as it was."""
+    golden = load_golden(golden_name)
+    expected_path = GOLDEN_DIR / f"{golden_name}.expected.json"
+    expected_data = json.loads(expected_path.read_text()) if expected_path.exists() else {}
+    steps = {}
+    for case in golden["cases"]:
+        turns = case.get("turns") or [case]
+        for t, step in enumerate(turns, start=1):
+            steps[f"{case['id']}#{t}" if "turns" in case else case["id"]] = (case, step["expected"])
+    by_case: dict[str, list[CaseScore]] = defaultdict(list)
+    for record in report["results"]:
+        case, expected = steps[record["id"]]
+        record["expected"] = expected
+        score = score_case(
+            record["id"], case["category"], expected, record, expected_data.get(record["id"])
+        )
+        record["score"] = score.__dict__ | {"passed": score.passed}
+        by_case[case["id"]].append(score)
+    scores = []
+    for case in golden["cases"]:
+        turns = by_case.get(case["id"])
+        if turns:
+            scores.append(
+                combine_turns(case["id"], case["category"], turns) if "turns" in case else turns[0]
+            )
+    report["scores"] = [s.__dict__ | {"passed": s.passed} for s in scores]
+    report["meta"] |= {"rescored_with_golden_version": golden["version"]}
+    return report
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--only", nargs="*", help="case ids to run")
     parser.add_argument("--delay", type=float, default=3.0, help="seconds between cases")
     parser.add_argument("--golden", default="stage_a", help="golden set name in evals/golden")
+    parser.add_argument("--rescore", type=Path, help="saved report .json to score again")
     args = parser.parse_args()
+    if args.rescore:
+        report = rescore(json.loads(args.rescore.read_text()), args.golden)
+        summary = summarise(report)
+        report["summary"] = summary
+        stem = (
+            args.rescore.with_suffix("").name
+            + f"-rescored-v{report['meta']['rescored_with_golden_version']}"
+        )
+        (REPORTS / f"{stem}.json").write_text(json.dumps(report, indent=2, default=str) + "\n")
+        (REPORTS / f"{stem}.md").write_text(render_markdown(report, summary))
+        o = summary["overall"]
+        print(f"{o['passed']} / {o['scored']} scored cases passed → {REPORTS / stem}.md")
+        return
     report = run(args.only, args.delay, args.golden)
     summary = summarise(report)
     report["summary"] = summary
