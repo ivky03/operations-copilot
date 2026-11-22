@@ -13,10 +13,10 @@ from evals.golden import (
     load_access,
     load_documents,
     load_golden,
+    oracle_for,
     render_expected,
     validate,
 )
-from evals.oracle import Oracle
 
 MANIFESTS = sorted((REFERENCE / "manifests").glob("*.yaml"))
 
@@ -37,13 +37,51 @@ def test_held_out_set_is_valid():
     assert not tuning_ids & {c["id"] for c in held_out["cases"]}
 
 
-def test_committed_expected_answers_are_current(golden):
+def test_stage_b_set_is_valid_and_stage_aware():
+    stage_b = load_golden("stage_b")
+    assert stage_b["dataset"] == "stage_b"
+    assert validate(stage_b) == []
+    # Documents and grants come from the set's own stage: Stage A has no absence policy.
+    assert "absence-policy" in load_documents("stage_b")
+    assert "absence-policy" not in load_documents("stage_a")
+    assert load_access("stage_b")["staff"] == {"operations"}
+
+
+@pytest.mark.parametrize("name", ["stage_a", "stage_b"])
+def test_committed_expected_answers_are_current(name):
     """Drift guard: data or golden changes must be followed by `python -m evals.build_expected`."""
-    fresh = render_expected(build_expected(golden, Oracle()))
-    committed = (GOLDEN_DIR / "stage_a.expected.json").read_text(encoding="utf-8")
+    golden = load_golden(name)
+    fresh = render_expected(build_expected(golden, oracle_for(golden)))
+    committed = (GOLDEN_DIR / f"{name}.expected.json").read_text(encoding="utf-8")
     assert fresh == committed, (
-        "stage_a.expected.json is stale: run `uv run python -m evals.build_expected`"
+        f"{name}.expected.json is stale: run `uv run python -m evals.build_expected {name}`"
     )
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        # Finance may not read the absence policy (Operations only)
+        (lambda c: c["expected"].update(must_cite=["absence-policy"]), "has no access"),
+        (lambda c: c["expected"].update(must_not_use=["profit"]), "unknown metric"),
+        # "category" on purchase orders could be the product's or the supplier's
+        (
+            lambda c: c["expected"].update(
+                data=[{"metric": "units_ordered", "group_by": ["category"]}]
+            ),
+            "bad data query",
+        ),
+        (
+            lambda c: c["expected"].update(data=[{"metric": "headcount", "group_by": ["vibe"]}]),
+            "bad data query",
+        ),
+    ],
+)
+def test_validator_catches_mistakes_in_the_stage_b_set(mutate, message):
+    broken = copy.deepcopy(load_golden("stage_b"))
+    case = next(c for c in broken["cases"] if c["id"] == "pol-b03")  # a finance persona
+    mutate(case)
+    assert any(message in p for p in validate(broken)), validate(broken)
 
 
 @pytest.mark.parametrize(

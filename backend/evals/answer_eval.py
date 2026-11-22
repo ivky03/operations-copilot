@@ -11,16 +11,20 @@ A case passes when:
   references ([C2]); no must_not_cite document is cited.
 
 Restricted cases pass only if no passage from a must_not_cite document was even retrieved
-(so it never reached the model) and the pipeline didn't error. Citations are parsed here
+(so it never reached the model), no evidence was computed from a must_not_use metric (data
+the persona may not read), and the pipeline didn't error. Citations are parsed here
 with our own simple pattern, independently of the verifier.
 
 Evidence may carry an extra column that is constant across its rows (e.g. "month": "2026-02"
 when the planner grouped a single-month question by month). Such a column carries no extra
-information, so it is dropped before comparing; any other difference is a failure.
+information, so it is dropped before comparing; any other difference is a failure. A column
+the planner qualified with its table ("stores.store_name") is compared as "store_name".
 """
 
 import re
 from dataclasses import dataclass, field
+
+from evals.oracle import RATIO_METRICS
 
 ANSWERED = {"answered", "answered_fallback"}
 EXPECTED_STATUS = {
@@ -30,7 +34,6 @@ EXPECTED_STATUS = {
 }
 # Categories needing capabilities that don't exist yet; reported, not scored.
 NOT_YET: dict[str, str] = {}
-RATIO_METRICS = {"cancellation_rate"}
 
 
 @dataclass
@@ -76,10 +79,19 @@ def normalise_rows(rows: list[dict], metric: str, keep: set[str] | None = None) 
     return out
 
 
+def _bare(name: str) -> str:
+    return name.rsplit(".", 1)[-1]
+
+
+def unqualify(rows: list[dict]) -> list[dict]:
+    """{"stores.store_name": ...} -> {"store_name": ...}."""
+    return [{_bare(k): v for k, v in row.items()} for row in rows]
+
+
 def rows_match(expected: list[dict], got: list[dict], metric: str, ordered: bool) -> bool:
     keep = set(expected[0]) if expected else {metric}
     exp = normalise_rows(expected, metric)
-    act = normalise_rows(got, metric, keep)
+    act = normalise_rows(unqualify(got), metric, keep)
     if ordered:
         return exp == act
     key = lambda r: sorted((k, repr(v)) for k, v in r.items())  # noqa: E731
@@ -94,7 +106,8 @@ def data_matches(expected_items: list[dict], evidence: list[dict]) -> tuple[bool
         metric = spec["metric"]
         ordered = bool(spec.get("order_by_value"))
         if not any(
-            e["metric"] == metric and rows_match(rows, e["rows"], metric, ordered) for e in evidence
+            _bare(e["metric"]) == metric and rows_match(rows, e["rows"], metric, ordered)
+            for e in evidence
         ):
             got = [(e["metric"], len(e["rows"])) for e in evidence]
             notes.append(f"expected {metric} ({len(rows)} rows) not matched; got {got}")
@@ -143,9 +156,15 @@ def score_case(
                 if _matches(label, p)
             }
         )
-        score.behaviour_ok = status != "error" and not leaked
+        used = sorted(
+            {_bare(e["metric"]) for e in result.get("evidence", [])}
+            & set(expected.get("must_not_use", []))
+        )
+        score.behaviour_ok = status != "error" and not leaked and not used
         if leaked:
             score.notes.append(f"retrieved restricted passages: {', '.join(leaked)}")
+        if used:
+            score.notes.append(f"computed restricted metrics: {', '.join(used)}")
     else:
         score.behaviour_ok = status in EXPECTED_STATUS[want]
     if not score.behaviour_ok:

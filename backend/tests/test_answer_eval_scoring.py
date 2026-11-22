@@ -87,6 +87,34 @@ def test_restricted_fails_if_a_forbidden_passage_was_even_retrieved():
     assert not score_case("p", "permission", exp, {**clean, "status": "error"}, None).passed
 
 
+def test_restricted_fails_if_a_forbidden_metric_was_computed():
+    """Datasets leak through numbers, not passages: computing headcount for Finance is a leak."""
+    exp = {"answer": "restricted", "must_not_use": ["headcount"]}
+    clean = {"status": "unanswerable", "evidence": [], "passages": []}
+    assert score_case("p", "permission", exp, clean, None).passed
+    leaked = {**clean, "status": "answered", "evidence": [ev([{"headcount": 5}], "headcount")]}
+    s = score_case("p", "permission", exp, leaked, None)
+    assert not s.passed and "computed restricted metrics: headcount" in s.notes
+    qualified = {**leaked, "evidence": [ev([{"headcount": 5}], "staff.headcount")]}
+    assert not score_case("p", "permission", exp, qualified, None).passed
+
+
+def test_a_table_qualified_column_matches_the_plain_name():
+    expected = [{"store_name": "Berlin Store", "headcount": 5}]
+    assert rows_match(
+        expected, [{"stores.store_name": "Berlin Store", "headcount": 5}], "headcount", False
+    )
+    assert not rows_match(
+        expected, [{"stores.country": "Berlin Store", "headcount": 5}], "headcount", False
+    )
+
+
+def test_an_empty_value_matches_an_empty_value_not_zero():
+    """April's actual cost is unknown (None); an engine reporting 0 has the wrong answer."""
+    assert rows_match([{"actual_cost": None}], [{"actual_cost": None}], "actual_cost", False)
+    assert not rows_match([{"actual_cost": None}], [{"actual_cost": 0}], "actual_cost", False)
+
+
 def test_policy_answers_must_cite_the_right_document_version():
     exp = {
         "answer": "answer",

@@ -16,10 +16,14 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-from evals.oracle import DEFAULT_DATA, Oracle, Query
+from evals.oracle import METRICS, Oracle, Query
 
 ROOT = Path(__file__).resolve().parents[2]
 REFERENCE = ROOT / "data" / "reference"
+STAGE_B = ROOT / "data" / "stage_b"
+# A golden set's `dataset` names the data stage it is written for. Answerability depends on
+# the data: "how many people work in Berlin?" has no answer in Stage A and is 5 in Stage B.
+STAGE_ROOTS = {"stage_a": [REFERENCE], "stage_b": [REFERENCE, STAGE_B]}
 GOLDEN_DIR = ROOT / "evals" / "golden"
 CATEGORIES = {
     "calculation",
@@ -30,6 +34,8 @@ CATEGORIES = {
     "unanswerable",
     "permission",
     "follow_up",
+    "table_choice",  # look-alike tables or metrics: the question must reach the right one
+    "now_answerable",  # unanswerable at an earlier stage, answerable with this stage's data
 }
 ANSWER_TYPES = {"answer", "clarify", "abstain", "restricted"}
 
@@ -40,19 +46,29 @@ class DocVersion:
     version: int
 
 
-def load_documents(doc_dir: Path = REFERENCE / "documents") -> dict[str, set[int]]:
+def load_documents(stage: str = "stage_a") -> dict[str, set[int]]:
     """doc_id -> set of versions, read from each document's front matter."""
     docs: dict[str, set[int]] = {}
-    for path in sorted(doc_dir.glob("*.md")):
+    paths = [p for root in STAGE_ROOTS[stage] for p in sorted((root / "documents").glob("*.md"))]
+    for path in paths:
         front = path.read_text(encoding="utf-8").split("---")[1]
         meta = yaml.safe_load(front)
         docs.setdefault(meta["doc_id"], set()).add(int(meta["version"]))
     return docs
 
 
-def load_access(path: Path = REFERENCE / "access.yaml") -> dict[str, set[str]]:
+def load_access(stage: str = "stage_a") -> dict[str, set[str]]:
     """source -> groups allowed to read it."""
-    return {k: set(v) for k, v in yaml.safe_load(path.read_text())["grants"].items()}
+    access: dict[str, set[str]] = {}
+    for root in STAGE_ROOTS[stage]:
+        grants = yaml.safe_load((root / "access.yaml").read_text())["grants"]
+        access |= {k: set(v) for k, v in grants.items()}
+    return access
+
+
+def load_sources(stage: str) -> set[str]:
+    """Every dataset and document a data stage publishes."""
+    return set(load_access(stage))
 
 
 def parse_citation(ref: str, docs: dict[str, set[int]]) -> DocVersion:
@@ -74,11 +90,19 @@ def iter_steps(case: dict):
         yield case["id"], case["question"], case["expected"]
 
 
-def validate(golden: dict, data_dir: Path = DEFAULT_DATA) -> list[str]:
+def validate(golden: dict) -> list[str]:
     """Return a list of problems (empty means the golden set is consistent)."""
-    docs, access = load_documents(), load_access()
-    products = set(pd.read_csv(data_dir / "products.csv")["product_name"])
-    tables = {name: pd.read_csv(data_dir / f"{name}.csv") for name in ("stores", "products")}
+    stage = golden.get("dataset", "stage_a")
+    if stage not in STAGE_ROOTS:
+        return [f"unknown dataset {stage!r}; expected one of {sorted(STAGE_ROOTS)}"]
+    docs, access = load_documents(stage), load_access(stage)
+    tables = {
+        path.stem: pd.read_csv(path)
+        for root in STAGE_ROOTS[stage]
+        for path in sorted((root / "tables").glob("*.csv"))
+    }
+    products = set(tables["products"]["product_name"])
+    oracle = Oracle.for_stage(stage)
     problems: list[str] = []
     seen: set[str] = set()
 
@@ -120,9 +144,15 @@ def validate(golden: dict, data_dir: Path = DEFAULT_DATA) -> list[str]:
                         problems.append(f"{step}: grounding {phrase!r} -> missing value")
             for spec in exp.get("data", []):
                 try:
-                    Query(**spec)
-                except (TypeError, ValueError) as e:
+                    rows = oracle.run(Query(**spec))
+                except (TypeError, ValueError, KeyError) as e:
                     problems.append(f"{step}: bad data query {spec}: {e}")
+                    continue
+                if exp.get("grounding") and not rows:
+                    problems.append(f"{step}: grounded query {spec} matches no rows")
+            for metric in exp.get("must_not_use", []):
+                if metric not in METRICS:
+                    problems.append(f"{step}: must_not_use names unknown metric {metric!r}")
             if exp["answer"] in {"answer"} and not (exp.get("data") or exp.get("must_cite")):
                 problems.append(f"{step}: 'answer' case needs data or citations")
     return problems
@@ -138,6 +168,10 @@ def build_expected(golden: dict, oracle: Oracle) -> dict:
                     {"query": spec, "rows": oracle.run(Query(**spec))} for spec in exp["data"]
                 ]
     return expected
+
+
+def oracle_for(golden: dict) -> Oracle:
+    return Oracle.for_stage(golden.get("dataset", "stage_a"))
 
 
 def load_golden(name: str = "stage_a") -> dict:

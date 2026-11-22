@@ -8,6 +8,10 @@ Usage (from backend/, with the reference data published in the dev database):
     uv run python -m evals.run_answer_eval                 # full run (~25 min on free tiers)
     uv run python -m evals.run_answer_eval --only calc-001 vg-001
     uv run python -m evals.run_answer_eval --golden stage_a.heldout   # held-out questions
+    DATABASE_URL=...copilot_stage_b uv run python -m evals.run_answer_eval --golden stage_b
+
+A golden set is written for one data stage (its `dataset`), and the run refuses a database
+holding a different stage: Stage A's "unanswerable" staff question has an answer in Stage B.
 """
 
 import argparse
@@ -26,9 +30,17 @@ from app.answer.pipeline import answer_question
 from app.api.ask import get_planner_llm, get_writer_llm
 from app.config import get_settings
 from app.db import _session_factory
-from app.models import AnswerRun, Conversation, LlmCall, User
+from app.models import (
+    AnswerRun,
+    Conversation,
+    LlmCall,
+    Source,
+    SourceVersion,
+    User,
+    VersionStatus,
+)
 from evals.answer_eval import CaseScore, combine_turns, percentile, score_case
-from evals.golden import GOLDEN_DIR, load_golden
+from evals.golden import GOLDEN_DIR, STAGE_ROOTS, load_golden, load_sources
 
 REPORTS = Path(__file__).resolve().parents[2] / "evals" / "reports"
 PERSONAS = {
@@ -41,6 +53,27 @@ def _git(*args: str) -> str:
     """Read commit info for the report. Fixed command, no user input."""
     cmd = ["git", *args]
     return subprocess.run(cmd, capture_output=True, text=True, check=False).stdout.strip()  # noqa: S603
+
+
+def check_stage(db: Session, stage: str) -> None:
+    """The database must hold exactly the sources of the golden set's data stage."""
+    published = set(
+        db.scalars(
+            select(Source.slug)
+            .join(SourceVersion, SourceVersion.source_id == Source.id)
+            .where(SourceVersion.status == VersionStatus.PUBLISHED)
+        )
+    )
+    expected = load_sources(stage)
+    missing = sorted(expected - published)
+    known = set().union(*(load_sources(other) for other in STAGE_ROOTS))
+    extra = sorted((published & known) - expected)
+    if missing or extra:
+        raise SystemExit(
+            f"This database does not hold {stage} data: "
+            f"missing {missing or 'nothing'}, from another stage {extra or 'nothing'}. "
+            "Point DATABASE_URL at a database seeded with that stage."
+        )
 
 
 def _print(n: int, total: int, label: str, score: CaseScore, record: dict) -> None:
@@ -129,6 +162,7 @@ def run(only: list[str] | None, delay: float, golden_name: str = "stage_a") -> d
         raise SystemExit(
             "Seed and publish the reference data first (app.cli seed-reference, publish-reference)."
         )
+    check_stage(db, golden.get("dataset", "stage_a"))
 
     results, scores = [], []
     cases = [c for c in golden["cases"] if not only or c["id"] in only]
