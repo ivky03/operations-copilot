@@ -1,0 +1,65 @@
+budget_line_id,budget_month,department,cost_category,budget_eur,actual_eur
+B-001,2026-01-01,Stores,Staff,28000.00,24522.30
+B-002,2026-01-01,Stores,Rent,12500.00,12376.06
+B-003,2026-01-01,Stores,Utilities,39500.00,40239.96
+B-004,2026-01-01,Online,Staff,37000.00,35904.25
+B-005,2026-01-01,Online,Platform fees,50000.00,54835.38
+B-006,2026-01-01,Online,Marketing,55000.00,45932.93
+B-007,2026-01-01,Fulfilment,Staff,22000.00,24168.30
+B-008,2026-01-01,Fulfilment,Carriers,18000.00,15159.25
+B-009,2026-01-01,Fulfilment,Packaging,5000.00,5779.54
+B-010,2026-01-01,Customer Service,Staff,48500.00,44304.85
+B-011,2026-01-01,Customer Service,Software,50000.00,46951.16
+B-012,2026-01-01,Marketing,Media,19000.00,16595.74
+B-013,2026-01-01,Marketing,Agencies,24000.00,24302.58
+B-014,2026-01-01,Head Office,Staff,37500.00,39387.67
+B-015,2026-01-01,Head Office,Rent,37500.00,32304.85
+B-016,2026-01-01,Head Office,IT,52500.00,48595.98
+B-017,2026-02-01,Stores,Staff,31000.00,29470.05
+B-018,2026-02-01,Stores,Rent,7000.00,7967.51
+B-019,2026-02-01,Stores,Utilities,57000.00,62379.89
+B-020,2026-02-01,Online,Staff,29000.00,29578.06
+B-021,2026-02-01,Online,Platform fees,5000.00,5484.71
+B-022,2026-02-01,Online,Marketing,36000.00,40748.49
+B-023,2026-02-01,Fulfilment,Staff,10500.00,9948.67
+B-024,2026-02-01,Fulfilment,Carriers,36500.00,41679.48
+B-025,2026-02-01,Fulfilment,Packaging,54000.00,50971.63
+B-026,2026-02-01,Customer Service,Staff,23000.00,20372.13
+B-027,2026-02-01,Customer Service,Software,59500.00,57803.20
+B-028,2026-02-01,Marketing,Media,37000.00,34615.62
+B-029,2026-02-01,Marketing,Agencies,16500.00,18423.58
+B-030,2026-02-01,Head Office,Staff,24500.00,21872.14
+B-031,2026-02-01,Head Office,Rent,12000.00,13832.75
+B-032,2026-02-01,Head Office,IT,36500.00,40217.94
+B-033,2026-03-01,Stores,Staff,36500.00,35294.28
+B-034,2026-03-01,Stores,Rent,16500.00,15324.42
+B-035,2026-03-01,Stores,Utilities,27500.00,22666.67
+B-036,2026-03-01,Online,Staff,42000.00,35504.02
+B-037,2026-03-01,Online,Platform fees,23000.00,22473.03
+B-038,2026-03-01,Online,Marketing,11500.00,12943.04
+B-039,2026-03-01,Fulfilment,Staff,4000.00,4088.50
+B-040,2026-03-01,Fulfilment,Carriers,40500.00,41795.23
+B-041,2026-03-01,Fulfilment,Packaging,16500.00,16550.31
+B-042,2026-03-01,Customer Service,Staff,18500.00,20720.87
+B-043,2026-03-01,Customer Service,Software,8500.00,9082.69
+B-044,2026-03-01,Marketing,Media,16500.00,18529.44
+B-045,2026-03-01,Marketing,Agencies,59500.00,50295.79
+B-046,2026-03-01,Head Office,Staff,12500.00,11196.27
+B-047,2026-03-01,Head Office,Rent,6500.00,6078.87
+B-048,2026-03-01,Head Office,IT,18500.00,15832.85
+B-049,2026-04-01,Stores,Staff,53500.00,
+B-050,2026-04-01,Stores,Rent,35000.00,
+B-051,2026-04-01,Stores,Utilities,37500.00,
+B-052,2026-04-01,Online,Staff,26500.00,
+B-053,2026-04-01,Online,Platform fees,15000.00,
+B-054,2026-04-01,Online,Marketing,47000.00,
+B-055,2026-04-01,Fulfilment,Staff,42500.00,
+B-056,2026-04-01,Fulfilment,Carriers,34000.00,
+B-057,2026-04-01,Fulfilment,Packaging,47500.00,
+B-058,2026-04-01,Customer Service,Staff,45500.00,
+B-059,2026-04-01,Customer Service,Software,32500.00,
+B-060,2026-04-01,Marketing,Media,32500.00,
+B-061,2026-04-01,Marketing,Agencies,46500.00,
+B-062,2026-04-01,Head Office,Staff,38000.00,
+B-063,2026-04-01,Head Office,Rent,15500.00,
+B-064,2026-04-01,Head Office,IT,46000.00,

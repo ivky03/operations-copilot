@@ -97,3 +97,96 @@ def test_deliberate_edge_cases_are_present(data):
     promo = [x for x in lines if x.promo_code == PROMO_CODE]
     assert promo and all(x.invoice_date.month == 4 for x in promo)
     assert all(PRODUCT[x.product_id].category == PROMO_CATEGORY for x in promo)
+
+
+# ----------------------------------------------------------------------------- Stage B
+
+
+@pytest.fixture(scope="module")
+def stage_b():
+    from datagen.stage_b import generate_stage_b
+
+    return {
+        name: [dict(zip(t.header, row, strict=True)) for row in t.rows]
+        for name, t in generate_stage_b().items()
+    }
+
+
+def test_stage_b_committed_csvs_match_the_generator(tmp_path):
+    from datagen.__main__ import STAGE_B_OUT, write_stage_b
+
+    names = write_stage_b(tmp_path)
+    assert len(names) == 11
+    for name in names:
+        assert (tmp_path / f"{name}.csv").read_bytes() == (
+            STAGE_B_OUT / f"{name}.csv"
+        ).read_bytes(), f"{name}.csv is stale: run `uv run python -m datagen --stage b`"
+
+
+def test_stage_b_leaves_stage_a_untouched(tmp_path):
+    """Stage A's answers stay valid only if its files are byte-for-byte the same."""
+    write_all(tmp_path)
+    for name in ("stores", "products", "transactions", "returns"):
+        assert (tmp_path / f"{name}.csv").read_bytes() == (DEFAULT_OUT / f"{name}.csv").read_bytes()
+
+
+def test_stage_b_inventory_follows_sales_and_purchase_orders(stage_b, data):
+    snapshots = stage_b["inventory_snapshots"]
+    assert len(snapshots) >= 20000, "the largest table is in the planned ~20k range"
+    assert all(s["units_on_hand"] >= 0 for s in snapshots)
+    assert all(s["is_stockout"] == (s["units_on_hand"] == 0) for s in snapshots)
+    fr = [s for s in snapshots if s["store_id"] == "S08"]
+    assert min(s["snapshot_date"] for s in fr) == STORE["S08"].opened_date
+
+    from datagen.stage_b import SUPPLIERS
+
+    preferred = {s[3]: s[0] for s in SUPPLIERS if s[6]}
+    for po in stage_b["purchase_orders"]:
+        assert po["supplier_id"] == preferred[PRODUCT[po["product_id"]].category]
+        assert (po["received_date"] is None) == (po["status"] in ("open", "cancelled"))
+        if po["received_date"]:
+            assert po["days_late"] == (po["received_date"] - po["expected_date"]).days
+        assert po["quantity_received"] <= po["quantity_ordered"]
+    statuses = {po["status"] for po in stage_b["purchase_orders"]}
+    assert statuses == {"received", "partially_received", "open", "cancelled"}
+
+
+def test_stage_b_shipments_tickets_and_summary_agree_with_sales(stage_b, data):
+    lines, returns = data
+    cancelled = {x.invoice_no[1:] for x in lines if x.is_cancellation}
+    for s in stage_b["shipments"]:
+        assert STORE[s["store_id"]].channel == "Online"
+        assert s["invoice_no"] not in cancelled, "cancelled orders are never shipped"
+        if s["delivered_date"]:
+            assert s["is_on_time"] == (s["delivered_date"] <= s["promised_date"])
+        else:
+            assert s["status"] == "in_transit" and s["is_on_time"] is None
+    tickets = stage_b["support_tickets"]
+    assert sum(t["category"] == "Returns" for t in tickets) == len(returns)
+    assert all(t["csat_score"] is None or 1 <= t["csat_score"] <= 5 for t in tickets)
+    assert all(t["status"] == "closed" or t["csat_score"] is None for t in tickets)
+
+    # The dashboard look-alike equals gross sales (before cancellations and refunds).
+    gross = round(sum(x.quantity * x.unit_price for x in lines if not x.is_cancellation), 2)
+    dashboard = round(sum(r["dashboard_revenue"] for r in stage_b["sales_daily_summary"]), 2)
+    assert dashboard == gross
+
+
+def test_stage_b_people_and_finance_edge_cases(stage_b):
+    staff = stage_b["staff"]
+    assert sum(not s["is_active"] for s in staff) == 3, "three leavers"
+    berlin = [s for s in staff if s["store_id"] == "S04"]
+    assert any(s["end_date"] for s in berlin) and any(s["start_date"].year == 2026 for s in berlin)
+    active = {s["employee_id"]: s for s in staff}
+    for shift in stage_b["shifts"]:
+        person = active[shift["employee_id"]]
+        assert person["start_date"] <= shift["shift_date"]
+        assert person["end_date"] is None or shift["shift_date"] <= person["end_date"]
+        assert (shift["worked_hours"] == 0) == (shift["absence_reason"] is not None)
+    april = [b for b in stage_b["budgets"] if b["budget_month"].month == 4]
+    assert april and all(b["actual_eur"] is None for b in april), "April isn't closed"
+    assert all(
+        b["actual_eur"] is not None for b in stage_b["budgets"] if b["budget_month"].month < 4
+    )
+    promos = {p["promo_code"]: p for p in stage_b["promotions"]}
+    assert promos[PROMO_CODE]["category"] == PROMO_CATEGORY

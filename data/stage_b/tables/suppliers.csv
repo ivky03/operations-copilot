@@ -1,0 +1,11 @@
+supplier_id,supplier_name,country,category,lead_time_days,payment_terms_days,is_preferred
+SU01,Lumen Works,Poland,Lighting,12,30,true
+SU02,Bright Atelier,Italy,Lighting,18,45,false
+SU03,Ferro Kitchenware,Portugal,Kitchen,10,30,true
+SU04,Nordic Pantry Goods,Sweden,Kitchen,14,60,false
+SU05,Porto Linen Co.,Portugal,Textiles,9,30,true
+SU06,Anatolia Weavers,Turkey,Textiles,21,60,false
+SU07,Oakhaus Furniture,Germany,Furniture,20,45,true
+SU08,Baltic Timber Design,Lithuania,Furniture,28,60,false
+SU09,Clay & Glass Studio,Spain,Decor,11,30,true
+SU10,Frame Republic,Netherlands,Decor,8,30,false

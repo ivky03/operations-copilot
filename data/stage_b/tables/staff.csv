@@ -1,0 +1,36 @@
+employee_id,display_name,role,store_id,contract_type,weekly_contract_hours,start_date,end_date,is_active
+E001,Ana B.,Store Manager,S01,full_time,37.50,2019-03-11,,true
+E002,Ben V.,Sales Associate,S01,full_time,37.50,2019-03-22,,true
+E003,Carla Y.,Sales Associate,S01,part_time,20.00,2021-07-14,,true
+E004,Dev V.,Sales Associate,S01,full_time,37.50,2020-04-01,,true
+E005,Elif A.,Sales Associate,S01,part_time,24.00,2020-11-04,2026-02-13,false
+E006,Finn I.,Fulfilment Associate,S02,full_time,37.50,2018-05-30,,true
+E007,Greta M.,Fulfilment Associate,S02,full_time,37.50,2018-12-28,,true
+E008,Hugo H.,Store Manager,S03,full_time,37.50,2021-05-11,,true
+E009,Ines F.,Sales Associate,S03,full_time,37.50,2023-03-01,,true
+E010,Jonas Q.,Sales Associate,S03,part_time,20.00,2022-10-15,,true
+E011,Kira U.,Sales Associate,S03,part_time,24.00,2021-07-08,,true
+E012,Liam D.,Sales Associate,S03,full_time,37.50,2022-11-18,,true
+E013,Maya X.,Store Manager,S04,full_time,37.50,2020-08-11,,true
+E014,Nico P.,Sales Associate,S04,part_time,24.00,2020-12-05,,true
+E015,Olga V.,Sales Associate,S04,part_time,16.00,2022-08-19,,true
+E016,Pablo D.,Sales Associate,S04,full_time,37.50,2022-06-11,,true
+E017,Quinn N.,Sales Associate,S04,full_time,37.50,2022-08-08,2026-03-27,false
+E018,Rosa F.,Fulfilment Associate,S05,full_time,37.50,2019-08-18,,true
+E019,Sven S.,Fulfilment Associate,S05,full_time,37.50,2019-07-08,,true
+E020,Tara C.,Store Manager,S06,full_time,37.50,2022-02-08,,true
+E021,Umar E.,Sales Associate,S06,part_time,24.00,2022-11-01,,true
+E022,Vera W.,Sales Associate,S06,full_time,37.50,2024-01-03,2026-03-06,false
+E023,Wes U.,Sales Associate,S06,part_time,16.00,2022-11-17,,true
+E024,Xenia B.,Store Manager,S07,full_time,37.50,2023-04-10,,true
+E025,Yusuf R.,Sales Associate,S07,full_time,37.50,2025-09-25,,true
+E026,Zoe Q.,Sales Associate,S07,part_time,16.00,2023-04-30,,true
+E027,Aiden F.,Sales Associate,S07,full_time,37.50,2024-08-07,,true
+E028,Bea T.,Fulfilment Associate,S08,full_time,37.50,2026-12-28,,true
+E029,Cian C.,Customer Service Agent,,part_time,20.00,2021-03-04,,true
+E030,Dora Z.,Customer Service Agent,,full_time,37.50,2024-09-05,,true
+E031,Emil Q.,Customer Service Agent,,part_time,20.00,2024-10-13,,true
+E032,Fleur I.,Customer Service Agent,,part_time,16.00,2023-09-23,,true
+E033,Gael G.,Customer Service Agent,,part_time,16.00,2022-01-11,,true
+E034,Hana L.,Sales Associate,S04,part_time,20.00,2026-03-16,,true
+E035,Ivo I.,Customer Service Agent,,full_time,37.50,2026-03-02,,true
