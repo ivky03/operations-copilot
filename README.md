@@ -97,6 +97,7 @@ Each capability is evaluated separately, and results are published in `evals/rep
 |---|---|
 | Calculations | Plan correctness; numeric answers vs an independent pandas oracle |
 | Value grounding | Correct resolution of names and aliases, or a correct clarifying question |
+| Table choice (Stage B) | Look-alike tables reach the right one: net sales vs dashboard revenue, customer vs purchase orders, actuals vs targets |
 | Document retrieval | Recall@k, MRR, citation support |
 | Combined answers & follow-ups | Both parts correct; context carried across turns |
 | Ambiguous / unanswerable | Clarifies or abstains instead of fabricating |
@@ -110,8 +111,9 @@ cd backend
 uv run python -m evals.run_retrieval_eval   # seconds; deterministic
 uv run python -m evals.run_answer_eval      # ~25 min on free tiers; results vary between runs
 uv run python -m evals.run_answer_eval --golden stage_a.heldout   # questions never used for tuning
+DATABASE_URL=<a Stage B database> uv run python -m evals.run_answer_eval --golden stage_b
 ```
-Held-out questions (`evals/golden/stage_a.heldout.yaml`) are committed before the change they measure, so a change can't be tuned to them.
+Held-out questions (`evals/golden/stage_a.heldout.yaml`) are committed before the change they measure, so a change can't be tuned to them. Each question set belongs to one data stage, and the runner refuses a database holding another: a question with no answer in Stage A may have one in Stage B. If an answer key turns out to be wrong, the key is corrected under a new version and the saved answers are scored again (`--rescore`), without new model calls; the original report is kept.
  **No result is claimed before it has been measured.**
 
 ## Running locally
