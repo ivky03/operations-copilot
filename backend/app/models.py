@@ -56,6 +56,14 @@ class VersionStatus(StrEnum):
     READY = "ready"  # validated and processed, not yet visible
     PUBLISHED = "published"  # the version answers use (at most one per source)
     SUPERSEDED = "superseded"  # an older published version
+    DISCARDED = "discarded"  # a ready version the steward chose not to publish; content removed
+
+
+class JobStatus(StrEnum):
+    PENDING = "pending"  # waiting for a worker (message sent, or about to be re-sent)
+    RUNNING = "running"  # claimed by a worker until locked_until
+    SUCCEEDED = "succeeded"  # processed; the result may still be "invalid" (bad file, not a crash)
+    FAILED = "failed"  # gave up after repeated errors; a steward can retry
 
 
 def _enum(e: type[StrEnum], name: str) -> Enum:
@@ -347,3 +355,44 @@ class LlmCall(Base):
     completion_tokens: Mapped[int | None] = mapped_column(Integer)
     latency_ms: Mapped[int] = mapped_column(Integer, nullable=False)
     error: Mapped[str | None] = mapped_column(Text)
+
+
+class Job(Base):
+    """One uploaded file set being processed in the background.
+
+    The database row is the source of truth for a job's state; the SQS message only says
+    "look at job X". So a lost, duplicated or late message can't corrupt anything: the worker
+    claims the row atomically, and does the work and marks the job done in one transaction.
+    """
+
+    __tablename__ = "jobs"
+    __table_args__ = (Index("ix_jobs_status", "status"),)
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    kind: Mapped[str] = mapped_column(String(30), nullable=False)  # prepare_dataset | _document
+    source_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sources.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    created_by: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL")
+    )
+    status: Mapped[JobStatus] = mapped_column(
+        _enum(JobStatus, "job_status"), nullable=False, default=JobStatus.PENDING
+    )
+    attempts: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    max_attempts: Mapped[int] = mapped_column(Integer, nullable=False)
+    payload: Mapped[dict] = mapped_column(JSONB, nullable=False)  # S3 keys of the uploaded files
+    result: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    error: Mapped[str | None] = mapped_column(Text)  # last failure, for the steward
+    source_version_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("source_versions.id", ondelete="SET NULL")
+    )
+    locked_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # When the message was last sent (or, after a failed attempt, when it is due back).
+    enqueued_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = _created_at()
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+    source: Mapped[Source] = relationship()
+    version: Mapped[SourceVersion | None] = relationship()
+    creator: Mapped[User | None] = relationship()
