@@ -1,0 +1,31 @@
+# Dataset manifest (Stage B). Synthetic. Finance only.
+source: budgets
+title: Cost budgets and actuals
+description: >
+  Monthly cost budget by department and cost category, with actual spend once the month is
+  closed. April 2026 is not closed yet, so its actuals are empty.
+grain: One row per month, department and cost category.
+primary_key: [budget_line_id]
+time_column: budget_month
+
+columns:
+  - {name: budget_line_id, type: string, role: id, description: Budget line identifier.}
+  - {name: budget_month, type: date, role: time, description: First day of the month.}
+  - {name: department, type: string, role: dimension, description: Department responsible., value_index: true}
+  - {name: cost_category, type: string, role: dimension, description: Type of cost., value_index: true}
+  - {name: budget_eur, type: decimal, role: measure, description: Budgeted cost in EUR., unit: EUR}
+  - {name: actual_eur, type: decimal, role: measure, nullable: true, description: Actual cost in EUR. Empty until the month is closed., unit: EUR}
+
+metrics:
+  - name: budgeted_cost
+    title: Budgeted cost
+    description: Planned cost.
+    aggregation: sum
+    expression: budget_eur
+    unit: EUR
+  - name: actual_cost
+    title: Actual cost
+    description: Actual cost, for closed months only.
+    aggregation: sum
+    expression: actual_eur
+    unit: EUR

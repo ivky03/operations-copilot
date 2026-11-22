@@ -1,0 +1,89 @@
+# Dataset manifest (Stage B). Synthetic.
+source: purchase_orders
+title: Purchase orders to suppliers
+description: >
+  Stock Brindlewood Home orders FROM its suppliers (not customer orders, which are in
+  transactions). Raised automatically when a store's stock falls to the reorder point.
+  unit_cost is the purchase price we pay, not the selling price.
+grain: One row per purchase order line (one product for one store).
+primary_key: [po_line_id]
+time_column: ordered_date
+
+columns:
+  - {name: po_line_id, type: string, role: id, description: Purchase order line identifier.}
+  - {name: po_number, type: string, role: id, description: "Purchase order number, e.g. PO-26001."}
+  - {name: supplier_id, type: string, role: id, description: Supplier the order was placed with.}
+  - {name: store_id, type: string, role: id, description: Store the stock is delivered to.}
+  - {name: product_id, type: string, role: id, description: Product ordered.}
+  - {name: ordered_date, type: date, role: time, description: Date the purchase order was placed.}
+  - {name: expected_date, type: date, role: dimension, description: Delivery date agreed with the supplier.}
+  - {name: received_date, type: date, role: dimension, nullable: true, description: Date the goods arrived. Empty if not received (open or cancelled).}
+  - {name: quantity_ordered, type: integer, role: measure, description: Units ordered., unit: units}
+  - {name: quantity_received, type: integer, role: measure, description: Units actually received (can be fewer than ordered)., unit: units}
+  - {name: unit_cost, type: decimal, role: measure, description: Purchase price per unit in EUR., unit: EUR}
+  - name: status
+    type: string
+    role: dimension
+    description: received, partially_received, open (not yet arrived) or cancelled (by the supplier).
+    value_index: true
+    allowed_values: [received, partially_received, open, cancelled]
+  - {name: days_late, type: integer, role: measure, nullable: true, description: "Received date minus expected date in days; negative means early. Empty if not received.", unit: days}
+
+relationships:
+  - {column: supplier_id, references: suppliers.supplier_id}
+  - {column: store_id, references: stores.store_id}
+  - {column: product_id, references: products.product_id}
+
+metrics:
+  - name: purchase_value
+    title: Purchase order value
+    description: Value of units ordered at purchase cost (quantity ordered x unit cost), by order date.
+    aggregation: sum
+    expression: quantity_ordered * unit_cost
+    unit: EUR
+  - name: units_ordered
+    title: Units ordered from suppliers
+    description: Units ordered from suppliers.
+    aggregation: sum
+    expression: quantity_ordered
+    unit: units
+  - name: units_received
+    title: Units received from suppliers
+    description: Units actually received from suppliers.
+    aggregation: sum
+    expression: quantity_received
+    unit: units
+  - name: purchase_order_count
+    title: Purchase orders
+    description: Number of purchase orders placed.
+    aggregation: count_distinct
+    expression: po_number
+  - name: received_purchase_order_count
+    title: Received purchase orders
+    description: Purchase orders that arrived, fully or partially.
+    aggregation: count_distinct
+    expression: po_number
+    filters:
+      - {column: status, op: "!=", value: open}
+      - {column: status, op: "!=", value: cancelled}
+  - name: late_purchase_order_count
+    title: Late purchase orders
+    description: Received purchase orders that arrived after the agreed date.
+    aggregation: count_distinct
+    expression: po_number
+    filters:
+      - {column: days_late, op: ">", value: 0}
+  - name: open_purchase_order_count
+    title: Open purchase orders
+    description: Purchase orders not yet received (still on their way).
+    aggregation: count_distinct
+    expression: po_number
+    filters:
+      - {column: status, op: "=", value: open}
+
+derived_metrics:
+  - name: supplier_late_rate
+    title: Supplier late delivery rate
+    description: Share of received purchase orders that arrived late.
+    formula: late_purchase_order_count / received_purchase_order_count
+    unit: ratio

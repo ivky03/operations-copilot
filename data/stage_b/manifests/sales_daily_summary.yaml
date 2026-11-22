@@ -1,0 +1,35 @@
+# Dataset manifest (Stage B). Synthetic.
+source: sales_daily_summary
+title: Store dashboard daily summary
+description: >
+  Nightly extract behind the store dashboards: orders placed each day and their value BEFORE
+  cancellations and refunds. It is not the governed revenue measure: for net sales use the
+  net_sales metric of transactions. Days without orders have no row.
+grain: One row per store per day with at least one order.
+primary_key: [summary_date, store_id]
+time_column: summary_date
+
+columns:
+  - {name: summary_date, type: date, role: time, description: Day the orders were placed.}
+  - {name: store_id, type: string, role: id, description: Store or web shop.}
+  - {name: orders_placed, type: integer, role: measure, description: "Orders placed that day, including ones cancelled later."}
+  - {name: dashboard_revenue, type: decimal, role: measure, description: "Value of orders placed that day, before cancellations and refunds.", unit: EUR}
+  - {name: units_ordered, type: integer, role: measure, description: Units on the orders placed that day., unit: units}
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+
+metrics:
+  - name: dashboard_revenue
+    title: Dashboard revenue
+    description: >
+      Order value as shown on the store dashboard, before cancellations and refunds. Not the
+      same as net sales.
+    aggregation: sum
+    expression: dashboard_revenue
+    unit: EUR
+  - name: dashboard_orders
+    title: Dashboard orders placed
+    description: Orders placed, as counted on the store dashboard.
+    aggregation: sum
+    expression: orders_placed

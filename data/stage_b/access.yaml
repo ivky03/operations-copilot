@@ -1,0 +1,35 @@
+# Stage B access grants: the sources added on top of Stage A (data/reference/access.yaml).
+# Groups are the same two. Stewards describe data; administrators grant access.
+grants:
+  # Datasets for both groups
+  suppliers: [operations, finance]
+  purchase_orders: [operations, finance]
+  inventory_snapshots: [operations, finance]
+  promotions: [operations, finance]
+  shipments: [operations, finance]
+  support_tickets: [operations, finance]
+  sales_daily_summary: [operations, finance]
+
+  # People data: Operations only
+  staff: [operations]
+  shifts: [operations]
+
+  # Finance only
+  sales_targets: [finance]
+  budgets: [finance]
+
+  # Documents for all employees
+  purchasing-and-receiving: [operations, finance]
+  supplier-management-policy: [operations, finance]
+  stock-count-procedure: [operations, finance]
+  delivery-performance: [operations, finance]
+  promotions-calendar-2026: [operations, finance]
+  dashboard-vs-reported-sales: [operations, finance]
+  customer-service-standards: [operations, finance]
+
+  # Operations only
+  staffing-and-scheduling: [operations]
+  absence-policy: [operations]
+
+  # Finance only
+  budget-guidelines-2026: [finance]

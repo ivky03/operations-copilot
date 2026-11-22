@@ -1,0 +1,25 @@
+# Dataset manifest (Stage B). Synthetic. Finance only.
+source: sales_targets
+title: Monthly net sales targets
+description: >
+  The net sales each store was expected to make each month (a plan, not actual sales).
+  Compare with the net_sales metric of transactions for the same store and month.
+grain: One row per store per month.
+primary_key: [target_month, store_id]
+time_column: target_month
+
+columns:
+  - {name: target_month, type: date, role: time, description: First day of the month the target is for.}
+  - {name: store_id, type: string, role: id, description: Store or web shop.}
+  - {name: net_sales_target, type: decimal, role: measure, description: Target net sales for the month in EUR., unit: EUR}
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+
+metrics:
+  - name: net_sales_target
+    title: Net sales target
+    description: Planned net sales.
+    aggregation: sum
+    expression: net_sales_target
+    unit: EUR

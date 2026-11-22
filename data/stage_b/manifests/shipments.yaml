@@ -1,0 +1,64 @@
+# Dataset manifest (Stage B). Synthetic.
+source: shipments
+title: Online order shipments
+description: >
+  Deliveries of web-shop orders to customers (physical store purchases are taken home and have
+  no shipment; cancelled orders are not shipped). On time means delivered on or before the
+  promised date.
+grain: One row per shipped online order.
+primary_key: [shipment_id]
+time_column: shipped_date
+
+columns:
+  - {name: shipment_id, type: string, role: id, description: Shipment identifier.}
+  - {name: invoice_no, type: string, role: id, description: Customer order (invoice) shipped.}
+  - {name: store_id, type: string, role: id, description: Web shop the order came from.}
+  - {name: carrier, type: string, role: dimension, description: Delivery company., value_index: true}
+  - {name: shipped_date, type: date, role: time, description: Date the parcel left the warehouse.}
+  - {name: promised_date, type: date, role: dimension, description: Latest delivery date promised to the customer.}
+  - {name: delivered_date, type: date, role: dimension, nullable: true, description: Date delivered. Empty while in transit.}
+  - {name: is_on_time, type: boolean, role: dimension, nullable: true, description: Delivered on or before the promised date. Empty while in transit.}
+  - {name: delivery_days, type: integer, role: measure, nullable: true, description: Days from dispatch to delivery., unit: days}
+  - name: status
+    type: string
+    role: dimension
+    description: delivered or in_transit.
+    value_index: true
+    allowed_values: [delivered, in_transit]
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+
+metrics:
+  - name: shipment_count
+    title: Shipments
+    description: Number of online orders shipped.
+    aggregation: count
+    expression: shipment_id
+  - name: delivered_count
+    title: Delivered shipments
+    description: Shipments that have been delivered.
+    aggregation: count
+    expression: shipment_id
+    filters:
+      - {column: status, op: "=", value: delivered}
+  - name: on_time_count
+    title: On-time deliveries
+    description: Shipments delivered on or before the promised date.
+    aggregation: count
+    expression: shipment_id
+    filters:
+      - {column: is_on_time, op: "=", value: true}
+  - name: average_delivery_days
+    title: Average delivery time
+    description: Average days from dispatch to delivery (delivered shipments only).
+    aggregation: avg
+    expression: delivery_days
+    unit: days
+
+derived_metrics:
+  - name: on_time_delivery_rate
+    title: On-time delivery rate
+    description: Share of delivered shipments that arrived on time (in-transit parcels are excluded).
+    formula: on_time_count / delivered_count
+    unit: ratio

@@ -1,0 +1,30 @@
+# Dataset manifest (Stage B). Synthetic.
+source: suppliers
+title: Suppliers
+description: >
+  Companies Brindlewood Home buys its products from, one main (preferred) and one alternative
+  supplier per product category.
+grain: One row per supplier.
+primary_key: [supplier_id]
+
+columns:
+  - {name: supplier_id, type: string, role: id, description: "Supplier identifier, e.g. SU01."}
+  - {name: supplier_name, type: string, role: dimension, description: Supplier company name., value_index: true}
+  - {name: country, type: string, role: dimension, description: Country the supplier ships from., value_index: true}
+  - {name: category, type: string, role: dimension, description: Product category the supplier provides., value_index: true}
+  - {name: lead_time_days, type: integer, role: measure, description: Agreed days from purchase order to delivery., unit: days}
+  - {name: payment_terms_days, type: integer, role: attribute, description: Days we have to pay the supplier's invoice., unit: days}
+  - {name: is_preferred, type: boolean, role: dimension, description: True for the category's main supplier; purchase orders go to it.}
+
+metrics:
+  - name: supplier_count
+    title: Suppliers
+    description: Number of suppliers.
+    aggregation: count_distinct
+    expression: supplier_id
+  - name: average_lead_time_days
+    title: Average agreed lead time
+    description: Average agreed lead time in days (the contract, not actual delivery performance).
+    aggregation: avg
+    expression: lead_time_days
+    unit: days
