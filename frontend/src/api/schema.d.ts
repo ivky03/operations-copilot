@@ -278,6 +278,169 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/steward/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Jobs */
+        get: operations["list_jobs_api_steward_jobs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/jobs/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Job */
+        get: operations["get_job_api_steward_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/jobs/{job_id}/retry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Retry Job */
+        post: operations["retry_job_api_steward_jobs__job_id__retry_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Sources */
+        get: operations["list_sources_api_steward_sources_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/uploads": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Upload
+         * @description Accept the files and return at once (202 Accepted). Validation and loading happen in
+         *     the background worker; follow progress with GET /api/steward/jobs/{id}.
+         */
+        post: operations["upload_api_steward_sources__slug__uploads_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/versions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Versions */
+        get: operations["list_versions_api_steward_sources__slug__versions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/versions/{number}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Version
+         * @description Everything needed to decide whether to publish: issues, or a preview and what changed.
+         */
+        get: operations["get_version_api_steward_sources__slug__versions__number__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/versions/{number}/discard": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Discard */
+        post: operations["discard_api_steward_sources__slug__versions__number__discard_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/versions/{number}/publish": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Publish
+         * @description Make a ready version the one answers use. New answers use it from the next question.
+         */
+        post: operations["publish_api_steward_sources__slug__versions__number__publish_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -345,6 +508,24 @@ export interface components {
             /** Status */
             status: string;
         };
+        /** Body_upload_api_steward_sources__slug__uploads_post */
+        Body_upload_api_steward_sources__slug__uploads_post: {
+            /**
+             * Data
+             * @description Dataset rows (CSV)
+             */
+            data?: string | null;
+            /**
+             * Document
+             * @description Document (Markdown)
+             */
+            document?: string | null;
+            /**
+             * Manifest
+             * @description Dataset manifest (YAML)
+             */
+            manifest?: string | null;
+        };
         /** CandidateOut */
         CandidateOut: {
             /** Column */
@@ -355,6 +536,45 @@ export interface components {
             score: number;
             /** Value */
             value: string;
+        };
+        /** ColumnOut */
+        ColumnOut: {
+            /** Description */
+            description: string;
+            /** Name */
+            name: string;
+            /** Type */
+            type: string;
+        };
+        /**
+         * Comparison
+         * @description How a version differs from the one currently published.
+         */
+        Comparison: {
+            /**
+             * Columns Added
+             * @default []
+             */
+            columns_added: string[];
+            /**
+             * Columns Removed
+             * @default []
+             */
+            columns_removed: string[];
+            /** Published Row Count */
+            published_row_count?: number | null;
+            /** Published Version */
+            published_version: number;
+            /**
+             * Sections Added
+             * @default []
+             */
+            sections_added: string[];
+            /**
+             * Sections Removed
+             * @default []
+             */
+            sections_removed: string[];
         };
         /** ConversationOut */
         ConversationOut: {
@@ -463,6 +683,45 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** JobOut */
+        JobOut: {
+            /** Attempts */
+            attempts: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Created By */
+            created_by: string | null;
+            /** Error */
+            error: string | null;
+            /** Finished At */
+            finished_at: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Issue Count */
+            issue_count: number;
+            /** Issues */
+            issues: string[];
+            /** Kind */
+            kind: string;
+            /** Max Attempts */
+            max_attempts: number;
+            /** Result Status */
+            result_status: string | null;
+            /** Row Count */
+            row_count: number | null;
+            /** Source */
+            source: string;
+            /** Status */
+            status: string;
+            /** Version */
+            version: number | null;
         };
         /** LoginRequest */
         LoginRequest: {
@@ -581,6 +840,21 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** StewardSourceOut */
+        StewardSourceOut: {
+            /** Active Jobs */
+            active_jobs: number;
+            /** Kind */
+            kind: string;
+            /** Published Version */
+            published_version: number | null;
+            /** Ready Versions */
+            ready_versions: number[];
+            /** Slug */
+            slug: string;
+            /** Title */
+            title: string;
+        };
         /**
          * TimeRange
          * @description Half-open range: start <= time < end. "February 2026" is 2026-02-01 to 2026-03-01.
@@ -622,6 +896,66 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** VersionDetail */
+        VersionDetail: {
+            /** Body */
+            body?: string | null;
+            /**
+             * Columns
+             * @default []
+             */
+            columns: components["schemas"]["ColumnOut"][];
+            compared_to?: components["schemas"]["Comparison"] | null;
+            /** Doc Title */
+            doc_title?: string | null;
+            /** Effective Date */
+            effective_date?: string | null;
+            /**
+             * Issues
+             * @default []
+             */
+            issues: string[];
+            /** Kind */
+            kind: string;
+            /**
+             * Sample Rows
+             * @default []
+             */
+            sample_rows: (string | null)[][];
+            /**
+             * Sections
+             * @default []
+             */
+            sections: string[];
+            /** Source */
+            source: string;
+            /** Title */
+            title: string;
+            version: components["schemas"]["VersionOut"];
+        };
+        /** VersionOut */
+        VersionOut: {
+            /** Chunks */
+            chunks?: number | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Issue Count
+             * @default 0
+             */
+            issue_count: number;
+            /** Published At */
+            published_at: string | null;
+            /** Row Count */
+            row_count?: number | null;
+            /** Status */
+            status: string;
+            /** Version */
+            version: number;
         };
     };
     responses: never;
@@ -1148,6 +1482,282 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["SourceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_jobs_api_steward_jobs_get: {
+        parameters: {
+            query?: {
+                source?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_job_api_steward_jobs__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    retry_job_api_steward_jobs__job_id__retry_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_sources_api_steward_sources_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StewardSourceOut"][];
+                };
+            };
+        };
+    };
+    upload_api_steward_sources__slug__uploads_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_api_steward_sources__slug__uploads_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_versions_api_steward_sources__slug__versions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VersionOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_version_api_steward_sources__slug__versions__number__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VersionDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discard_api_steward_sources__slug__versions__number__discard_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VersionOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    publish_api_steward_sources__slug__versions__number__publish_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                number: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VersionOut"];
                 };
             };
             /** @description Validation Error */
