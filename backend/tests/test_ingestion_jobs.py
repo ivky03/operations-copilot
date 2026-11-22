@@ -30,7 +30,7 @@ pytestmark = pytest.mark.integration
 STEWARD = "steward@example.com"
 MANIFESTS, TABLES, DOCS = REFERENCE / "manifests", REFERENCE / "tables", REFERENCE / "documents"
 STORES_CSV = (TABLES / "stores.csv").read_bytes()
-NEW_STORE = b"S09,Dublin Store,Ireland,UK & Ireland,Retail,2026-06-01\n"
+NEW_STORE = b"S09,Lisbon Store,Portugal,Southwest Europe,Retail,2026-06-01\n"
 
 
 @pytest.fixture
@@ -145,9 +145,14 @@ def test_a_dataset_upload_is_prepared_in_the_background_and_published_after_prev
 
     preview = client.get("/api/steward/sources/stores/versions/2").json()
     assert preview["version"]["status"] == "ready"
-    assert ["S09", "Dublin Store", "Ireland", "UK & Ireland", "Retail", "2026-06-01"] in preview[
-        "sample_rows"
-    ]
+    assert [
+        "S09",
+        "Lisbon Store",
+        "Portugal",
+        "Southwest Europe",
+        "Retail",
+        "2026-06-01",
+    ] in preview["sample_rows"]
     assert preview["compared_to"]["published_row_count"] == 8
 
     published = client.post("/api/steward/sources/stores/versions/2/publish")
@@ -429,3 +434,14 @@ def test_re_uploading_the_same_files_creates_nothing_new(setup, db):
         for j in client.get("/api/steward/jobs?source=stores").json()
     ]
     assert results == [("succeeded", "ready", 2), ("succeeded", "ready", 2)]
+
+
+def test_a_long_poll_outlasting_the_default_timeout_does_not_lose_messages(ingest_queues):
+    """Regression: the worker's long poll (10 s) once ran on a client with a 5 s read timeout.
+    The request was abandoned mid-wait, and a message delivered then stayed hidden for the
+    full visibility timeout. Waiting longer than 5 s must simply return, then deliver."""
+    started = time.monotonic()
+    assert jobs.receive(wait_seconds=6) == []
+    assert time.monotonic() - started >= 5.5
+    get_client("sqs").send_message(QueueUrl=ingest_queues.main, MessageBody="{}")
+    assert len(jobs.receive(wait_seconds=6)) == 1

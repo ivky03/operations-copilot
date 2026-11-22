@@ -13,19 +13,24 @@ from botocore.config import Config
 from app.config import get_settings
 
 # Short timeouts and few retries: a health check must answer quickly, not hang.
-_BOTO_CONFIG = Config(connect_timeout=2, read_timeout=5, retries={"max_attempts": 2})
+CONNECT_TIMEOUT, READ_TIMEOUT = 2, 5
 
 
 @lru_cache
-def get_client(service: str) -> Any:
+def get_client(service: str, read_timeout: int = READ_TIMEOUT) -> Any:
+    """`read_timeout` must exceed any server-side wait: the worker's SQS long poll waits up
+    to 20 s for a message, so it uses a client with a longer timeout (see jobs.receive)."""
     s = get_settings()
+    config = Config(
+        connect_timeout=CONNECT_TIMEOUT, read_timeout=read_timeout, retries={"max_attempts": 2}
+    )
     return boto3.client(
         service,
         endpoint_url=s.aws_endpoint_url,
         region_name=s.aws_region,
         aws_access_key_id=s.aws_access_key_id,
         aws_secret_access_key=s.aws_secret_access_key,
-        config=_BOTO_CONFIG,
+        config=config,
     )
 
 

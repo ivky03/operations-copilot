@@ -273,8 +273,15 @@ def handle_message(db: Session, message: dict) -> None:
         db.commit()
 
 
+LONG_POLL_MAX = 20  # SQS's limit for one receive
+
+
 def receive(wait_seconds: int = 10, max_messages: int = 5) -> list[dict]:
-    response = get_client("sqs").receive_message(
+    # The HTTP read timeout must outlast the wait. Otherwise the request is abandoned while
+    # SQS is still answering it: a message delivered at that moment counts as received, and
+    # stays hidden for the whole visibility timeout with nobody working on it.
+    wait_seconds = min(wait_seconds, LONG_POLL_MAX)
+    response = get_client("sqs", read_timeout=LONG_POLL_MAX + 10).receive_message(
         QueueUrl=ensure_infrastructure().main,
         MaxNumberOfMessages=max_messages,
         WaitTimeSeconds=wait_seconds,  # long polling: one request waits for work, no busy loop
