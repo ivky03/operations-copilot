@@ -1,0 +1,6 @@
+promo_code,promo_name,category,discount_pct,start_date,end_date,channel
+AUTUMN15,Autumn refresh,Decor,15.00,2025-10-01,2025-10-31,All
+BLACKFRI25,Black Friday,Furniture,25.00,2025-11-28,2025-12-01,Online
+SPRING10,Spring textiles,Textiles,10.00,2026-04-01,2026-04-30,All
+GARDEN10,Garden decor,Decor,10.00,2026-05-15,2026-06-15,All
+SUMMER20,Summer furniture,Furniture,20.00,2026-06-15,2026-07-15,All

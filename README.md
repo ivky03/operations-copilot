@@ -29,6 +29,8 @@ Nothing in the engine is specific to one industry:
 
 The repository ships a **synthetic online-retail reference dataset** (transactions, products, stores, returns, plus policy documents). It was chosen because it produces realistic, verifiable questions, and it deliberately includes hard cases: cancellations, missing values, ambiguous names, superseded policies and restricted documents. The same engine can serve logistics, HR, finance or healthcare operations by registering different sources.
 
+A larger **Stage B** (`data/stage_b/`) adds eleven tables around the same core: inventory, purchasing, suppliers, shipments, support tickets, staff and shifts, plus Finance-only targets and budgets. That makes 15 tables, the largest with 22,500 rows, and 21 documents, including look-alike tables that make choosing the right one harder. Administrators register new sources in the browser, and stewards publish their first versions.
+
 ## How an answer is produced
 
 The language model **interprets** the question and **phrases** the answer. Code does everything else: it authorizes, computes and verifies.

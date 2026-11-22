@@ -1,0 +1,290 @@
+ticket_id,opened_at,closed_at,channel,category,store_id,invoice_no,priority,status,first_response_minutes,resolution_hours,csat_score
+T-00001,2026-01-01T13:15:00,2026-01-01T17:45:00,chat,Other,,,low,closed,8,4.50,
+T-00002,2026-01-01T14:15:00,2026-01-01T19:45:00,phone,Store visit,S05,,normal,closed,0,5.50,
+T-00003,2026-01-02T10:15:00,2026-01-02T10:45:00,chat,Other,,,low,closed,9,0.50,3
+T-00004,2026-01-02T18:45:00,2026-01-02T22:45:00,phone,Store visit,S03,,low,closed,4,4.00,4
+T-00005,2026-01-03T10:30:00,2026-01-03T12:30:00,phone,Product question,,,normal,closed,2,2.00,
+T-00006,2026-01-03T11:45:00,2026-01-05T06:51:00,email,Other,,,normal,closed,1286,43.10,
+T-00007,2026-01-03T14:00:00,2026-01-03T19:42:00,chat,Other,,,normal,closed,6,5.70,
+T-00008,2026-01-04T11:00:00,2026-01-04T12:48:00,phone,Product question,,,normal,closed,4,1.80,
+T-00009,2026-01-04T14:45:00,2026-01-05T18:39:00,email,Product question,,,normal,closed,728,27.90,
+T-00010,2026-01-05T18:30:00,2026-01-08T13:24:00,email,Product question,,,low,closed,194,66.90,
+T-00011,2026-01-05T19:30:00,2026-01-07T06:54:00,email,Other,,,low,closed,709,35.40,5
+T-00012,2026-01-06T19:15:00,2026-01-06T19:33:00,chat,Other,,,normal,closed,1,0.30,
+T-00013,2026-01-07T12:45:00,2026-01-07T13:15:00,chat,Store visit,S06,,normal,closed,10,0.50,
+T-00014,2026-01-07T14:00:00,2026-01-07T16:18:00,phone,Delivery,S02,INV-100002,high,closed,3,2.30,3
+T-00015,2026-01-08T19:45:00,2026-01-11T19:39:00,email,Product question,,,normal,closed,321,71.90,
+T-00016,2026-01-09T11:45:00,2026-01-09T13:39:00,phone,Other,,,normal,closed,2,1.90,4
+T-00017,2026-01-09T13:30:00,2026-01-10T20:24:00,email,Product question,,,normal,closed,1331,30.90,
+T-00018,2026-01-10T17:45:00,2026-01-10T18:27:00,phone,Store visit,S01,,normal,closed,0,0.70,
+T-00019,2026-01-11T08:15:00,2026-01-11T13:45:00,chat,Other,,,normal,closed,11,5.50,
+T-00020,2026-01-11T10:00:00,2026-01-11T11:54:00,chat,Other,,,normal,closed,4,1.90,3
+T-00021,2026-01-11T14:15:00,2026-01-12T09:15:00,email,Product question,,,normal,closed,1076,19.00,
+T-00022,2026-01-12T09:30:00,2026-01-13T11:00:00,email,Other,,,low,closed,770,25.50,
+T-00023,2026-01-12T12:00:00,2026-01-12T15:42:00,phone,Other,,,normal,closed,2,3.70,4
+T-00024,2026-01-13T10:30:00,2026-01-16T03:18:00,email,Product question,,,normal,closed,410,64.80,
+T-00025,2026-01-13T17:00:00,2026-01-13T20:48:00,phone,Store visit,S01,,normal,closed,4,3.80,5
+T-00026,2026-01-14T16:00:00,2026-01-14T20:24:00,phone,Delivery,S05,INV-100005,high,closed,4,4.40,
+T-00027,2026-01-14T17:45:00,2026-01-16T02:51:00,email,Other,,,normal,closed,139,33.10,
+T-00028,2026-01-15T11:00:00,2026-01-15T13:36:00,phone,Store visit,S06,,low,closed,1,2.60,5
+T-00029,2026-01-15T12:00:00,2026-01-17T02:12:00,email,Store visit,S03,,normal,closed,522,38.20,4
+T-00030,2026-01-16T09:15:00,2026-01-17T21:27:00,email,Other,,,normal,closed,641,36.20,
+T-00031,2026-01-16T10:00:00,2026-01-19T06:42:00,email,Returns,S04,INV-100011,normal,closed,1104,68.70,
+T-00032,2026-01-16T11:30:00,,phone,Product question,,,normal,open,0,,
+T-00033,2026-01-16T17:45:00,2026-01-16T19:39:00,phone,Product question,,,normal,closed,3,1.90,
+T-00034,2026-01-17T12:15:00,2026-01-17T15:03:00,phone,Product question,,,low,closed,0,2.80,4
+T-00035,2026-01-17T13:00:00,2026-01-17T14:06:00,phone,Delivery,S02,INV-100008,high,closed,1,1.10,3
+T-00036,2026-01-17T15:45:00,2026-01-17T16:21:00,phone,Other,,,normal,closed,3,0.60,
+T-00037,2026-01-17T18:30:00,2026-01-17T21:30:00,chat,Product question,,,normal,closed,5,3.00,5
+T-00038,2026-01-18T11:00:00,2026-01-18T12:06:00,phone,Product question,,,normal,closed,3,1.10,5
+T-00039,2026-01-18T12:30:00,2026-01-18T13:24:00,phone,Other,,,normal,closed,2,0.90,
+T-00040,2026-01-19T15:00:00,2026-01-19T18:00:00,phone,Store visit,S05,,normal,closed,0,3.00,
+T-00041,2026-01-19T19:15:00,2026-01-19T19:45:00,phone,Product question,,,low,closed,0,0.50,4
+T-00042,2026-01-20T10:00:00,2026-01-21T10:24:00,email,Returns,S02,INV-100025,low,closed,927,24.40,3
+T-00043,2026-01-20T12:15:00,2026-01-22T05:39:00,email,Other,,,normal,closed,673,41.40,
+T-00044,2026-01-20T14:15:00,2026-01-20T15:57:00,chat,Product question,,,normal,closed,5,1.70,4
+T-00045,2026-01-20T16:45:00,2026-01-22T17:03:00,email,Product question,,,normal,closed,195,48.30,
+T-00046,2026-01-21T12:15:00,,phone,Product question,,,low,open,2,,
+T-00047,2026-01-21T17:00:00,2026-01-21T20:30:00,phone,Other,,,low,closed,1,3.50,5
+T-00048,2026-01-21T19:15:00,2026-01-22T00:51:00,phone,Product question,,,normal,closed,0,5.60,
+T-00049,2026-01-22T17:45:00,2026-01-22T23:15:00,chat,Other,,,normal,closed,3,5.50,4
+T-00050,2026-01-22T18:15:00,2026-01-25T13:27:00,email,Other,,,normal,closed,283,67.20,3
+T-00051,2026-01-23T09:00:00,2026-01-23T18:36:00,email,Product question,,,normal,closed,460,9.60,5
+T-00052,2026-01-23T09:00:00,2026-01-23T10:06:00,chat,Other,,,normal,closed,2,1.10,
+T-00053,2026-01-24T10:00:00,2026-01-24T14:42:00,email,Returns,S02,INV-100004,low,closed,666,4.70,5
+T-00054,2026-01-24T10:00:00,2026-01-24T15:30:00,phone,Product question,,,normal,closed,4,5.50,
+T-00055,2026-01-24T10:30:00,2026-01-26T05:36:00,email,Store visit,S04,,low,closed,1264,43.10,
+T-00056,2026-01-25T09:00:00,2026-01-25T13:42:00,phone,Delivery,S05,INV-100023,high,closed,3,4.70,2
+T-00057,2026-01-25T19:15:00,2026-01-26T20:03:00,email,Other,,,normal,closed,337,24.80,4
+T-00058,2026-01-26T17:15:00,2026-01-26T23:09:00,chat,Product question,,,normal,closed,6,5.90,4
+T-00059,2026-01-27T19:15:00,2026-01-27T21:39:00,phone,Store visit,S03,,low,closed,0,2.40,4
+T-00060,2026-01-28T16:45:00,2026-01-28T19:27:00,chat,Store visit,S03,,low,closed,2,2.70,
+T-00061,2026-01-29T09:00:00,2026-01-29T14:54:00,phone,Product question,,,normal,closed,0,5.90,4
+T-00062,2026-01-29T09:21:00,2026-01-31T09:09:00,email,Billing,S05,INV-100038,high,closed,266,47.80,
+T-00063,2026-01-29T17:30:00,2026-02-01T07:12:00,email,Other,,,normal,closed,791,61.70,4
+T-00064,2026-01-29T19:15:00,2026-01-29T23:45:00,phone,Other,,,normal,closed,4,4.50,
+T-00065,2026-01-30T12:30:00,2026-01-30T12:48:00,phone,Product question,,,normal,closed,0,0.30,
+T-00066,2026-01-30T17:00:00,2026-01-30T19:54:00,chat,Delivery,S02,INV-100025,high,closed,11,2.90,1
+T-00067,2026-01-31T14:45:00,2026-01-31T20:39:00,chat,Store visit,S06,,low,closed,11,5.90,3
+T-00068,2026-02-01T19:30:00,2026-02-01T22:42:00,chat,Store visit,S04,,low,closed,12,3.20,
+T-00069,2026-02-02T09:30:00,2026-02-04T23:42:00,email,Other,,,normal,closed,203,62.20,4
+T-00070,2026-02-02T15:45:00,2026-02-02T17:27:00,phone,Store visit,S02,,normal,closed,1,1.70,4
+T-00071,2026-02-03T08:00:00,2026-02-03T10:18:00,phone,Other,,,low,closed,3,2.30,5
+T-00072,2026-02-03T08:00:00,2026-02-04T23:18:00,email,Other,,,low,closed,1282,39.30,
+T-00073,2026-02-03T17:52:00,2026-02-04T20:46:00,email,Billing,S03,INV-100042,high,closed,1459,26.90,3
+T-00074,2026-02-04T13:45:00,2026-02-04T18:51:00,phone,Store visit,S02,,normal,closed,4,5.10,
+T-00075,2026-02-04T15:00:00,2026-02-04T18:30:00,phone,Store visit,S06,,normal,closed,0,3.50,5
+T-00076,2026-02-05T11:15:00,2026-02-05T14:21:00,phone,Product question,,,normal,closed,1,3.10,5
+T-00077,2026-02-05T11:15:00,2026-02-05T15:09:00,chat,Store visit,S05,,normal,closed,6,3.90,5
+T-00078,2026-02-05T17:30:00,2026-02-05T19:12:00,chat,Store visit,S01,,low,closed,10,1.70,4
+T-00079,2026-02-06T10:00:00,2026-02-08T02:36:00,email,Returns,S07,INV-100035,normal,closed,66,40.60,3
+T-00080,2026-02-06T11:45:00,2026-02-08T11:51:00,email,Product question,,,normal,closed,498,48.10,
+T-00081,2026-02-06T17:15:00,2026-02-06T17:39:00,phone,Other,,,normal,closed,2,0.40,4
+T-00082,2026-02-07T09:30:00,2026-02-07T10:00:00,phone,Product question,,,normal,closed,1,0.50,5
+T-00083,2026-02-07T13:00:00,2026-02-07T13:54:00,chat,Other,,,normal,closed,5,0.90,4
+T-00084,2026-02-07T14:30:00,2026-02-07T19:06:00,phone,Product question,,,low,closed,3,4.60,
+T-00085,2026-02-08T09:15:00,2026-02-10T15:51:00,email,Store visit,S07,,normal,closed,1482,54.60,
+T-00086,2026-02-08T14:30:00,2026-02-08T16:36:00,phone,Product question,,,normal,closed,2,2.10,4
+T-00087,2026-02-09T10:00:00,2026-02-09T11:30:00,chat,Store visit,S05,,low,closed,6,1.50,
+T-00088,2026-02-09T11:45:00,2026-02-09T13:15:00,chat,Store visit,S03,,normal,closed,1,1.50,
+T-00089,2026-02-09T15:30:00,2026-02-09T21:12:00,phone,Store visit,S04,,normal,closed,3,5.70,
+T-00090,2026-02-10T10:00:00,2026-02-10T23:48:00,email,Returns,S05,INV-100050,low,closed,65,13.80,
+T-00091,2026-02-10T14:15:00,2026-02-10T15:15:00,chat,Product question,,,low,closed,12,1.00,4
+T-00092,2026-02-10T15:45:00,2026-02-13T01:15:00,email,Other,,,low,closed,45,57.50,4
+T-00093,2026-02-10T19:30:00,2026-02-10T22:36:00,phone,Store visit,S01,,normal,closed,3,3.10,5
+T-00094,2026-02-11T09:45:00,2026-02-11T11:27:00,phone,Other,,,low,closed,0,1.70,5
+T-00095,2026-02-11T14:30:00,2026-02-11T15:36:00,chat,Product question,,,low,closed,12,1.10,
+T-00096,2026-02-12T11:30:00,2026-02-12T13:36:00,chat,Product question,,,low,closed,1,2.10,4
+T-00097,2026-02-13T12:00:00,2026-02-13T16:24:00,chat,Delivery,S05,INV-100047,high,closed,8,4.40,
+T-00098,2026-02-13T15:30:00,2026-02-16T14:48:00,email,Product question,,,normal,closed,1471,71.30,4
+T-00099,2026-02-13T18:45:00,2026-02-14T00:09:00,chat,Other,,,normal,closed,6,5.40,
+T-00100,2026-02-14T11:15:00,2026-02-14T12:03:00,phone,Product question,,,normal,closed,4,0.80,
+T-00101,2026-02-14T18:00:00,2026-02-15T16:12:00,email,Product question,,,low,closed,1472,22.20,
+T-00102,2026-02-15T08:45:00,2026-02-16T23:51:00,email,Product question,,,normal,closed,883,39.10,4
+T-00103,2026-02-15T09:45:00,2026-02-16T22:09:00,email,Store visit,S02,,normal,closed,955,36.40,
+T-00104,2026-02-16T10:00:00,2026-02-17T14:48:00,email,Returns,S02,INV-100045,normal,closed,584,28.80,4
+T-00105,2026-02-16T12:30:00,2026-02-16T14:00:00,phone,Other,,,normal,closed,4,1.50,
+T-00106,2026-02-17T09:30:00,2026-02-17T10:12:00,phone,Store visit,S02,,low,closed,0,0.70,
+T-00107,2026-02-17T10:00:00,2026-02-18T11:12:00,email,Returns,S05,INV-100058,normal,closed,1084,25.20,4
+T-00108,2026-02-17T14:45:00,2026-02-17T19:15:00,phone,Product question,,,normal,closed,4,4.50,5
+T-00109,2026-02-18T10:15:00,2026-02-20T23:27:00,email,Product question,,,normal,closed,867,61.20,
+T-00110,2026-02-18T12:15:00,2026-02-20T18:27:00,email,Other,,,normal,closed,83,54.20,5
+T-00111,2026-02-19T10:15:00,2026-02-19T13:57:00,phone,Product question,,,normal,closed,4,3.70,
+T-00112,2026-02-19T12:00:00,2026-02-19T12:24:00,chat,Product question,,,normal,closed,10,0.40,
+T-00113,2026-02-20T10:30:00,2026-02-20T16:30:00,phone,Product question,,,normal,closed,1,6.00,5
+T-00114,2026-02-21T09:30:00,2026-02-23T12:30:00,email,Product question,,,normal,closed,1202,51.00,
+T-00115,2026-02-21T10:45:00,2026-02-21T13:57:00,phone,Product question,,,low,closed,4,3.20,
+T-00116,2026-02-21T19:00:00,2026-02-21T19:18:00,chat,Product question,,,normal,closed,7,0.30,
+T-00117,2026-02-22T09:30:00,2026-02-22T12:48:00,chat,Other,,,low,closed,5,3.30,
+T-00118,2026-02-22T12:15:00,2026-02-22T16:15:00,chat,Product question,,,low,closed,8,4.00,
+T-00119,2026-02-22T19:30:00,2026-02-24T09:36:00,email,Store visit,S01,,low,closed,474,38.10,4
+T-00120,2026-02-23T15:30:00,2026-02-23T18:36:00,chat,Other,,,low,closed,4,3.10,3
+T-00121,2026-02-23T19:45:00,2026-02-23T23:45:00,chat,Store visit,S02,,low,closed,3,4.00,4
+T-00122,2026-02-24T08:30:00,2026-02-24T11:24:00,chat,Other,,,normal,closed,1,2.90,3
+T-00123,2026-02-24T14:45:00,2026-02-24T19:45:00,chat,Other,,,normal,closed,6,5.00,5
+T-00124,2026-02-25T08:30:00,2026-02-25T10:48:00,phone,Other,,,normal,closed,0,2.30,
+T-00125,2026-02-26T10:00:00,2026-02-28T00:12:00,email,Returns,S06,INV-100030,normal,closed,965,38.20,
+T-00126,2026-02-26T18:15:00,2026-02-26T22:39:00,phone,Other,,,low,closed,3,4.40,
+T-00127,2026-02-27T14:30:00,2026-02-27T17:48:00,phone,Store visit,S03,,normal,closed,0,3.30,
+T-00128,2026-02-28T09:00:00,2026-03-01T04:18:00,email,Product question,,,low,closed,1257,19.30,4
+T-00129,2026-02-28T10:00:00,2026-03-02T13:24:00,email,Returns,S05,INV-100073,normal,closed,560,51.40,5
+T-00130,2026-03-01T13:15:00,2026-03-02T14:51:00,email,Billing,S03,INV-100075,high,closed,878,25.60,
+T-00131,2026-03-01T15:00:00,2026-03-01T20:00:00,phone,Product question,,,low,closed,3,5.00,5
+T-00132,2026-03-01T17:45:00,2026-03-01T23:39:00,chat,Other,,,normal,closed,8,5.90,4
+T-00133,2026-03-02T08:45:00,2026-03-05T01:57:00,email,Product question,,,low,closed,1096,65.20,
+T-00134,2026-03-02T14:30:00,2026-03-02T18:36:00,phone,Product question,,,normal,closed,0,4.10,3
+T-00135,2026-03-02T17:30:00,2026-03-02T20:30:00,phone,Product question,,,low,closed,3,3.00,
+T-00136,2026-03-03T11:30:00,2026-03-03T13:54:00,chat,Other,,,low,closed,7,2.40,4
+T-00137,2026-03-03T15:30:00,2026-03-03T21:06:00,chat,Product question,,,normal,closed,2,5.60,4
+T-00138,2026-03-04T08:00:00,2026-03-04T11:18:00,phone,Store visit,S03,,low,closed,1,3.30,4
+T-00139,2026-03-04T11:30:00,2026-03-05T02:24:00,email,Product question,,,normal,closed,46,14.90,
+T-00140,2026-03-04T13:45:00,2026-03-04T15:15:00,phone,Product question,,,normal,closed,3,1.50,
+T-00141,2026-03-05T11:30:00,2026-03-05T17:12:00,chat,Other,,,normal,closed,12,5.70,
+T-00142,2026-03-05T17:00:00,2026-03-07T18:30:00,email,Product question,,,normal,closed,845,49.50,
+T-00143,2026-03-06T14:00:00,2026-03-07T13:06:00,email,Product question,,,normal,closed,1148,23.10,5
+T-00144,2026-03-06T18:30:00,2026-03-07T00:24:00,chat,Product question,,,low,closed,8,5.90,
+T-00145,2026-03-07T08:30:00,2026-03-10T06:30:00,email,Product question,,,normal,closed,1337,70.00,4
+T-00146,2026-03-08T10:15:00,2026-03-08T15:51:00,phone,Product question,,,low,closed,4,5.60,
+T-00147,2026-03-08T14:00:00,2026-03-11T05:36:00,email,Other,,,normal,closed,224,63.60,5
+T-00148,2026-03-08T15:45:00,2026-03-08T21:21:00,chat,Other,,,normal,closed,6,5.60,
+T-00149,2026-03-09T08:30:00,2026-03-09T14:30:00,chat,Store visit,S02,,normal,closed,12,6.00,4
+T-00150,2026-03-09T18:15:00,2026-03-09T22:33:00,chat,Other,,,normal,closed,10,4.30,5
+T-00151,2026-03-10T09:00:00,2026-03-13T08:48:00,email,Product question,,,normal,closed,1013,71.80,5
+T-00152,2026-03-10T18:15:00,2026-03-10T22:51:00,chat,Store visit,S01,,low,closed,10,4.60,5
+T-00153,2026-03-11T18:15:00,2026-03-11T20:51:00,phone,Store visit,S05,,low,closed,1,2.60,
+T-00154,2026-03-11T18:15:00,2026-03-11T23:33:00,chat,Store visit,S06,,normal,closed,7,5.30,3
+T-00155,2026-03-12T11:00:00,2026-03-12T15:42:00,phone,Product question,,,normal,closed,1,4.70,
+T-00156,2026-03-12T11:30:00,2026-03-13T10:54:00,email,Product question,,,low,closed,160,23.40,
+T-00157,2026-03-12T13:30:00,2026-03-12T14:12:00,phone,Product question,,,normal,closed,1,0.70,
+T-00158,2026-03-13T10:00:00,2026-03-15T16:12:00,email,Returns,S02,INV-100079,normal,closed,1216,54.20,3
+T-00159,2026-03-13T15:00:00,2026-03-13T17:12:00,chat,Delivery,S05,INV-100081,high,closed,5,2.20,
+T-00160,2026-03-13T15:45:00,2026-03-13T21:33:00,chat,Other,,,low,closed,7,5.80,4
+T-00161,2026-03-13T18:00:00,2026-03-13T20:54:00,chat,Store visit,S05,,normal,closed,8,2.90,4
+T-00162,2026-03-13T19:15:00,2026-03-13T23:33:00,chat,Product question,,,low,closed,12,4.30,4
+T-00163,2026-03-14T09:30:00,2026-03-14T14:48:00,phone,Product question,,,normal,closed,3,5.30,3
+T-00164,2026-03-14T17:15:00,2026-03-15T12:33:00,email,Other,,,normal,closed,1393,19.30,3
+T-00165,2026-03-15T13:00:00,2026-03-15T16:00:00,phone,Product question,,,low,closed,4,3.00,4
+T-00166,2026-03-15T15:30:00,2026-03-17T03:06:00,email,Store visit,S08,,normal,closed,192,35.60,
+T-00167,2026-03-16T10:30:00,2026-03-16T14:54:00,chat,Other,,,low,closed,1,4.40,4
+T-00168,2026-03-16T17:45:00,2026-03-16T19:45:00,phone,Product question,,,low,closed,0,2.00,
+T-00169,2026-03-17T08:30:00,2026-03-17T11:18:00,chat,Product question,,,low,closed,3,2.80,2
+T-00170,2026-03-17T09:45:00,2026-03-17T10:27:00,chat,Other,,,low,closed,2,0.70,3
+T-00171,2026-03-17T17:15:00,2026-03-17T18:09:00,phone,Store visit,S01,,normal,closed,3,0.90,5
+T-00172,2026-03-18T14:00:00,2026-03-18T16:54:00,chat,Store visit,S04,,normal,closed,1,2.90,5
+T-00173,2026-03-19T11:45:00,2026-03-19T14:09:00,chat,Store visit,S05,,low,closed,4,2.40,
+T-00174,2026-03-19T19:45:00,2026-03-22T08:21:00,email,Product question,,,normal,closed,1150,60.60,4
+T-00175,2026-03-20T16:00:00,2026-03-20T20:12:00,chat,Store visit,S01,,normal,closed,3,4.20,4
+T-00176,2026-03-20T17:00:00,2026-03-20T17:54:00,chat,Delivery,S05,INV-100083,high,closed,1,0.90,3
+T-00177,2026-03-20T18:45:00,2026-03-20T21:15:00,chat,Product question,,,normal,closed,4,2.50,
+T-00178,2026-03-21T10:00:00,2026-03-21T14:00:00,chat,Product question,,,normal,closed,7,4.00,5
+T-00179,2026-03-21T11:45:00,2026-03-21T16:45:00,chat,Other,,,low,closed,6,5.00,5
+T-00180,2026-03-22T09:45:00,2026-03-22T10:03:00,chat,Product question,,,low,closed,4,0.30,4
+T-00181,2026-03-22T10:00:00,2026-03-22T12:36:00,chat,Store visit,S08,,normal,closed,12,2.60,5
+T-00182,2026-03-22T10:45:00,2026-03-22T15:21:00,phone,Product question,,,normal,closed,0,4.60,5
+T-00183,2026-03-23T15:00:00,2026-03-23T16:12:00,chat,Delivery,S08,INV-100089,high,closed,2,1.20,
+T-00184,2026-03-23T16:30:00,2026-03-25T10:00:00,email,Product question,,,low,closed,837,41.50,4
+T-00185,2026-03-24T09:00:00,2026-03-24T10:24:00,phone,Delivery,S08,INV-100090,high,closed,1,1.40,3
+T-00186,2026-03-24T10:15:00,2026-03-24T14:03:00,phone,Other,,,low,closed,1,3.80,4
+T-00187,2026-03-24T11:00:00,2026-03-24T14:06:00,phone,Delivery,S02,INV-100100,high,closed,1,3.10,2
+T-00188,2026-03-24T13:15:00,2026-03-25T19:27:00,email,Store visit,S07,,low,closed,1368,30.20,
+T-00189,2026-03-25T08:15:00,2026-03-27T03:15:00,email,Store visit,S03,,low,closed,531,43.00,4
+T-00190,2026-03-25T13:15:00,2026-03-26T12:51:00,email,Product question,,,normal,closed,278,23.60,4
+T-00191,2026-03-26T17:30:00,2026-03-29T05:36:00,email,Product question,,,low,closed,1170,60.10,5
+T-00192,2026-03-26T18:15:00,2026-03-26T20:27:00,chat,Product question,,,low,closed,10,2.20,4
+T-00193,2026-03-27T11:00:00,2026-03-28T01:18:00,email,Product question,,,normal,closed,203,14.30,3
+T-00194,2026-03-27T11:30:00,2026-03-27T16:18:00,phone,Store visit,S02,,normal,closed,2,4.80,
+T-00195,2026-03-28T08:00:00,2026-03-28T09:30:00,phone,Store visit,S08,,normal,closed,1,1.50,
+T-00196,2026-03-28T09:30:00,2026-03-28T13:24:00,phone,Product question,,,normal,closed,1,3.90,3
+T-00197,2026-03-29T08:15:00,2026-03-29T12:45:00,phone,Product question,,,normal,closed,1,4.50,
+T-00198,2026-03-29T15:00:00,2026-04-01T12:06:00,email,Other,,,normal,closed,1496,69.10,
+T-00199,2026-03-30T10:00:00,2026-04-01T01:06:00,email,Returns,S05,INV-100095,low,closed,1079,39.10,4
+T-00200,2026-03-30T14:15:00,2026-03-30T14:39:00,phone,Store visit,S08,,low,closed,2,0.40,4
+T-00201,2026-03-30T16:30:00,2026-04-01T16:06:00,email,Other,,,normal,closed,749,47.60,5
+T-00202,2026-03-31T08:15:00,2026-03-31T12:09:00,phone,Product question,,,normal,closed,3,3.90,
+T-00203,2026-03-31T16:15:00,2026-03-31T19:39:00,chat,Product question,,,normal,closed,11,3.40,
+T-00204,2026-04-01T10:00:00,2026-04-01T20:54:00,email,Returns,S02,INV-100085,normal,closed,1093,10.90,
+T-00205,2026-04-01T14:15:00,2026-04-01T14:27:00,chat,Product question,,,low,closed,9,0.20,5
+T-00206,2026-04-01T15:00:00,2026-04-01T17:06:00,phone,Product question,,,normal,closed,4,2.10,4
+T-00207,2026-04-01T15:15:00,2026-04-01T20:33:00,phone,Product question,,,normal,closed,3,5.30,
+T-00208,2026-04-02T10:00:00,2026-04-05T06:00:00,email,Returns,S02,INV-100079,normal,closed,1202,68.00,
+T-00209,2026-04-02T10:15:00,2026-04-02T11:09:00,phone,Product question,,,normal,closed,4,0.90,3
+T-00210,2026-04-02T19:30:00,2026-04-02T21:00:00,phone,Store visit,S06,,normal,closed,4,1.50,5
+T-00211,2026-04-03T09:15:00,2026-04-03T14:09:00,chat,Product question,,,low,closed,6,4.90,4
+T-00212,2026-04-03T10:00:00,2026-04-05T03:18:00,email,Returns,S02,INV-100103,normal,closed,876,41.30,3
+T-00213,2026-04-03T11:00:00,2026-04-03T12:12:00,chat,Delivery,S02,INV-100117,high,closed,6,1.20,
+T-00214,2026-04-03T12:30:00,2026-04-03T15:42:00,phone,Product question,,,normal,closed,1,3.20,
+T-00215,2026-04-04T09:30:00,2026-04-04T11:06:00,chat,Other,,,low,closed,1,1.60,5
+T-00216,2026-04-04T13:00:00,2026-04-04T18:24:00,email,Other,,,normal,closed,712,5.40,
+T-00217,2026-04-05T15:00:00,2026-04-05T18:00:00,chat,Other,,,normal,closed,4,3.00,
+T-00218,2026-04-05T15:30:00,2026-04-08T01:12:00,email,Product question,,,normal,closed,1037,57.70,
+T-00219,2026-04-06T14:00:00,2026-04-06T17:12:00,chat,Delivery,S02,INV-100121,high,closed,4,3.20,3
+T-00220,2026-04-06T18:15:00,2026-04-06T21:51:00,phone,Product question,,,normal,closed,1,3.60,4
+T-00221,2026-04-07T09:45:00,2026-04-07T12:51:00,phone,Other,,,normal,closed,2,3.10,4
+T-00222,2026-04-07T10:00:00,2026-04-09T08:42:00,email,Returns,S04,INV-100120,low,closed,936,46.70,3
+T-00223,2026-04-07T10:00:00,2026-04-08T14:12:00,email,Returns,S02,INV-100118,normal,closed,637,28.20,5
+T-00224,2026-04-07T18:00:00,2026-04-07T19:00:00,phone,Product question,,,normal,closed,4,1.00,5
+T-00225,2026-04-08T09:45:00,2026-04-08T11:03:00,phone,Store visit,S08,,normal,closed,2,1.30,4
+T-00226,2026-04-08T10:00:00,2026-04-08T11:48:00,phone,Delivery,S05,INV-100114,high,closed,3,1.80,
+T-00227,2026-04-08T14:15:00,2026-04-08T16:51:00,phone,Other,,,normal,closed,4,2.60,5
+T-00228,2026-04-09T16:30:00,2026-04-09T19:48:00,phone,Other,,,normal,closed,1,3.30,5
+T-00229,2026-04-09T16:45:00,2026-04-11T17:27:00,email,Other,,,low,closed,492,48.70,
+T-00230,2026-04-10T10:45:00,2026-04-11T20:15:00,email,Product question,,,normal,closed,580,33.50,
+T-00231,2026-04-10T15:45:00,2026-04-10T18:45:00,chat,Product question,,,normal,closed,12,3.00,
+T-00232,2026-04-11T09:15:00,2026-04-12T21:21:00,email,Product question,,,low,closed,1275,36.10,3
+T-00233,2026-04-11T10:00:00,2026-04-11T15:42:00,email,Returns,S05,INV-100093,normal,closed,1271,5.70,
+T-00234,2026-04-11T10:00:00,2026-04-11T23:42:00,email,Store visit,S03,,normal,closed,818,13.70,5
+T-00235,2026-04-11T16:15:00,2026-04-11T20:33:00,chat,Product question,,,normal,closed,8,4.30,3
+T-00236,2026-04-12T11:30:00,2026-04-12T14:36:00,phone,Other,,,normal,closed,0,3.10,4
+T-00237,2026-04-12T12:30:00,2026-04-12T14:24:00,phone,Product question,,,normal,closed,0,1.90,5
+T-00238,2026-04-12T16:15:00,2026-04-12T22:09:00,chat,Other,,,low,closed,3,5.90,4
+T-00239,2026-04-13T09:15:00,2026-04-13T12:45:00,chat,Product question,,,normal,closed,1,3.50,5
+T-00240,2026-04-13T10:45:00,2026-04-13T14:39:00,phone,Store visit,S06,,normal,closed,3,3.90,
+T-00241,2026-04-13T13:30:00,2026-04-13T20:06:00,email,Product question,,,normal,closed,1004,6.60,
+T-00242,2026-04-14T08:45:00,2026-04-14T10:27:00,chat,Product question,,,normal,closed,10,1.70,4
+T-00243,2026-04-14T17:00:00,2026-04-14T22:00:00,chat,Other,,,low,closed,10,5.00,3
+T-00244,2026-04-15T19:30:00,2026-04-17T11:42:00,email,Product question,,,low,closed,987,40.20,
+T-00245,2026-04-16T09:47:00,2026-04-18T16:35:00,email,Billing,S02,INV-100144,high,closed,832,54.80,
+T-00246,2026-04-16T14:00:00,2026-04-16T15:30:00,chat,Store visit,S07,,normal,closed,1,1.50,5
+T-00247,2026-04-16T16:30:00,2026-04-19T01:30:00,email,Product question,,,normal,closed,470,57.00,3
+T-00248,2026-04-16T18:45:00,2026-04-16T23:27:00,phone,Store visit,S06,,normal,closed,4,4.70,5
+T-00249,2026-04-17T10:00:00,2026-04-18T18:36:00,email,Returns,S02,INV-100118,low,closed,857,32.60,3
+T-00250,2026-04-17T10:00:00,2026-04-17T12:54:00,email,Returns,S05,INV-100104,normal,closed,1322,2.90,3
+T-00251,2026-04-17T13:30:00,2026-04-19T23:36:00,email,Store visit,S03,,normal,closed,531,58.10,4
+T-00252,2026-04-17T14:30:00,2026-04-17T17:24:00,phone,Product question,,,low,closed,1,2.90,5
+T-00253,2026-04-18T08:00:00,2026-04-18T08:36:00,chat,Product question,,,low,closed,8,0.60,
+T-00254,2026-04-18T08:45:00,2026-04-18T16:03:00,email,Product question,,,low,closed,1291,7.30,
+T-00255,2026-04-18T09:15:00,2026-04-21T07:27:00,email,Other,,,normal,closed,567,70.20,
+T-00256,2026-04-18T10:00:00,2026-04-20T19:18:00,email,Returns,S05,INV-100107,normal,closed,1095,57.30,
+T-00257,2026-04-19T13:45:00,2026-04-19T14:21:00,chat,Other,,,normal,closed,8,0.60,5
+T-00258,2026-04-19T17:45:00,2026-04-19T21:57:00,phone,Product question,,,low,closed,4,4.20,4
+T-00259,2026-04-20T12:30:00,2026-04-20T14:36:00,chat,Product question,,,low,closed,7,2.10,
+T-00260,2026-04-20T13:00:00,2026-04-20T17:48:00,chat,Product question,,,normal,closed,10,4.80,
+T-00261,2026-04-21T09:45:00,2026-04-23T23:27:00,email,Other,,,normal,closed,688,61.70,4
+T-00262,2026-04-21T16:45:00,2026-04-23T11:27:00,email,Product question,,,low,closed,1112,42.70,3
+T-00263,2026-04-22T09:30:00,2026-04-22T09:54:00,phone,Product question,,,normal,closed,3,0.40,4
+T-00264,2026-04-22T10:00:00,2026-04-25T08:06:00,email,Returns,S05,INV-100107,low,closed,848,70.10,3
+T-00265,2026-04-22T16:30:00,2026-04-25T08:18:00,email,Other,,,normal,closed,52,63.80,
+T-00266,2026-04-23T09:45:00,2026-04-25T08:09:00,email,Other,,,normal,closed,1167,46.40,
+T-00267,2026-04-23T12:00:00,2026-04-23T16:54:00,chat,Other,,,normal,closed,2,4.90,
+T-00268,2026-04-23T14:15:00,2026-04-23T17:51:00,phone,Product question,,,normal,closed,2,3.60,5
+T-00269,2026-04-23T22:56:00,2026-04-26T19:32:00,email,Billing,S05,INV-100157,high,closed,1446,68.60,4
+T-00270,2026-04-24T10:58:00,2026-04-24T19:04:00,email,Billing,S08,INV-100158,high,closed,918,8.10,5
+T-00271,2026-04-24T16:30:00,2026-04-26T19:18:00,email,Store visit,S01,,low,closed,153,50.80,5
+T-00272,2026-04-25T15:15:00,2026-04-25T15:45:00,chat,Product question,,,normal,closed,1,0.50,3
+T-00273,2026-04-25T18:00:00,2026-04-25T22:42:00,chat,Product question,,,low,closed,1,4.70,
+T-00274,2026-04-26T12:00:00,2026-04-26T14:30:00,chat,Store visit,S06,,low,closed,11,2.50,
+T-00275,2026-04-26T12:30:00,2026-04-26T17:42:00,chat,Product question,,,normal,closed,8,5.20,5
+T-00276,2026-04-26T16:04:00,2026-04-26T20:34:00,email,Billing,S08,INV-100161,high,closed,1104,4.50,4
+T-00277,2026-04-27T08:30:00,2026-04-29T16:42:00,email,Product question,,,normal,closed,1097,56.20,
+T-00278,2026-04-27T10:00:00,2026-04-30T08:18:00,email,Returns,S04,INV-100134,normal,closed,1063,70.30,4
+T-00279,2026-04-27T12:00:00,2026-04-27T13:06:00,phone,Delivery,S08,INV-100148,high,closed,4,1.10,
+T-00280,2026-04-27T13:45:00,2026-04-27T17:51:00,chat,Product question,,,low,closed,6,4.10,
+T-00281,2026-04-28T10:00:00,2026-04-29T12:12:00,email,Returns,S05,INV-100115,low,closed,1098,26.20,
+T-00282,2026-04-28T10:00:00,2026-04-30T02:42:00,email,Returns,S02,INV-100130,low,closed,1115,40.70,3
+T-00283,2026-04-28T12:00:00,2026-04-29T11:30:00,email,Product question,,,normal,closed,56,23.50,4
+T-00284,2026-04-28T15:15:00,2026-04-28T19:09:00,email,Other,,,normal,closed,1072,3.90,
+T-00285,2026-04-29T10:28:00,2026-04-30T05:22:00,email,Billing,S04,INV-100169,high,closed,61,18.90,
+T-00286,2026-04-29T13:45:00,2026-04-29T18:21:00,phone,Store visit,S05,,normal,closed,2,4.60,
+T-00287,2026-04-29T18:30:00,2026-04-29T19:12:00,phone,Store visit,S08,,normal,closed,1,0.70,4
+T-00288,2026-04-30T15:15:00,2026-04-30T20:27:00,chat,Product question,,,normal,closed,1,5.20,3
+T-00289,2026-04-30T18:45:00,2026-04-30T21:57:00,chat,Other,,,normal,closed,3,3.20,4

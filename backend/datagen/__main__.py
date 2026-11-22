@@ -1,7 +1,8 @@
 """Write the reference dataset as CSV files.
 
 Usage (from backend/):
-    uv run python -m datagen                 # writes ../data/reference/tables/*.csv
+    uv run python -m datagen                 # Stage A: ../data/reference/tables/*.csv
+    uv run python -m datagen --stage b       # Stage B additions: ../data/stage_b/tables/*.csv
     uv run python -m datagen --out /tmp/x    # write somewhere else
 """
 
@@ -12,7 +13,9 @@ from pathlib import Path
 from datagen.catalog import PRODUCTS, STORES
 from datagen.generate import generate
 
-DEFAULT_OUT = Path(__file__).resolve().parents[2] / "data" / "reference" / "tables"
+DATA = Path(__file__).resolve().parents[2] / "data"
+DEFAULT_OUT = DATA / "reference" / "tables"
+STAGE_B_OUT = DATA / "stage_b" / "tables"
 
 
 def _fmt(value: object) -> str:
@@ -136,13 +139,30 @@ def write_all(out: Path) -> dict[str, int]:
     }
 
 
+def write_stage_b(out: Path) -> dict[str, int]:
+    from datagen.stage_b import generate_stage_b
+
+    out.mkdir(parents=True, exist_ok=True)
+    counts = {}
+    for name, table in generate_stage_b().items():
+        _write(out / f"{name}.csv", table.header, table.rows)
+        counts[name] = len(table.rows)
+    return counts
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--stage", choices=["a", "b"], default="a")
+    parser.add_argument("--out", type=Path)
     args = parser.parse_args()
-    counts = write_all(args.out)
+    if args.stage == "b":
+        args.out = args.out or STAGE_B_OUT
+        counts = write_stage_b(args.out)
+    else:
+        args.out = args.out or DEFAULT_OUT
+        counts = write_all(args.out)
     for table, n in counts.items():
-        print(f"{table:<13} {n:>4} rows -> {args.out / (table + '.csv')}")
+        print(f"{table:<20} {n:>6} rows -> {args.out / (table + '.csv')}")
 
 
 if __name__ == "__main__":

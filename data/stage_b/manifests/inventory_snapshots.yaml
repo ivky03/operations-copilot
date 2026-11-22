@@ -1,0 +1,46 @@
+# Dataset manifest (Stage B). Synthetic.
+source: inventory_snapshots
+title: Daily stock levels
+description: >
+  End-of-day stock for every product in every store. These are POINT-IN-TIME balances: to get
+  stock on a date, filter to that single day. Adding up several days double-counts the same
+  units. Online shops hold their own stock.
+grain: One row per store, product and day (end of day).
+primary_key: [snapshot_date, store_id, product_id]
+time_column: snapshot_date
+
+columns:
+  - {name: snapshot_date, type: date, role: time, description: Day the stock count applies to (end of day).}
+  - {name: store_id, type: string, role: id, description: Store holding the stock.}
+  - {name: product_id, type: string, role: id, description: Product.}
+  - {name: units_on_hand, type: integer, role: measure, description: Units in stock at the end of the day., unit: units}
+  - {name: units_on_order, type: integer, role: measure, description: Units ordered from suppliers and not yet arrived., unit: units}
+  - {name: is_stockout, type: boolean, role: dimension, description: True when units on hand is zero.}
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+  - {column: product_id, references: products.product_id}
+
+metrics:
+  - name: units_on_hand
+    title: Units on hand
+    description: >
+      Stock at the end of a day. Point-in-time: use with a time range of one day, or group by
+      day; summing across days is meaningless.
+    aggregation: sum
+    expression: units_on_hand
+    unit: units
+  - name: units_on_order
+    title: Units on order
+    description: Units on open purchase orders at the end of a day. Point-in-time, like units on hand.
+    aggregation: sum
+    expression: units_on_order
+    unit: units
+  - name: stockout_days
+    title: Stockout days
+    description: Number of store-product-days that ended with zero stock.
+    aggregation: count
+    expression: product_id
+    filters:
+      - {column: is_stockout, op: "=", value: true}
+    unit: days

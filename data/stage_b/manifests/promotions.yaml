@@ -1,0 +1,31 @@
+# Dataset manifest (Stage B). Synthetic.
+source: promotions
+title: Promotions calendar
+description: >
+  Past, current and planned promotions. A promotion code on a sales line (transactions.promo_code)
+  matches promo_code here. Only SPRING10 falls inside the sales data (January to April 2026).
+grain: One row per promotion.
+primary_key: [promo_code]
+time_column: start_date
+
+columns:
+  - {name: promo_code, type: string, role: id, description: "Code applied at checkout, e.g. SPRING10.", value_index: true}
+  - {name: promo_name, type: string, role: dimension, description: Promotion name., value_index: true}
+  - {name: category, type: string, role: dimension, description: Product category discounted., value_index: true}
+  - {name: discount_pct, type: decimal, role: measure, description: Discount off list price in percent., unit: percent}
+  - {name: start_date, type: date, role: time, description: First day of the promotion.}
+  - {name: end_date, type: date, role: dimension, description: Last day of the promotion (inclusive).}
+  - {name: channel, type: string, role: dimension, description: "All, or Online only.", value_index: true}
+
+metrics:
+  - name: promotion_count
+    title: Promotions
+    description: Number of promotions.
+    aggregation: count_distinct
+    expression: promo_code
+  - name: average_discount_pct
+    title: Average discount
+    description: Average discount in percent.
+    aggregation: avg
+    expression: discount_pct
+    unit: percent

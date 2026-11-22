@@ -4,6 +4,8 @@ Usage (from backend/):
     uv run python -m app.cli create-user --email a@b.co --name "A B" --role admin --groups finance
     uv run python -m app.cli seed-reference     # groups, demo users, sources and grants
     uv run python -m app.cli publish-reference  # validate, load and publish all reference data
+    uv run python -m app.cli seed-reference --stage b      # Stage B: 15 tables, 21 documents
+    uv run python -m app.cli publish-reference --stage b
     uv run python -m app.cli validate-dataset --manifest m.yaml --csv t.csv   # dry run
 
 Passwords are never accepted as command-line arguments, because those end up in shell
@@ -31,6 +33,9 @@ from app.models import Group, Role, Source, SourceGrant, SourceKind, User
 from app.security import hash_password
 
 REFERENCE = Path(__file__).resolve().parents[2] / "data" / "reference"
+STAGE_B = REFERENCE.parent / "stage_b"
+# Each stage is Stage A plus additions; Stage A's files never change, so its answers stay valid.
+STAGES = {"a": [REFERENCE], "b": [REFERENCE, STAGE_B]}
 
 DEMO_USERS = [
     ("ops.employee@brindlewood.example", "Olivia Ops", Role.EMPLOYEE, ["operations"]),
@@ -72,25 +77,37 @@ def _create_user(
     return user
 
 
-def _reference_sources() -> list[tuple[str, SourceKind, str]]:
-    """(slug, kind, title) for every reference manifest and document."""
+def _reference_sources(roots: list[Path]) -> list[tuple[str, SourceKind, str]]:
+    """(slug, kind, title) for every manifest and document of a stage."""
     out = []
-    for path in sorted((REFERENCE / "manifests").glob("*.yaml")):
-        m = yaml.safe_load(path.read_text())
-        out.append((m["source"], SourceKind.DATASET, m["title"]))
+    for root in roots:
+        for path in sorted((root / "manifests").glob("*.yaml")):
+            m = yaml.safe_load(path.read_text())
+            out.append((m["source"], SourceKind.DATASET, m["title"]))
     seen = set()
-    for path in sorted((REFERENCE / "documents").glob("*.md")):
-        meta = yaml.safe_load(path.read_text(encoding="utf-8").split("---")[1])
-        if meta["doc_id"] not in seen:
-            seen.add(meta["doc_id"])
-            out.append((meta["doc_id"], SourceKind.DOCUMENT, meta["title"]))
+    for root in roots:
+        for path in sorted((root / "documents").glob("*.md")):
+            meta = yaml.safe_load(path.read_text(encoding="utf-8").split("---")[1])
+            if meta["doc_id"] not in seen:
+                seen.add(meta["doc_id"])
+                out.append((meta["doc_id"], SourceKind.DOCUMENT, meta["title"]))
     return out
 
 
-def seed_reference(db: Session) -> dict[str, str]:
-    """Idempotent: running it twice creates nothing new. Returns {email: password} for new users."""
+def _grants(roots: list[Path]) -> dict[str, list[str]]:
+    grants: dict[str, list[str]] = {}
+    for root in roots:
+        grants |= yaml.safe_load((root / "access.yaml").read_text())["grants"]
+    return grants
+
+
+def seed_reference(db: Session, stage: str = "a") -> dict[str, str]:
+    """Idempotent: running it twice creates nothing new. Returns {email: password} for new users.
+    Stage B on top of an existing Stage A setup adds only the new sources."""
+    roots = STAGES[stage]
     access = yaml.safe_load((REFERENCE / "access.yaml").read_text())
     groups = {slug: _get_or_create_group(db, slug, name) for slug, name in access["groups"].items()}
+    grants = _grants(roots)
 
     new_passwords: dict[str, str] = {}
     for email, name, role, group_slugs in DEMO_USERS:
@@ -98,27 +115,24 @@ def seed_reference(db: Session) -> dict[str, str]:
         if _create_user(db, email, name, role, group_slugs, password):
             new_passwords[email] = password
 
-    for slug, kind, title in _reference_sources():
+    for slug, kind, title in _reference_sources(roots):
         source = db.scalar(select(Source).where(Source.slug == slug))
         if source is None:
             source = Source(slug=slug, kind=kind, title=title)
             db.add(source)
             db.flush()
-            for group_slug in access["grants"][slug]:
+            for group_slug in grants[slug]:
                 db.add(SourceGrant(source_id=source.id, group_id=groups[group_slug].id))
-            audit.record(
-                db, None, "source.register", slug, grants=access["grants"][slug], via="cli"
-            )
+            audit.record(db, None, "source.register", slug, grants=grants[slug], via="cli")
     db.commit()
     return new_passwords
 
 
-def _dataset_order() -> list[Path]:
+def _dataset_order(roots: list[Path]) -> list[Path]:
     """Manifests ordered so every dataset comes after the datasets it depends on
     (relationships and cross-dataset metrics). A cycle is reported as an error."""
-    manifests = {
-        p.stem: yaml.safe_load(p.read_text()) for p in (REFERENCE / "manifests").glob("*.yaml")
-    }
+    paths = {p.stem: p for root in roots for p in (root / "manifests").glob("*.yaml")}
+    manifests = {name: yaml.safe_load(p.read_text()) for name, p in paths.items()}
     deps = {}
     for name, m in manifests.items():
         refs = {r["references"].split(".")[0] for r in m.get("relationships", [])}
@@ -137,17 +151,20 @@ def _dataset_order() -> list[Path]:
         ordered += ready
         for n in ready:
             del deps[n]
-    return [REFERENCE / "manifests" / f"{n}.yaml" for n in ordered]
+    return [paths[n] for n in ordered]
 
 
-def publish_reference(db: Session) -> list[PublishResult]:
+def publish_reference(db: Session, stage: str = "a") -> list[PublishResult]:
+    roots = STAGES[stage]
     results = []
-    for manifest_path in _dataset_order():
+    for manifest_path in _dataset_order(roots):
         manifest = yaml.safe_load(manifest_path.read_text())
-        csv_bytes = (REFERENCE / "tables" / f"{manifest['source']}.csv").read_bytes()
+        root = manifest_path.parents[1]
+        csv_bytes = (root / "tables" / f"{manifest['source']}.csv").read_bytes()
         results.append(publish_dataset(db, manifest, csv_bytes))
-    for doc_path in sorted((REFERENCE / "documents").glob("*.md")):  # v1 sorts before v2
-        results.append(publish_document(db, doc_path.read_bytes()))
+    for root in roots:
+        for doc_path in sorted((root / "documents").glob("*.md")):  # v1 sorts before v2
+            results.append(publish_document(db, doc_path.read_bytes()))
     return results
 
 
@@ -171,8 +188,10 @@ def main(argv: list[str] | None = None) -> int:
     cu.add_argument("--role", choices=[r.value for r in Role], default=Role.EMPLOYEE.value)
     cu.add_argument("--groups", nargs="*", default=[])
 
-    sub.add_parser("seed-reference", help="Create groups, demo users, sources and grants")
-    sub.add_parser("publish-reference", help="Validate, load and publish all reference data")
+    seed = sub.add_parser("seed-reference", help="Create groups, demo users, sources and grants")
+    seed.add_argument("--stage", choices=sorted(STAGES), default="a")
+    pub = sub.add_parser("publish-reference", help="Validate, load and publish all reference data")
+    pub.add_argument("--stage", choices=sorted(STAGES), default="a")
     sub.add_parser(
         "index-documents", help="Rebuild search chunks for every stored document version"
     )
@@ -204,7 +223,7 @@ def main(argv: list[str] | None = None) -> int:
             db.commit()
             print("Created." if user else "A user with that email already exists; nothing changed.")
         elif args.command == "seed-reference":
-            passwords = seed_reference(db)
+            passwords = seed_reference(db, args.stage)
             if passwords:
                 print("Demo users created. Passwords are shown ONCE; store them now:\n")
                 for email, pw in passwords.items():
@@ -212,7 +231,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 print("Reference setup already present; nothing changed.")
         elif args.command == "publish-reference":
-            results = publish_reference(db)
+            results = publish_reference(db, args.stage)
             for r in results:
                 _print_result(r)
             if any(r.status == "invalid" for r in results):

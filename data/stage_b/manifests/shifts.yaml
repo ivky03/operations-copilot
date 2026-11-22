@@ -1,0 +1,68 @@
+# Dataset manifest (Stage B). Synthetic.
+source: shifts
+title: Staff shifts
+description: >
+  Every scheduled shift from January to April 2026 and the hours actually worked. An absence
+  (sick, no_show, holiday) is a scheduled shift with zero hours worked.
+grain: One row per scheduled shift.
+primary_key: [shift_id]
+time_column: shift_date
+
+columns:
+  - {name: shift_id, type: string, role: id, description: Shift identifier.}
+  - {name: employee_id, type: string, role: id, description: Employee scheduled.}
+  - {name: store_id, type: string, role: id, nullable: true, description: Store the shift is in. Empty for central customer service.}
+  - {name: shift_date, type: date, role: time, description: Date of the shift.}
+  - {name: scheduled_hours, type: decimal, role: measure, description: Hours scheduled., unit: hours}
+  - {name: worked_hours, type: decimal, role: measure, description: Hours actually worked (0 when absent)., unit: hours}
+  - name: absence_reason
+    type: string
+    role: dimension
+    nullable: true
+    description: sick, no_show or holiday when the person was absent; empty when they worked.
+    value_index: true
+    allowed_values: [sick, no_show, holiday]
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+  - {column: employee_id, references: staff.employee_id}
+
+metrics:
+  - name: shift_count
+    title: Shifts
+    description: Number of scheduled shifts.
+    aggregation: count
+    expression: shift_id
+  - name: hours_scheduled
+    title: Hours scheduled
+    description: Total scheduled hours.
+    aggregation: sum
+    expression: scheduled_hours
+    unit: hours
+  - name: hours_worked
+    title: Hours worked
+    description: Total hours actually worked.
+    aggregation: sum
+    expression: worked_hours
+    unit: hours
+  - name: absence_count
+    title: Absences
+    description: Scheduled shifts not worked, for any reason (sick, no_show, holiday).
+    aggregation: count
+    expression: shift_id
+    filters:
+      - {column: worked_hours, op: "=", value: 0}
+  - name: sick_shift_count
+    title: Sick days
+    description: Shifts missed because of sickness.
+    aggregation: count
+    expression: shift_id
+    filters:
+      - {column: absence_reason, op: "=", value: sick}
+
+derived_metrics:
+  - name: absence_rate
+    title: Absence rate
+    description: Share of scheduled shifts not worked.
+    formula: absence_count / shift_count
+    unit: ratio

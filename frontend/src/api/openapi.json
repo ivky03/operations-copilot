@@ -1,6 +1,55 @@
 {
   "components": {
     "schemas": {
+      "AdminSourceOut": {
+        "description": "Admins see every source and who can read it, but not its content (no data access).",
+        "properties": {
+          "groups": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Groups",
+            "type": "array"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "published_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published Version"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "kind",
+          "title",
+          "status",
+          "groups",
+          "published_version"
+        ],
+        "title": "AdminSourceOut",
+        "type": "object"
+      },
       "AskRequest": {
         "properties": {
           "conversation_id": {
@@ -609,6 +658,24 @@
         "title": "GroundRequest",
         "type": "object"
       },
+      "GroupOut": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "name"
+        ],
+        "title": "GroupOut",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -986,6 +1053,41 @@
         "title": "QueryPlan",
         "type": "object"
       },
+      "RegisterSource": {
+        "properties": {
+          "groups": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Groups",
+            "type": "array"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/SourceKind"
+          },
+          "slug": {
+            "maxLength": 100,
+            "pattern": "^[a-z][a-z0-9-]{0,99}$|^[a-z][a-z0-9_]{0,62}$",
+            "title": "Slug",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "kind",
+          "title",
+          "groups"
+        ],
+        "title": "RegisterSource",
+        "type": "object"
+      },
       "RenameRequest": {
         "properties": {
           "title": {
@@ -1055,6 +1157,14 @@
         ],
         "title": "SetGrants",
         "type": "object"
+      },
+      "SourceKind": {
+        "enum": [
+          "dataset",
+          "document"
+        ],
+        "title": "SourceKind",
+        "type": "string"
       },
       "SourceOut": {
         "properties": {
@@ -1452,6 +1562,96 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/admin/groups": {
+      "get": {
+        "operationId": "list_groups_api_admin_groups_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/GroupOut"
+                  },
+                  "title": "Response List Groups Api Admin Groups Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Groups",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/sources": {
+      "get": {
+        "operationId": "list_all_sources_api_admin_sources_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AdminSourceOut"
+                  },
+                  "title": "Response List All Sources Api Admin Sources Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List All Sources",
+        "tags": [
+          "admin"
+        ]
+      },
+      "post": {
+        "description": "Register a new dataset or document and decide who may read it. It has no content until\na steward in one of those groups uploads a first version, which is then reviewed and\npublished like any other.",
+        "operationId": "register_source_api_admin_sources_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterSource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSourceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Register Source",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
     "/api/admin/sources/{slug}/grants": {
       "put": {
         "description": "Replace which groups can read a source. Revocation applies to the next request.",

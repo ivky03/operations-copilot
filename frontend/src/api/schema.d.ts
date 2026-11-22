@@ -4,6 +4,46 @@
  */
 
 export interface paths {
+    "/api/admin/groups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Groups */
+        get: operations["list_groups_api_admin_groups_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/sources": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List All Sources */
+        get: operations["list_all_sources_api_admin_sources_get"];
+        put?: never;
+        /**
+         * Register Source
+         * @description Register a new dataset or document and decide who may read it. It has no content until
+         *     a steward in one of those groups uploads a first version, which is then reviewed and
+         *     published like any other.
+         */
+        post: operations["register_source_api_admin_sources_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/sources/{slug}/grants": {
         parameters: {
             query?: never;
@@ -469,6 +509,24 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * AdminSourceOut
+         * @description Admins see every source and who can read it, but not its content (no data access).
+         */
+        AdminSourceOut: {
+            /** Groups */
+            groups: string[];
+            /** Kind */
+            kind: string;
+            /** Published Version */
+            published_version: number | null;
+            /** Slug */
+            slug: string;
+            /** Status */
+            status: string;
+            /** Title */
+            title: string;
+        };
         /** AskRequest */
         AskRequest: {
             /** Conversation Id */
@@ -679,6 +737,13 @@ export interface components {
             /** Phrase */
             phrase: string;
         };
+        /** GroupOut */
+        GroupOut: {
+            /** Name */
+            name: string;
+            /** Slug */
+            slug: string;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -794,6 +859,16 @@ export interface components {
             time_grain?: ("day" | "week" | "month" | "quarter" | "year") | null;
             time_range?: components["schemas"]["TimeRange"] | null;
         };
+        /** RegisterSource */
+        RegisterSource: {
+            /** Groups */
+            groups: string[];
+            kind: components["schemas"]["SourceKind"];
+            /** Slug */
+            slug: string;
+            /** Title */
+            title: string;
+        };
         /** RenameRequest */
         RenameRequest: {
             /** Title */
@@ -820,6 +895,11 @@ export interface components {
             /** Groups */
             groups: string[];
         };
+        /**
+         * SourceKind
+         * @enum {string}
+         */
+        SourceKind: "dataset" | "document";
         /** SourceOut */
         SourceOut: {
             /** Kind */
@@ -966,6 +1046,79 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    list_groups_api_admin_groups_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GroupOut"][];
+                };
+            };
+        };
+    };
+    list_all_sources_api_admin_sources_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSourceOut"][];
+                };
+            };
+        };
+    };
+    register_source_api_admin_sources_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegisterSource"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AdminSourceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     set_source_grants_api_admin_sources__slug__grants_put: {
         parameters: {
             query?: never;

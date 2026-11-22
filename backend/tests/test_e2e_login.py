@@ -323,3 +323,46 @@ def test_a_steward_uploads_reviews_and_publishes_a_new_version(worker_thread, li
     page.get_by_role("button", name="Upload new version").click()
     page.get_by_text("This upload was rejected:").wait_for(timeout=20000)
     assert "row 3, column unit_price" in page.get_by_role("alert").inner_text()
+
+
+ADMIN = "admin@brindlewood.example"
+
+
+def test_an_admin_registers_a_new_dataset_and_a_steward_publishes_it(worker_thread, live_app, page):
+    """The whole path for a table the application has never seen: registered in the browser,
+    uploaded, prepared by the worker, published, and visible to the granted group only."""
+    url, passwords = live_app
+    stage_b = SAMPLES.parent / "stage_b"
+    page.goto(url)
+    sign_in(page, ADMIN, passwords[ADMIN])
+    page.get_by_role("button", name="Sources", exact=True).click()
+    page.get_by_label("Name").fill("purchase-orders")
+    assert "underscores" in page.locator("#name-hint").inner_text()
+    assert page.get_by_role("button", name="Register").is_disabled()
+    page.get_by_label("Name").fill("suppliers")
+    page.get_by_label("Title").fill("Suppliers")
+    page.get_by_label("operations").check()
+    page.get_by_role("button", name="Register").click()
+    page.get_by_text("Registered suppliers").wait_for()
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, STEWARD, passwords[STEWARD])
+    page.get_by_role("button", name="Manage sources").click()
+    page.get_by_role("button", name="Suppliers").click()
+    page.get_by_label("Manifest (YAML)").set_input_files(stage_b / "manifests" / "suppliers.yaml")
+    page.get_by_label("Rows (CSV)").set_input_files(stage_b / "tables" / "suppliers.csv")
+    page.get_by_role("button", name="Upload new version").click()
+    page.get_by_role("button", name="Publish v1").click(timeout=20000)
+    page.get_by_label("Version 1").get_by_text("Published", exact=True).wait_for()
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, OPS, passwords[OPS])
+    page.get_by_text("Welcome, Olivia").wait_for()
+    open_sources(page)
+    assert page.get_by_text("suppliers", exact=True).count() == 1
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, FIN, passwords[FIN])  # not granted to Finance
+    page.get_by_text("Welcome, Felix").wait_for()
+    open_sources(page)
+    assert page.get_by_text("suppliers", exact=True).count() == 0

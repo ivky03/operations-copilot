@@ -1,0 +1,56 @@
+# Dataset manifest (Stage B). Synthetic people; names are invented.
+source: staff
+title: Staff
+description: >
+  Everyone employed between January and April 2026, including people who have left
+  (end_date set). Customer service agents work centrally and have no store.
+grain: One row per employee.
+primary_key: [employee_id]
+time_column: start_date
+
+columns:
+  - {name: employee_id, type: string, role: id, description: "Employee identifier, e.g. E001."}
+  - {name: display_name, type: string, role: attribute, description: First name and initial.}
+  - name: role
+    type: string
+    role: dimension
+    description: Job role.
+    value_index: true
+    allowed_values: [Store Manager, Sales Associate, Fulfilment Associate, Customer Service Agent]
+  - {name: store_id, type: string, role: id, nullable: true, description: Store the person works in. Empty for central customer service.}
+  - name: contract_type
+    type: string
+    role: dimension
+    description: full_time or part_time.
+    value_index: true
+    allowed_values: [full_time, part_time]
+    aliases: {full time: full_time, part time: part_time, FT: full_time, PT: part_time}
+  - {name: weekly_contract_hours, type: decimal, role: measure, description: Contracted hours per week., unit: hours}
+  - {name: start_date, type: date, role: time, description: First day of employment.}
+  - {name: end_date, type: date, role: dimension, nullable: true, description: Last day of employment. Empty if still employed.}
+  - {name: is_active, type: boolean, role: dimension, description: True if still employed on 30 April 2026 (the end of the data).}
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+
+metrics:
+  - name: headcount
+    title: Headcount
+    description: People employed on 30 April 2026 (leavers excluded).
+    aggregation: count_distinct
+    expression: employee_id
+    filters:
+      - {column: is_active, op: "=", value: true}
+  - name: employees_any_time
+    title: Employees at any time
+    description: Everyone employed at some point from January to April 2026, including leavers.
+    aggregation: count_distinct
+    expression: employee_id
+  - name: contracted_hours
+    title: Contracted weekly hours
+    description: Sum of weekly contracted hours of people employed on 30 April 2026.
+    aggregation: sum
+    expression: weekly_contract_hours
+    filters:
+      - {column: is_active, op: "=", value: true}
+    unit: hours

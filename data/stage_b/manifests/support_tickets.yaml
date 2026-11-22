@@ -1,0 +1,82 @@
+# Dataset manifest (Stage B). Synthetic.
+source: support_tickets
+title: Customer support tickets
+description: >
+  Customer contacts handled by customer service, by email, chat or phone. CSAT is the
+  customer's 1-5 rating after a ticket closes; about half of customers answer.
+grain: One row per ticket.
+primary_key: [ticket_id]
+time_column: opened_at
+
+columns:
+  - {name: ticket_id, type: string, role: id, description: Ticket identifier.}
+  - {name: opened_at, type: timestamp, role: time, description: When the customer got in touch.}
+  - {name: closed_at, type: timestamp, role: dimension, nullable: true, description: When the ticket was resolved. Empty while open.}
+  - name: channel
+    type: string
+    role: dimension
+    description: email, chat or phone.
+    value_index: true
+    allowed_values: [email, chat, phone]
+  - name: category
+    type: string
+    role: dimension
+    description: What the contact was about.
+    value_index: true
+    allowed_values: [Returns, Delivery, Billing, Product question, Store visit, Other]
+  - {name: store_id, type: string, role: id, nullable: true, description: "Store involved, when there is one."}
+  - {name: invoice_no, type: string, role: attribute, nullable: true, description: "Customer order the ticket is about, if any."}
+  - name: priority
+    type: string
+    role: dimension
+    description: high, normal or low.
+    value_index: true
+    allowed_values: [high, normal, low]
+  - name: status
+    type: string
+    role: dimension
+    description: open or closed.
+    value_index: true
+    allowed_values: [open, closed]
+  - {name: first_response_minutes, type: integer, role: measure, description: Minutes until the first reply to the customer., unit: minutes}
+  - {name: resolution_hours, type: decimal, role: measure, nullable: true, description: Hours from opening to resolution. Empty while open., unit: hours}
+  - {name: csat_score, type: integer, role: measure, nullable: true, description: Customer satisfaction rating 1 (worst) to 5 (best). Empty if the customer didn't answer.}
+
+relationships:
+  - {column: store_id, references: stores.store_id}
+
+metrics:
+  - name: ticket_count
+    title: Tickets
+    description: Number of tickets opened.
+    aggregation: count
+    expression: ticket_id
+  - name: open_ticket_count
+    title: Open tickets
+    description: Tickets not yet resolved.
+    aggregation: count
+    expression: ticket_id
+    filters:
+      - {column: status, op: "=", value: open}
+  - name: average_first_response_minutes
+    title: Average first response time
+    description: Average minutes until the first reply.
+    aggregation: avg
+    expression: first_response_minutes
+    unit: minutes
+  - name: average_resolution_hours
+    title: Average resolution time
+    description: Average hours to resolve, closed tickets only.
+    aggregation: avg
+    expression: resolution_hours
+    unit: hours
+  - name: average_csat
+    title: Average CSAT
+    description: Average customer satisfaction rating (1-5) over tickets where the customer answered.
+    aggregation: avg
+    expression: csat_score
+  - name: csat_responses
+    title: CSAT responses
+    description: Number of tickets with a satisfaction rating.
+    aggregation: count
+    expression: csat_score
