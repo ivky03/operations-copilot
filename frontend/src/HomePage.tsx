@@ -1,6 +1,21 @@
 import { useEffect, useState } from "react";
 import { ApiError, listSources, type Session, type SourceItem } from "./api/client";
 import { Chat } from "./Chat";
+import { StewardPage } from "./StewardPage";
+
+type View = "ask" | "manage";
+
+/** The page lives in the URL hash (#/manage), so a refresh or a bookmark keeps it. */
+function useView(allowed: boolean): [View, (v: View) => void] {
+  const read = (): View => (allowed && window.location.hash === "#/manage" ? "manage" : "ask");
+  const [view, setView] = useState<View>(read);
+  useEffect(() => {
+    const onHash = () => setView(read());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  });
+  return [view, (v) => (window.location.hash = v === "manage" ? "#/manage" : "")];
+}
 
 type Props = { session: Session; onSignOut: () => void; onSessionExpired: () => void };
 
@@ -47,6 +62,8 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
   const [sources, setSources] = useState<SourceItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { user } = session;
+  const isSteward = user.role === "steward";
+  const [view, go] = useView(isSteward);
 
   useEffect(() => {
     listSources()
@@ -64,6 +81,20 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
     <>
       <header className="topbar">
         <span className="brand">Operations Copilot</span>
+        {isSteward && (
+          <nav className="views" aria-label="Pages">
+            <button className={view === "ask" ? "current" : ""} aria-current={view === "ask"} onClick={() => go("ask")}>
+              Ask
+            </button>
+            <button
+              className={view === "manage" ? "current" : ""}
+              aria-current={view === "manage"}
+              onClick={() => go("manage")}
+            >
+              Manage sources
+            </button>
+          </nav>
+        )}
         <div className="user">
           <span>
             {user.display_name} <span className="muted">· {user.role}</span>
@@ -74,42 +105,46 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
         </div>
       </header>
 
-      <main className="page">
-        <h1>Welcome, {user.display_name.split(" ")[0]}</h1>
-        <p className="muted">
-          Groups:{" "}
-          {user.groups.length ? (
-            user.groups.map((g) => (
-              <span key={g} className="badge">
-                {g}
-              </span>
-            ))
-          ) : (
-            <span className="badge">none</span>
-          )}
-        </p>
-        <Chat onSessionExpired={onSessionExpired} />
-
-        <details className="sources-panel">
-          <summary>
-            Sources you can access {sources ? `(${sources.length})` : ""}
-          </summary>
-          <p className="muted">Sources restricted to other groups are not shown.</p>
-
-        {error && (
-          <p className="error" role="alert">
-            {error}
+      {view === "manage" ? (
+        <StewardPage onSessionExpired={onSessionExpired} />
+      ) : (
+        <main className="page">
+          <h1>Welcome, {user.display_name.split(" ")[0]}</h1>
+          <p className="muted">
+            Groups:{" "}
+            {user.groups.length ? (
+              user.groups.map((g) => (
+                <span key={g} className="badge">
+                  {g}
+                </span>
+              ))
+            ) : (
+              <span className="badge">none</span>
+            )}
           </p>
-        )}
-        {!sources && !error && <p className="muted">Loading sources…</p>}
-        {sources && (
-          <div className="grid">
-            <SourceTable title="Datasets" items={datasets} />
-            <SourceTable title="Documents" items={documents} />
-          </div>
-        )}
-        </details>
-      </main>
+          <Chat onSessionExpired={onSessionExpired} />
+
+          <details className="sources-panel">
+            <summary>
+              Sources you can access {sources ? `(${sources.length})` : ""}
+            </summary>
+            <p className="muted">Sources restricted to other groups are not shown.</p>
+
+          {error && (
+            <p className="error" role="alert">
+              {error}
+            </p>
+          )}
+          {!sources && !error && <p className="muted">Loading sources…</p>}
+          {sources && (
+            <div className="grid">
+              <SourceTable title="Datasets" items={datasets} />
+              <SourceTable title="Documents" items={documents} />
+            </div>
+          )}
+          </details>
+        </main>
+      )}
     </>
   );
 }

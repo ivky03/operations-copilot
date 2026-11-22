@@ -27,7 +27,9 @@ let csrfToken: string | null = null;
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const headers: Record<string, string> = {};
-  if (body !== undefined) headers["Content-Type"] = "application/json";
+  // File uploads are sent as multipart form data; the browser sets that Content-Type itself.
+  const isForm = body instanceof FormData;
+  if (body !== undefined && !isForm) headers["Content-Type"] = "application/json";
   if (method !== "GET" && csrfToken) headers["X-CSRF-Token"] = csrfToken;
 
   let response: Response;
@@ -35,7 +37,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     response = await fetch(path, {
       method,
       headers,
-      body: body === undefined ? undefined : JSON.stringify(body),
+      body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
       credentials: "same-origin",
     });
   } catch {
@@ -166,3 +168,31 @@ export const getConversation = (id: string) => request<Conversation>("GET", `/ap
 export const renameConversation = (id: string, title: string) =>
   request<ConversationSummary>("PATCH", `/api/conversations/${id}`, { title });
 export const deleteConversation = (id: string) => request<void>("DELETE", `/api/conversations/${id}`);
+
+// ----------------------------------------------------------------------------- stewards
+
+export type StewardSource = components["schemas"]["StewardSourceOut"];
+export type Job = components["schemas"]["JobOut"];
+export type Version = components["schemas"]["VersionOut"];
+export type VersionDetail = components["schemas"]["VersionDetail"];
+
+const sourcePath = (slug: string) => `/api/steward/sources/${encodeURIComponent(slug)}`;
+
+export const stewardSources = () => request<StewardSource[]>("GET", "/api/steward/sources");
+export const listVersions = (slug: string) => request<Version[]>("GET", `${sourcePath(slug)}/versions`);
+export const getVersion = (slug: string, version: number) =>
+  request<VersionDetail>("GET", `${sourcePath(slug)}/versions/${version}`);
+export const publishVersion = (slug: string, version: number) =>
+  request<Version>("POST", `${sourcePath(slug)}/versions/${version}/publish`);
+export const discardVersion = (slug: string, version: number) =>
+  request<Version>("POST", `${sourcePath(slug)}/versions/${version}/discard`);
+export const listJobs = (slug: string) =>
+  request<Job[]>("GET", `/api/steward/jobs?source=${encodeURIComponent(slug)}&limit=20`);
+export const retryJob = (id: string) => request<Job>("POST", `/api/steward/jobs/${id}/retry`);
+
+/** Upload files for a new version: {manifest, data} for a dataset, {document} for a document. */
+export function uploadVersion(slug: string, files: Record<string, File>): Promise<Job> {
+  const form = new FormData();
+  for (const [name, file] of Object.entries(files)) form.append(name, file);
+  return request<Job>("POST", `${sourcePath(slug)}/uploads`, form);
+}
