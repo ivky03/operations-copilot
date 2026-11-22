@@ -1,0 +1,8 @@
+store_id,store_name,country,region,channel,opened_date
+S02,UK Online,United Kingdom,UK & Ireland,Online,2018-01-15
+S03,Dublin Store,Ireland,UK & Ireland,Retail,2021-06-01
+S04,Berlin Store,Germany,Central Europe,Retail,2020-09-01
+S05,DE Online,Germany,Central Europe,Online,2019-01-10
+S06,Amsterdam Store,Netherlands,Central Europe,Retail,2022-03-01
+S07,Madrid Store,Spain,Southwest Europe,Retail,2023-05-01
+S08,FR Online,France,Southwest Europe,Online,2026-03-02
