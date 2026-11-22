@@ -214,6 +214,28 @@ def test_unknown_value_is_explained_not_guessed(db, olivia):
     assert result.status == "unanswerable" and "Narnia" in result.answer
 
 
+def test_a_made_up_value_on_an_unindexed_column_is_not_reported_as_zero(db, olivia):
+    """Found by the Stage B evaluation: the planner filtered product_id on "oak tables", got no
+    rows, and the answer said nothing was sold. Ids have no value index, so check existence."""
+    plan = {
+        "kind": "data",
+        "queries": [
+            {
+                "metric": "units_sold",
+                "filters": [{"dimension": "product_id", "op": "in", "values": ["oak tables"]}],
+            }
+        ],
+    }
+    result, _, _ = ask(db, olivia, "Oak tables sold?", [plan], [{"answer": "0 sold [D1]"}])
+    assert result.status == "unanswerable" and "oak tables" in result.answer
+    assert result.evidence == []
+
+    real = {**plan, "queries": [{**plan["queries"][0], "filters": [
+        {"dimension": "product_id", "op": "in", "values": ["P001"]}]}]}  # fmt: skip
+    result, _, _ = ask(db, olivia, "P001 sold?", [real], [{"answer": "See [D1]."}])
+    assert result.status in {"answered", "answered_fallback"} and result.evidence
+
+
 # ----------------------------------------------------------------------------- planning
 
 
