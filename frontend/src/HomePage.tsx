@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import { ApiError, listSources, type Session, type SourceItem } from "./api/client";
 import { Chat } from "./Chat";
+import { AdminSourcesPage } from "./AdminSourcesPage";
 import { StewardPage } from "./StewardPage";
 
-type View = "ask" | "manage";
+/** The second page each role gets besides Ask (the server enforces who may use it). */
+const ROLE_PAGE: Record<string, { hash: string; label: string } | undefined> = {
+  steward: { hash: "#/manage", label: "Manage sources" },
+  admin: { hash: "#/admin", label: "Sources" },
+};
 
 /** The page lives in the URL hash (#/manage), so a refresh or a bookmark keeps it. */
-function useView(allowed: boolean): [View, (v: View) => void] {
-  const read = (): View => (allowed && window.location.hash === "#/manage" ? "manage" : "ask");
-  const [view, setView] = useState<View>(read);
+function useView(hash: string | undefined): [boolean, (other: boolean) => void] {
+  const read = () => !!hash && window.location.hash === hash;
+  const [onOther, setOnOther] = useState(read);
   useEffect(() => {
-    const onHash = () => setView(read());
+    const onHash = () => setOnOther(read());
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
   });
-  return [view, (v) => (window.location.hash = v === "manage" ? "#/manage" : "")];
+  return [onOther, (other) => (window.location.hash = other && hash ? hash : "")];
 }
 
 type Props = { session: Session; onSignOut: () => void; onSessionExpired: () => void };
@@ -62,8 +67,8 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
   const [sources, setSources] = useState<SourceItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { user } = session;
-  const isSteward = user.role === "steward";
-  const [view, go] = useView(isSteward);
+  const rolePage = ROLE_PAGE[user.role];
+  const [onRolePage, go] = useView(rolePage?.hash);
 
   useEffect(() => {
     listSources()
@@ -81,17 +86,13 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
     <>
       <header className="topbar">
         <span className="brand">Operations Copilot</span>
-        {isSteward && (
+        {rolePage && (
           <nav className="views" aria-label="Pages">
-            <button className={view === "ask" ? "current" : ""} aria-current={view === "ask"} onClick={() => go("ask")}>
+            <button className={onRolePage ? "" : "current"} aria-current={!onRolePage} onClick={() => go(false)}>
               Ask
             </button>
-            <button
-              className={view === "manage" ? "current" : ""}
-              aria-current={view === "manage"}
-              onClick={() => go("manage")}
-            >
-              Manage sources
+            <button className={onRolePage ? "current" : ""} aria-current={onRolePage} onClick={() => go(true)}>
+              {rolePage.label}
             </button>
           </nav>
         )}
@@ -105,8 +106,10 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
         </div>
       </header>
 
-      {view === "manage" ? (
+      {onRolePage && user.role === "steward" ? (
         <StewardPage onSessionExpired={onSessionExpired} />
+      ) : onRolePage && user.role === "admin" ? (
+        <AdminSourcesPage onSessionExpired={onSessionExpired} />
       ) : (
         <main className="page">
           <h1>Welcome, {user.display_name.split(" ")[0]}</h1>

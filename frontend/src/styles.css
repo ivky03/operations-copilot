@@ -281,3 +281,15 @@ button.link {
   max-height: 28rem; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px;
   padding: 0 1rem; background: var(--bg);
 }
+
+/* ---------------------------------------------------------------- admin: register a source */
+.register { display: flex; flex-direction: column; gap: 0.35rem; max-width: 520px; margin-bottom: 1rem; }
+.register label { margin-top: 0.4rem; }
+.register button { align-self: flex-start; }
+.choice { border: none; padding: 0; margin: 0.4rem 0 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+.choice legend { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; padding: 0; }
+.choice label { margin: 0; font-weight: 400; display: flex; align-items: center; gap: 0.35rem; }
+.hint { font-size: 0.8rem; color: var(--muted); }
+.hint.bad { color: var(--danger-text); }
+tr.highlight td { background: var(--badge-bg); }
+.banner strong { font-family: ui-monospace, monospace; }

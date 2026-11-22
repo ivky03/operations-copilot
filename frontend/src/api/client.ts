@@ -196,3 +196,13 @@ export function uploadVersion(slug: string, files: Record<string, File>): Promis
   for (const [name, file] of Object.entries(files)) form.append(name, file);
   return request<Job>("POST", `${sourcePath(slug)}/uploads`, form);
 }
+
+// ----------------------------------------------------------------------------- administrators
+
+export type AdminSource = components["schemas"]["AdminSourceOut"];
+export type Group = components["schemas"]["GroupOut"];
+export type RegisterSource = components["schemas"]["RegisterSource"];
+
+export const adminSources = () => request<AdminSource[]>("GET", "/api/admin/sources");
+export const adminGroups = () => request<Group[]>("GET", "/api/admin/groups");
+export const registerSource = (body: RegisterSource) => request<AdminSource>("POST", "/api/admin/sources", body);
