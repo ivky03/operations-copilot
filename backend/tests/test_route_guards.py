@@ -28,11 +28,13 @@ def _concrete(path: str) -> str:
 ALL_ROUTES = _api_routes()
 PROTECTED = [r for r in ALL_ROUTES if r not in PUBLIC]
 ADMIN_ROUTES = [r for r in PROTECTED if r[1].startswith("/api/admin")]
+STEWARD_ROUTES = [r for r in PROTECTED if r[1].startswith("/api/steward")]
 
 
 def test_public_allowlist_is_small_and_exact():
     assert set(PUBLIC) <= set(ALL_ROUTES), "allowlist names a route that doesn't exist"
     assert len(PROTECTED) >= 8
+    assert len(STEWARD_ROUTES) >= 9
 
 
 @pytest.mark.parametrize(("method", "path"), PROTECTED, ids=lambda x: str(x))
@@ -47,6 +49,16 @@ def test_every_admin_route_rejects_non_admins(client, make_user, method, path):
     csrf = login(client, "employee@example.com")
     resp = client.request(method, _concrete(path), json={}, headers={"X-CSRF-Token": csrf})
     assert resp.status_code == 403, f"{method} {path} answered {resp.status_code} for an employee"
+
+
+@pytest.mark.parametrize("role", ["employee", "admin"])
+@pytest.mark.parametrize(("method", "path"), STEWARD_ROUTES, ids=lambda x: str(x))
+def test_every_steward_route_rejects_other_roles(client, make_user, role, method, path):
+    # Admins manage users and grants, not source content: they are refused too.
+    make_user("someone@example.com", role=role, groups=("operations",))
+    csrf = login(client, "someone@example.com")
+    resp = client.request(method, _concrete(path), json={}, headers={"X-CSRF-Token": csrf})
+    assert resp.status_code == 403, f"{method} {path} answered {resp.status_code} for {role}"
 
 
 def test_frontend_api_contract_is_current():

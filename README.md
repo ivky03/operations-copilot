@@ -129,9 +129,14 @@ uv run python -m app.cli publish-reference  # validate, load and publish the ref
 uv run pytest                         # unit, integration and end-to-end tests
 uv run uvicorn app.main:app --reload --port 8010  # API on http://localhost:8010
 
-# In a second terminal
+# In a second terminal: the ingestion worker (processes steward uploads)
+cd backend && uv run python -m app.worker
+
+# In a third terminal
 cd frontend && nvm use && npm ci && npm run dev  # web app on http://localhost:5173
 ```
+
+Stewards upload new versions under **Manage sources**. The API stores the files in S3 and records a job, and the worker validates and loads them in the background. The new version stays invisible to answers until the steward reviews it and presses **Publish**. A duplicated message, a worker crash mid-job and a lost send are each covered by a test. `data/reference/sample_uploads/` has files to try it with.
 
 `GET /health` returns `200` when the API can reach PostgreSQL and the S3/SQS emulator, and `503` with per-dependency status otherwise. The application refuses to start if it's configured to target real AWS without an explicit `ALLOW_REAL_AWS=true`.
 

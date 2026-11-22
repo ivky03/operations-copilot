@@ -42,6 +42,24 @@ class Settings(BaseSettings):
     # Cost guardrail: real (billable) AWS must be enabled explicitly.
     allow_real_aws: bool = False
 
+    # Ingestion (M6). Uploaded files go to the bucket; each upload becomes one job, delivered
+    # to the worker through the queue. Tests use their own names so a running dev worker
+    # can't pick up test messages.
+    upload_bucket: str = "opscopilot-uploads"
+    ingest_queue_name: str = "opscopilot-ingest"
+    ingest_dlq_name: str = "opscopilot-ingest-dlq"
+    # How long a received message stays hidden from other workers while one works on it.
+    # Also how long a job stays locked: a worker that dies frees its job after this.
+    ingest_visibility_timeout: int = 120
+    ingest_max_attempts: int = 3  # failed attempts before a job is marked failed
+    # SQS moves a message to the dead-letter queue after this many receives without a delete,
+    # i.e. when the worker keeps dying before it can record anything. Above max_attempts, so
+    # ordinary failures are counted by our code first.
+    ingest_max_receives: int = 5
+    # A pending job with no message for this long is re-sent (its first send was lost).
+    ingest_stale_after_seconds: int = 120
+    max_upload_bytes: int = 20 * 1024 * 1024
+
     # Language models. Keys are SecretStr: printing or logging settings shows '**********'.
     # Groq is the primary provider; Gemini becomes the fallback only if its key is set.
     groq_api_key: SecretStr | None = None

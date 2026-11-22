@@ -120,3 +120,29 @@ def login(client: TestClient, email: str, password: str = PASSWORD) -> str:
     resp = client.post("/api/auth/login", json={"email": email, "password": password})
     assert resp.status_code == 200, resp.text
     return resp.json()["csrf_token"]
+
+
+@pytest.fixture
+def ingest_queues(monkeypatch):
+    """Fresh, uniquely named queues for one test (deleted afterwards), short timeouts, and a
+    test bucket. A running development worker listens on other queues, so it can't take
+    these messages, and one test's leftover messages can't reach the next."""
+    import uuid
+
+    from app.aws import get_client
+    from app.ingest import jobs
+
+    suffix = uuid.uuid4().hex[:8]
+    monkeypatch.setenv("UPLOAD_BUCKET", "opscopilot-uploads-test")
+    monkeypatch.setenv("INGEST_QUEUE_NAME", f"opscopilot-ingest-test-{suffix}")
+    monkeypatch.setenv("INGEST_DLQ_NAME", f"opscopilot-ingest-test-dlq-{suffix}")
+    monkeypatch.setenv("INGEST_VISIBILITY_TIMEOUT", "3")
+    get_settings.cache_clear()
+    queues = jobs.ensure_infrastructure()
+    yield queues
+    sqs = get_client("sqs")
+    for url in (queues.main, queues.dlq):
+        sqs.delete_queue(QueueUrl=url)
+    jobs._queues.clear()
+    monkeypatch.undo()
+    get_settings.cache_clear()

@@ -257,3 +257,69 @@ def test_progress_and_data_show_while_the_answer_is_still_being_written(live_app
         assert page.locator(".steps").count() == 0
     finally:
         app.dependency_overrides.clear()
+
+
+STEWARD = "data.steward@brindlewood.example"
+SAMPLES = Path(__file__).resolve().parents[2] / "data" / "reference"
+
+
+@pytest.fixture
+def worker_thread(ingest_queues):
+    """The ingestion worker, running in the background as it would in its own process."""
+    from app.worker import Worker
+
+    stop = threading.Event()
+
+    def loop():
+        worker = Worker()
+        while not stop.is_set():
+            worker.run_once(wait_seconds=1)
+
+    thread = threading.Thread(target=loop, daemon=True)
+    thread.start()
+    yield
+    stop.set()
+    thread.join(timeout=10)
+
+
+def test_a_steward_uploads_reviews_and_publishes_a_new_version(worker_thread, live_app, page):
+    """Real browser, API, S3/SQS (Floci) and worker: upload → background check → preview →
+    publish, plus a refused publish and a rejected file."""
+    url, passwords = live_app
+    page.goto(url)
+    sign_in(page, STEWARD, passwords[STEWARD])
+    page.get_by_role("button", name="Manage sources").click()
+    page.get_by_role("button", name="Stores and sales channels").click()
+
+    page.get_by_label("Manifest (YAML)").set_input_files(SAMPLES / "manifests" / "stores.yaml")
+    page.get_by_label("Rows (CSV)").set_input_files(
+        SAMPLES / "sample_uploads" / "stores_with_lisbon.csv"
+    )
+    page.get_by_role("button", name="Upload new version").click()
+    page.get_by_role("button", name="Publish v2").wait_for(timeout=20000)
+    preview = page.get_by_label("Version 2")
+    assert "8 → 9 rows" in preview.inner_text()
+    assert preview.get_by_role("cell", name="Lisbon Store").count() == 1
+    page.get_by_role("button", name="Publish v2").click()
+    preview.get_by_text("Published", exact=True).wait_for()
+
+    # Leaving out a store that published transactions use: preparing works, publishing doesn't.
+    page.get_by_label("Manifest (YAML)").set_input_files(SAMPLES / "manifests" / "stores.yaml")
+    page.get_by_label("Rows (CSV)").set_input_files(
+        SAMPLES / "sample_uploads" / "stores_without_london.csv"
+    )
+    page.get_by_role("button", name="Upload new version").click()
+    page.get_by_role("button", name="Publish v3").click(timeout=20000)
+    page.get_by_text("Can't publish:").wait_for()
+    assert "uses store_id 'S01'" in page.get_by_role("alert").inner_text()
+
+    page.get_by_role("button", name="Sales transactions").click()
+    page.get_by_label("Manifest (YAML)").set_input_files(
+        SAMPLES / "manifests" / "transactions.yaml"
+    )
+    page.get_by_label("Rows (CSV)").set_input_files(
+        SAMPLES / "invalid_uploads" / "transactions_with_errors.csv"
+    )
+    page.get_by_role("button", name="Upload new version").click()
+    page.get_by_text("This upload was rejected:").wait_for(timeout=20000)
+    assert "row 3, column unit_price" in page.get_by_role("alert").inner_text()

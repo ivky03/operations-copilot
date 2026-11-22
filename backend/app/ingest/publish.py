@@ -1,20 +1,28 @@
-"""Validate, load and publish dataset and document versions.
+"""Validate, load and publish dataset and document versions, in two steps.
 
-Publishing a dataset version, all in ONE database transaction:
-  1. validate the manifest, then the CSV rows against it;
-  2. check relationships against the referenced datasets' *published* versions;
-  3. create a typed table datasets.t_<source>_v<n> and bulk-load the rows (COPY);
-  4. build the value index (distinct values + aliases);
-  5. mark the new version published and the previous one superseded.
-If any step fails, Postgres rolls everything back, including the CREATE TABLE.
+1. **Prepare** (the background worker; slow): validate, then load and index, ending in `ready`.
+   For a dataset, in ONE database transaction:
+     - validate the manifest, then the CSV rows against it;
+     - check relationships against the referenced datasets' *published* versions;
+     - create a typed table datasets.t_<source>_v<n> and bulk-load the rows (COPY);
+     - build the value index (distinct values + aliases).
+   For a document: store the text, split it into chunks and embed them.
+   If any step fails, Postgres rolls everything back, including the CREATE TABLE.
+   A `ready` version is invisible to answers: they only read `published` (and, for document
+   history, `superseded`) versions.
+2. **Publish** (a steward, after previewing; fast): re-check that relationships still hold,
+   then mark the version published and the previous one superseded. Or **discard** it.
 
-Idempotent: re-publishing identical content (same SHA-256) is a no-op.
+The CLI runs both steps back to back (`publish_dataset`, `publish_document`).
+
+Idempotent: re-uploading identical content (same SHA-256) creates nothing new.
 Invalid uploads are recorded as an `invalid` version with their issues, so a steward can review
 them later; they never become visible to answers.
 """
 
 import hashlib
 import json
+import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime
 
@@ -27,6 +35,7 @@ from app.documents.index import index_document
 from app.ingest.manifest import Column, Manifest, parse_manifest
 from app.ingest.validate import Issue, validate_csv
 from app.models import (
+    DocChunk,
     DocumentContent,
     Source,
     SourceKind,
@@ -52,12 +61,13 @@ MAX_REPORTED_REFERENCE_ERRORS = 20
 @dataclass
 class PublishResult:
     source: str
-    status: str  # "published", "unchanged" or "invalid"
+    status: str  # "ready", "published", "unchanged" or "invalid"
     version: int | None = None
     issues: list[str] = field(default_factory=list)
     issue_count: int = 0
     row_count: int | None = None
     table: str | None = None
+    version_id: uuid.UUID | None = None
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -100,7 +110,9 @@ def _existing_with_hash(db: Session, source: Source, content_hash: str) -> Sourc
         select(SourceVersion).where(
             SourceVersion.source_id == source.id,
             SourceVersion.content_hash == content_hash,
-            SourceVersion.status.in_([VersionStatus.PUBLISHED, VersionStatus.SUPERSEDED]),
+            SourceVersion.status.in_(
+                [VersionStatus.READY, VersionStatus.PUBLISHED, VersionStatus.SUPERSEDED]
+            ),
         )
     )
 
@@ -258,27 +270,34 @@ def _build_value_index(
     return len(entries)
 
 
-def publish_dataset(
-    db: Session, manifest_data: dict, csv_bytes: bytes, actor: User | None = None
+def prepare_dataset(
+    db: Session,
+    manifest_data: dict,
+    csv_bytes: bytes,
+    actor: User | None = None,
+    expected_slug: str | None = None,
 ) -> PublishResult:
+    """Validate and load a dataset version, ending in `ready` (or `invalid`). Doesn't commit:
+    the caller commits, so a worker can mark its job done in the same transaction."""
     slug = str(manifest_data.get("source", "?")) if isinstance(manifest_data, dict) else "?"
     manifest, problems = parse_manifest(manifest_data)
     if manifest is None:
         return PublishResult(slug, "invalid", issues=problems, issue_count=len(problems))
+    if expected_slug and manifest.source != expected_slug:
+        msg = f"this manifest is for {manifest.source!r}, but it was uploaded to {expected_slug!r}"
+        return PublishResult(expected_slug, "invalid", issues=[msg], issue_count=1)
 
     source = _lock_source(db, manifest.source, SourceKind.DATASET)
     if source is None:
-        db.rollback()
         msg = f"dataset {manifest.source!r} is not registered (an administrator registers sources)"
         return PublishResult(manifest.source, "invalid", issues=[msg], issue_count=1)
 
     canonical_manifest = json.dumps(manifest.model_dump(mode="json"), sort_keys=True).encode()
     content_hash = _sha256(canonical_manifest, csv_bytes)
     if existing := _existing_with_hash(db, source, content_hash):
-        db.rollback()
-        return PublishResult(manifest.source, "unchanged", version=existing.version)
+        return _already_have(manifest.source, existing)
     if rejected := _previously_invalid(db, source, content_hash):
-        db.rollback()  # same broken file again: report the stored issues, record nothing new
+        # Same broken file again: report the stored issues, record nothing new.
         return PublishResult(
             manifest.source,
             "invalid",
@@ -297,7 +316,6 @@ def publish_dataset(
     if count:
         number = _record_invalid(db, source, content_hash, issues, count)
         audit.record(db, actor, "version.invalid", f"{manifest.source} v{number}", issues=count)
-        db.commit()
         return PublishResult(manifest.source, "invalid", number, issues, count)
 
     number = _next_version(db, source)
@@ -315,14 +333,164 @@ def publish_dataset(
         "row_count": len(checked.rows),
         "value_index_entries": indexed,
     }
-    _mark_published(db, source, version)
-    audit.record(
-        db, actor, "version.publish", f"{manifest.source} v{number}", rows=len(checked.rows)
-    )
-    db.commit()
+    audit.record(db, actor, "version.ready", f"{manifest.source} v{number}", rows=len(checked.rows))
     return PublishResult(
-        manifest.source, "published", number, row_count=len(checked.rows), table=table
+        manifest.source,
+        "ready",
+        number,
+        row_count=len(checked.rows),
+        table=table,
+        version_id=version.id,
     )
+
+
+def _already_have(slug: str, existing: SourceVersion) -> PublishResult:
+    """Identical content was uploaded before: re-uploading is a no-op (idempotent)."""
+    status = "ready" if existing.status == VersionStatus.READY else "unchanged"
+    return PublishResult(slug, status, existing.version, version_id=existing.id)
+
+
+def _missing_references_now(db: Session, manifest: Manifest, table: str) -> list[str]:
+    """Re-check relationships against what is published *now*: a referenced dataset may have
+    been republished between preparing this version and publishing it. Done in SQL against
+    the loaded table, so it's fast even for large tables."""
+    issues = []
+    staged = f"{DATASET_SCHEMA}.{_quote(table)}"
+    for rel in manifest.relationships:
+        target = published_version(db, rel.target_source)
+        if target is None:
+            issues.append(f"{rel.column}: {rel.target_source} has no published version")
+            continue
+        target_table = f"{DATASET_SCHEMA}.{_quote(target.meta['table'])}"
+        col, tcol = _quote(rel.column), _quote(rel.target_column)
+        missing = list(
+            db.scalars(
+                text(
+                    f"SELECT DISTINCT s.{col} FROM {staged} s WHERE s.{col} IS NOT NULL "  # noqa: S608 - generated identifiers
+                    f"AND NOT EXISTS (SELECT 1 FROM {target_table} t WHERE t.{tcol} = s.{col}) "
+                    f"ORDER BY 1 LIMIT {MAX_REPORTED_REFERENCE_ERRORS}"
+                )
+            )
+        )
+        issues += [
+            f"{rel.column}: {v!r} is no longer in {rel.references} (v{target.version})"
+            for v in missing
+        ]
+    for ref in sorted(manifest.external_metric_refs()):
+        source_slug, metric = ref.split(".")
+        target = published_version(db, source_slug)
+        names = {m["name"] for m in target.meta["manifest"].get("metrics", [])} if target else set()
+        if metric not in names:
+            issues.append(f"derived metric uses {ref}, which is no longer published")
+    return issues
+
+
+def _dependents_broken_now(db: Session, slug: str, manifest: Manifest, table: str) -> list[str]:
+    """The other direction: published datasets that reference *this* one (transactions →
+    stores) must still find every key in the new version, or their joins would silently
+    drop rows. E.g. a stores upload that leaves out a store transactions still use."""
+    issues = []
+    new_table = f"{DATASET_SCHEMA}.{_quote(table)}"
+    new_columns = {c.name for c in manifest.columns}
+    dependents = db.execute(
+        select(Source.slug, SourceVersion)
+        .join(Source)
+        .where(
+            SourceVersion.status == VersionStatus.PUBLISHED,
+            Source.kind == SourceKind.DATASET,
+            Source.slug != slug,
+        )
+    ).all()
+    for dep_slug, dep in dependents:
+        for rel in Manifest.model_validate(dep.meta["manifest"]).relationships:
+            if rel.target_source != slug:
+                continue
+            if rel.target_column not in new_columns:
+                issues.append(f"{dep_slug}.{rel.column} joins on {rel.references}, which is gone")
+                continue
+            dep_table = f"{DATASET_SCHEMA}.{_quote(dep.meta['table'])}"
+            col, tcol = _quote(rel.column), _quote(rel.target_column)
+            missing = db.scalars(
+                text(
+                    f"SELECT DISTINCT d.{col} FROM {dep_table} d WHERE d.{col} IS NOT NULL "  # noqa: S608 - generated identifiers
+                    f"AND NOT EXISTS (SELECT 1 FROM {new_table} n WHERE n.{tcol} = d.{col}) "
+                    f"ORDER BY 1 LIMIT {MAX_REPORTED_REFERENCE_ERRORS}"
+                )
+            )
+            issues += [
+                f"{dep_slug} (v{dep.version}) uses {rel.column} {v!r}, "
+                "which this version no longer has"
+                for v in missing
+            ]
+    return issues
+
+
+class PublishError(Exception):
+    def __init__(self, issues: list[str]):
+        super().__init__("; ".join(issues))
+        self.issues = issues
+
+
+def publish_version(db: Session, version: SourceVersion, actor: User | None = None) -> None:
+    """Make a `ready` version the one answers use. Doesn't commit (the caller does).
+
+    Raises PublishError if it can't be published: not ready, a newer version is already
+    published, or (datasets) its relationships no longer hold.
+    """
+    source = db.scalar(select(Source).where(Source.id == version.source_id).with_for_update())
+    db.refresh(version)  # read the status *after* taking the lock
+    if version.status != VersionStatus.READY:
+        raise PublishError([f"v{version.version} is {version.status.value}, not ready"])
+    current = published_version(db, source.slug)
+    if current and current.version > version.version:
+        raise PublishError([f"a newer version (v{current.version}) is already published"])
+    if source.kind == SourceKind.DATASET:
+        manifest = Manifest.model_validate(version.meta["manifest"])
+        table = version.meta["table"]
+        issues = _missing_references_now(db, manifest, table)
+        issues += _dependents_broken_now(db, source.slug, manifest, table)
+        if issues:
+            raise PublishError(issues)
+    _mark_published(db, source, version)
+    audit.record(db, actor, "version.publish", f"{source.slug} v{version.version}")
+
+
+def discard_version(db: Session, version: SourceVersion, actor: User | None = None) -> None:
+    """Drop a `ready` version the steward decided not to publish: its loaded table, value index
+    and search chunks are deleted; the version row stays as a record. Doesn't commit."""
+    source = db.scalar(select(Source).where(Source.id == version.source_id).with_for_update())
+    db.refresh(version)
+    if version.status != VersionStatus.READY:
+        raise PublishError(
+            [f"v{version.version} is {version.status.value}; only ready versions can be discarded"]
+        )
+    if table := version.meta.get("table"):
+        db.execute(text(f"DROP TABLE IF EXISTS {DATASET_SCHEMA}.{_quote(table)}"))
+    db.query(ValueIndexEntry).filter(ValueIndexEntry.source_version_id == version.id).delete()
+    db.query(DocChunk).filter(DocChunk.source_version_id == version.id).delete()
+    db.query(DocumentContent).filter(DocumentContent.source_version_id == version.id).delete()
+    version.status = VersionStatus.DISCARDED
+    audit.record(db, actor, "version.discard", f"{source.slug} v{version.version}")
+
+
+def _prepare_then_publish(db: Session, result: PublishResult, actor: User | None) -> PublishResult:
+    """The synchronous path (CLI, tests): prepare, publish straight away, commit."""
+    if result.status == "ready":
+        version = db.get(SourceVersion, result.version_id)
+        try:
+            publish_version(db, version, actor)
+        except PublishError as e:
+            db.rollback()
+            return PublishResult(result.source, "invalid", result.version, e.issues, len(e.issues))
+        result.status = "published"
+    db.commit()
+    return result
+
+
+def publish_dataset(
+    db: Session, manifest_data: dict, csv_bytes: bytes, actor: User | None = None
+) -> PublishResult:
+    return _prepare_then_publish(db, prepare_dataset(db, manifest_data, csv_bytes, actor), actor)
 
 
 # ----------------------------------------------------------------------------- documents
@@ -338,32 +506,36 @@ def _split_front_matter(raw: str) -> tuple[dict, str]:
     return meta, body.strip() + "\n"
 
 
-def publish_document(db: Session, content: bytes, actor: User | None = None) -> PublishResult:
+def prepare_document(
+    db: Session, content: bytes, actor: User | None = None, expected_slug: str | None = None
+) -> PublishResult:
+    """Validate, store and index (chunk + embed) a document version, ending in `ready`.
+    Doesn't commit."""
     try:
         meta, body = _split_front_matter(content.decode("utf-8"))
     except (UnicodeDecodeError, ValueError, yaml.YAMLError) as e:
-        return PublishResult("?", "invalid", issues=[str(e)], issue_count=1)
+        return PublishResult(expected_slug or "?", "invalid", issues=[str(e)], issue_count=1)
     missing = [k for k in ("doc_id", "version", "title", "effective_date") if k not in meta]
-    slug = str(meta.get("doc_id", "?"))
+    slug = str(meta.get("doc_id", expected_slug or "?"))
     if missing:
         return PublishResult(
             slug, "invalid", issues=[f"metadata is missing {missing}"], issue_count=1
         )
+    if expected_slug and slug != expected_slug:
+        msg = f"this document's doc_id is {slug!r}, but it was uploaded to {expected_slug!r}"
+        return PublishResult(expected_slug, "invalid", issues=[msg], issue_count=1)
 
     source = _lock_source(db, slug, SourceKind.DOCUMENT)
     if source is None:
-        db.rollback()
         msg = f"document {slug!r} is not registered (an administrator registers sources)"
         return PublishResult(slug, "invalid", issues=[msg], issue_count=1)
 
     content_hash = _sha256(content)
     if existing := _existing_with_hash(db, source, content_hash):
-        db.rollback()
-        return PublishResult(slug, "unchanged", version=existing.version)
+        return _already_have(slug, existing)
 
     expected = _next_version(db, source)
-    if int(meta["version"]) != expected:
-        db.rollback()
+    if str(meta["version"]) != str(expected):
         msg = f"document says version {meta['version']}, but the next version is {expected}"
         return PublishResult(slug, "invalid", issues=[msg], issue_count=1)
 
@@ -378,9 +550,11 @@ def publish_document(db: Session, content: bytes, actor: User | None = None) -> 
     db.add(version)
     db.flush()
     db.add(DocumentContent(source_version_id=version.id, body=body))
-    # Same transaction: the version becomes visible together with its search index.
     chunks = index_document(db, version, body)
-    _mark_published(db, source, version)
-    audit.record(db, actor, "version.publish", f"{slug} v{expected}", chunks=chunks)
-    db.commit()
-    return PublishResult(slug, "published", expected)
+    version.meta = {**clean_meta, "chunks": chunks}
+    audit.record(db, actor, "version.ready", f"{slug} v{expected}", chunks=chunks)
+    return PublishResult(slug, "ready", expected, version_id=version.id)
+
+
+def publish_document(db: Session, content: bytes, actor: User | None = None) -> PublishResult:
+    return _prepare_then_publish(db, prepare_document(db, content, actor), actor)
