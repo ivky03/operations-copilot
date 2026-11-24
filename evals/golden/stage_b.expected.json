@@ -1,0 +1,963 @@
+{
+  "calc-b01": [
+    {
+      "query": {
+        "group_by": [
+          "carrier"
+        ],
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "carrier": "Hexa Express",
+          "on_time_delivery_rate": 0.85
+        },
+        {
+          "carrier": "Parcelwise UK",
+          "on_time_delivery_rate": 0.8182
+        },
+        {
+          "carrier": "Rhein Logistik",
+          "on_time_delivery_rate": 0.8723
+        }
+      ]
+    }
+  ],
+  "calc-b02": [
+    {
+      "query": {
+        "filters": {
+          "day": [
+            "2026-03-31"
+          ]
+        },
+        "group_by": [
+          "country"
+        ],
+        "metric": "units_on_hand"
+      },
+      "rows": [
+        {
+          "country": "France",
+          "units_on_hand": 184
+        },
+        {
+          "country": "Germany",
+          "units_on_hand": 312
+        },
+        {
+          "country": "Ireland",
+          "units_on_hand": 212
+        },
+        {
+          "country": "Netherlands",
+          "units_on_hand": 171
+        },
+        {
+          "country": "Spain",
+          "units_on_hand": 210
+        },
+        {
+          "country": "United Kingdom",
+          "units_on_hand": 372
+        }
+      ]
+    }
+  ],
+  "calc-b03": [
+    {
+      "query": {
+        "group_by": [
+          "month"
+        ],
+        "metric": "absence_rate"
+      },
+      "rows": [
+        {
+          "absence_rate": 0.0599,
+          "month": "2026-01"
+        },
+        {
+          "absence_rate": 0.0668,
+          "month": "2026-02"
+        },
+        {
+          "absence_rate": 0.0787,
+          "month": "2026-03"
+        },
+        {
+          "absence_rate": 0.0713,
+          "month": "2026-04"
+        }
+      ]
+    }
+  ],
+  "calc-b04": [
+    {
+      "query": {
+        "group_by": [
+          "supplier_name"
+        ],
+        "metric": "supplier_late_rate"
+      },
+      "rows": [
+        {
+          "supplier_late_rate": 0.25,
+          "supplier_name": "Clay & Glass Studio"
+        },
+        {
+          "supplier_late_rate": 0.0588,
+          "supplier_name": "Ferro Kitchenware"
+        },
+        {
+          "supplier_late_rate": 0.25,
+          "supplier_name": "Lumen Works"
+        },
+        {
+          "supplier_late_rate": 0.5,
+          "supplier_name": "Oakhaus Furniture"
+        },
+        {
+          "supplier_late_rate": 0.2,
+          "supplier_name": "Porto Linen Co."
+        }
+      ]
+    }
+  ],
+  "calc-b05": [
+    {
+      "query": {
+        "metric": "open_purchase_order_count"
+      },
+      "rows": [
+        {
+          "open_purchase_order_count": 7
+        }
+      ]
+    }
+  ],
+  "calc-b06": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-01",
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "department"
+        ],
+        "metric": "budgeted_cost"
+      },
+      "rows": [
+        {
+          "budgeted_cost": 208000.0,
+          "department": "Customer Service"
+        },
+        {
+          "budgeted_cost": 207000.0,
+          "department": "Fulfilment"
+        },
+        {
+          "budgeted_cost": 238000.0,
+          "department": "Head Office"
+        },
+        {
+          "budgeted_cost": 172500.0,
+          "department": "Marketing"
+        },
+        {
+          "budgeted_cost": 288500.0,
+          "department": "Online"
+        },
+        {
+          "budgeted_cost": 255500.0,
+          "department": "Stores"
+        }
+      ]
+    },
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-01",
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "department"
+        ],
+        "metric": "actual_cost"
+      },
+      "rows": [
+        {
+          "actual_cost": 199234.9,
+          "department": "Customer Service"
+        },
+        {
+          "actual_cost": 210140.91,
+          "department": "Fulfilment"
+        },
+        {
+          "actual_cost": 229319.32,
+          "department": "Head Office"
+        },
+        {
+          "actual_cost": 162762.75,
+          "department": "Marketing"
+        },
+        {
+          "actual_cost": 283403.91,
+          "department": "Online"
+        },
+        {
+          "actual_cost": 250241.14,
+          "department": "Stores"
+        }
+      ]
+    }
+  ],
+  "calc-b07": [
+    {
+      "query": {
+        "group_by": [
+          "channel"
+        ],
+        "metric": "average_csat"
+      },
+      "rows": [
+        {
+          "average_csat": 3.94,
+          "channel": "chat"
+        },
+        {
+          "average_csat": 3.96,
+          "channel": "email"
+        },
+        {
+          "average_csat": 4.22,
+          "channel": "phone"
+        }
+      ]
+    }
+  ],
+  "calc-b08": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "store_name"
+        ],
+        "metric": "sick_shift_count"
+      },
+      "rows": [
+        {
+          "sick_shift_count": 3,
+          "store_name": "Amsterdam Store"
+        },
+        {
+          "sick_shift_count": 3,
+          "store_name": "DE Online"
+        },
+        {
+          "sick_shift_count": 2,
+          "store_name": "Dublin Store"
+        },
+        {
+          "sick_shift_count": 1,
+          "store_name": "London Flagship"
+        },
+        {
+          "sick_shift_count": 5,
+          "store_name": "Madrid Store"
+        },
+        {
+          "sick_shift_count": 2,
+          "store_name": "UK Online"
+        },
+        {
+          "sick_shift_count": 4,
+          "store_name": null
+        }
+      ]
+    }
+  ],
+  "calc-b09": [
+    {
+      "query": {
+        "group_by": [
+          "country"
+        ],
+        "metric": "average_delivery_days"
+      },
+      "rows": [
+        {
+          "average_delivery_days": 7.25,
+          "country": "France"
+        },
+        {
+          "average_delivery_days": 6.26,
+          "country": "Germany"
+        },
+        {
+          "average_delivery_days": 5.09,
+          "country": "United Kingdom"
+        }
+      ]
+    }
+  ],
+  "calc-b10": [
+    {
+      "query": {
+        "group_by": [
+          "month"
+        ],
+        "metric": "net_sales_target"
+      },
+      "rows": [
+        {
+          "month": "2026-01",
+          "net_sales_target": 14500.0
+        },
+        {
+          "month": "2026-02",
+          "net_sales_target": 13800.0
+        },
+        {
+          "month": "2026-03",
+          "net_sales_target": 21600.0
+        },
+        {
+          "month": "2026-04",
+          "net_sales_target": 13900.0
+        }
+      ]
+    }
+  ],
+  "calc-b11": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "category"
+        ],
+        "metric": "stockout_days"
+      },
+      "rows": [
+        {
+          "category": "Decor",
+          "stockout_days": 29
+        },
+        {
+          "category": "Furniture",
+          "stockout_days": 13
+        },
+        {
+          "category": "Kitchen",
+          "stockout_days": 23
+        },
+        {
+          "category": "Lighting",
+          "stockout_days": 6
+        },
+        {
+          "category": "Textiles",
+          "stockout_days": 16
+        }
+      ]
+    }
+  ],
+  "calc-b12": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "group_by": [
+          "category"
+        ],
+        "metric": "ticket_count"
+      },
+      "rows": [
+        {
+          "category": "Billing",
+          "ticket_count": 5
+        },
+        {
+          "category": "Delivery",
+          "ticket_count": 4
+        },
+        {
+          "category": "Other",
+          "ticket_count": 18
+        },
+        {
+          "category": "Product question",
+          "ticket_count": 35
+        },
+        {
+          "category": "Returns",
+          "ticket_count": 13
+        },
+        {
+          "category": "Store visit",
+          "ticket_count": 11
+        }
+      ]
+    }
+  ],
+  "comb-b01": [
+    {
+      "query": {
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "on_time_delivery_rate": 0.85
+        }
+      ]
+    }
+  ],
+  "comb-b02": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "absence_rate"
+      },
+      "rows": [
+        {
+          "absence_rate": 0.0787
+        }
+      ]
+    }
+  ],
+  "comb-b03": [
+    {
+      "query": {
+        "metric": "average_csat"
+      },
+      "rows": [
+        {
+          "average_csat": 4.04
+        }
+      ]
+    }
+  ],
+  "comb-b04": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "actual_cost"
+      },
+      "rows": [
+        {
+          "actual_cost": null
+        }
+      ]
+    }
+  ],
+  "comb-b05": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "London Flagship"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 44.0
+        }
+      ]
+    },
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "London Flagship"
+          ]
+        },
+        "metric": "dashboard_revenue"
+      },
+      "rows": [
+        {
+          "dashboard_revenue": 941.0
+        }
+      ]
+    }
+  ],
+  "comb-b06": [
+    {
+      "query": {
+        "group_by": [
+          "supplier_name"
+        ],
+        "metric": "supplier_late_rate"
+      },
+      "rows": [
+        {
+          "supplier_late_rate": 0.25,
+          "supplier_name": "Clay & Glass Studio"
+        },
+        {
+          "supplier_late_rate": 0.0588,
+          "supplier_name": "Ferro Kitchenware"
+        },
+        {
+          "supplier_late_rate": 0.25,
+          "supplier_name": "Lumen Works"
+        },
+        {
+          "supplier_late_rate": 0.5,
+          "supplier_name": "Oakhaus Furniture"
+        },
+        {
+          "supplier_late_rate": 0.2,
+          "supplier_name": "Porto Linen Co."
+        }
+      ]
+    }
+  ],
+  "fu-b01#1": [
+    {
+      "query": {
+        "group_by": [
+          "carrier"
+        ],
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "carrier": "Hexa Express",
+          "on_time_delivery_rate": 0.85
+        },
+        {
+          "carrier": "Parcelwise UK",
+          "on_time_delivery_rate": 0.8182
+        },
+        {
+          "carrier": "Rhein Logistik",
+          "on_time_delivery_rate": 0.8723
+        }
+      ]
+    }
+  ],
+  "fu-b01#2": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "group_by": [
+          "carrier"
+        ],
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "carrier": "Hexa Express",
+          "on_time_delivery_rate": 0.8333
+        },
+        {
+          "carrier": "Parcelwise UK",
+          "on_time_delivery_rate": 0.7778
+        },
+        {
+          "carrier": "Rhein Logistik",
+          "on_time_delivery_rate": 0.7692
+        }
+      ]
+    }
+  ],
+  "fu-b02#1": [
+    {
+      "query": {
+        "filters": {
+          "store_name": [
+            "Berlin Store"
+          ]
+        },
+        "metric": "headcount"
+      },
+      "rows": [
+        {
+          "headcount": 5
+        }
+      ]
+    }
+  ],
+  "fu-b02#2": [
+    {
+      "query": {
+        "filters": {
+          "store_name": [
+            "Dublin Store"
+          ]
+        },
+        "metric": "headcount"
+      },
+      "rows": [
+        {
+          "headcount": 5
+        }
+      ]
+    }
+  ],
+  "fu-b03#1": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02"
+          ]
+        },
+        "group_by": [
+          "department"
+        ],
+        "metric": "budgeted_cost"
+      },
+      "rows": [
+        {
+          "budgeted_cost": 82500.0,
+          "department": "Customer Service"
+        },
+        {
+          "budgeted_cost": 101000.0,
+          "department": "Fulfilment"
+        },
+        {
+          "budgeted_cost": 73000.0,
+          "department": "Head Office"
+        },
+        {
+          "budgeted_cost": 53500.0,
+          "department": "Marketing"
+        },
+        {
+          "budgeted_cost": 70000.0,
+          "department": "Online"
+        },
+        {
+          "budgeted_cost": 95000.0,
+          "department": "Stores"
+        }
+      ]
+    }
+  ],
+  "fu-b03#2": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02"
+          ]
+        },
+        "group_by": [
+          "department"
+        ],
+        "metric": "actual_cost"
+      },
+      "rows": [
+        {
+          "actual_cost": 78175.33,
+          "department": "Customer Service"
+        },
+        {
+          "actual_cost": 102599.78,
+          "department": "Fulfilment"
+        },
+        {
+          "actual_cost": 75922.83,
+          "department": "Head Office"
+        },
+        {
+          "actual_cost": 53039.2,
+          "department": "Marketing"
+        },
+        {
+          "actual_cost": 75811.26,
+          "department": "Online"
+        },
+        {
+          "actual_cost": 99817.45,
+          "department": "Stores"
+        }
+      ]
+    }
+  ],
+  "now-001": [
+    {
+      "query": {
+        "filters": {
+          "store_name": [
+            "Berlin Store"
+          ]
+        },
+        "metric": "headcount"
+      },
+      "rows": [
+        {
+          "headcount": 5
+        }
+      ]
+    }
+  ],
+  "now-002": [
+    {
+      "query": {
+        "metric": "average_csat"
+      },
+      "rows": [
+        {
+          "average_csat": 4.04
+        }
+      ]
+    }
+  ],
+  "tc-001": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "London Flagship"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 44.0
+        }
+      ]
+    }
+  ],
+  "tc-002": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "London Flagship"
+          ]
+        },
+        "metric": "dashboard_revenue"
+      },
+      "rows": [
+        {
+          "dashboard_revenue": 941.0
+        }
+      ]
+    }
+  ],
+  "tc-003": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "purchase_order_count"
+      },
+      "rows": [
+        {
+          "purchase_order_count": 31
+        }
+      ]
+    }
+  ],
+  "tc-004": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "order_count"
+      },
+      "rows": [
+        {
+          "order_count": 47
+        }
+      ]
+    }
+  ],
+  "tc-005": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "Berlin Store"
+          ]
+        },
+        "metric": "net_sales_target"
+      },
+      "rows": [
+        {
+          "net_sales_target": 2700.0
+        }
+      ]
+    }
+  ],
+  "tc-006": [
+    {
+      "query": {
+        "filters": {
+          "day": [
+            "2026-04-30"
+          ],
+          "product_name": [
+            "Brass Floor Lamp"
+          ]
+        },
+        "metric": "units_on_hand"
+      },
+      "rows": [
+        {
+          "units_on_hand": 71
+        }
+      ]
+    }
+  ],
+  "vg-b01": [
+    {
+      "query": {
+        "filters": {
+          "contract_type": [
+            "part_time"
+          ],
+          "store_name": [
+            "Dublin Store"
+          ]
+        },
+        "metric": "headcount"
+      },
+      "rows": [
+        {
+          "headcount": 2
+        }
+      ]
+    }
+  ],
+  "vg-b02": [
+    {
+      "query": {
+        "filters": {
+          "carrier": [
+            "Rhein Logistik"
+          ]
+        },
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "on_time_delivery_rate": 0.8723
+        }
+      ]
+    }
+  ],
+  "vg-b03": [
+    {
+      "any_of": [
+        {
+          "query": {
+            "filters": {
+              "absence_reason": [
+                "no_show"
+              ],
+              "month": [
+                "2026-04"
+              ]
+            },
+            "metric": "shift_count"
+          },
+          "rows": [
+            {
+              "shift_count": 7
+            }
+          ]
+        },
+        {
+          "query": {
+            "filters": {
+              "absence_reason": [
+                "no_show"
+              ],
+              "month": [
+                "2026-04"
+              ]
+            },
+            "metric": "absence_count"
+          },
+          "rows": [
+            {
+              "absence_count": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "vg-b04": [
+    {
+      "query": {
+        "filters": {
+          "department": [
+            "Marketing"
+          ],
+          "month": [
+            "2026-01",
+            "2026-02",
+            "2026-03"
+          ]
+        },
+        "metric": "actual_cost"
+      },
+      "rows": [
+        {
+          "actual_cost": 162762.75
+        }
+      ]
+    }
+  ]
+}

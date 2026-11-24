@@ -2,22 +2,31 @@
 
 The copilot computes answers by compiling a query plan to SQL. This module computes the same
 metrics a completely different way: plain pandas over the CSV files, written from the metric
-definitions document, sharing no code with the application. If both agree, we have real
+definitions (the Metric Definitions document for Stage A, the manifests' plain-English
+descriptions for Stage B), sharing no code with the application. If both agree, we have real
 evidence the copilot is correct. A bug would have to be made identically twice to hide.
 
-Supported dimensions: month (YYYY-MM), country, region, channel, store_name, category,
-product_name. Filters: {"month": ["2026-02", ...], "<dimension>": [values]}.
+Stage A: the four sales tables. Stage B: Stage A unchanged plus eleven operational tables.
+
+Dimensions: month (YYYY-MM) and day (YYYY-MM-DD) of the metric's own date column, plus any
+column of the metric's table or of a table it links to (stores, products, suppliers, staff).
+The metric's own table wins a name clash: a support ticket's "channel" is email/chat/phone,
+not the store's channel. A name found only on two linked tables is ambiguous and rejected.
+Filters: {"month": ["2026-02", ...], "<dimension>": [values]}.
 """
 
 from dataclasses import dataclass, field
 from functools import cached_property
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-DEFAULT_DATA = Path(__file__).resolve().parents[2] / "data" / "reference" / "tables"
+ROOT = Path(__file__).resolve().parents[2] / "data"
+DEFAULT_DATA = ROOT / "reference" / "tables"
+STAGE_B_DATA = ROOT / "stage_b" / "tables"
 
-DIMENSIONS = {"month", "country", "region", "channel", "store_name", "category", "product_name"}
+# ---------------------------------------------------------------------------- Stage A
 CURRENCY_METRICS = {
     "gross_sales",
     "cancellation_value",
@@ -25,7 +34,6 @@ CURRENCY_METRICS = {
     "net_sales",
     "average_order_value",
 }
-RATIO_METRICS = {"cancellation_rate"}
 BASE_METRICS = {
     "gross_sales",
     "cancellation_value",
@@ -40,7 +48,132 @@ DERIVED_METRICS = {
     "average_order_value": ("gross_sales", "order_count"),
     "cancellation_rate": ("cancelled_order_count", "order_count"),
 }
-METRICS = BASE_METRICS | set(DERIVED_METRICS)
+STAGE_A_METRICS = BASE_METRICS | set(DERIVED_METRICS)
+STAGE_A_DIMENSIONS = {
+    "month",
+    "country",
+    "region",
+    "channel",
+    "store_name",
+    "category",
+    "product_name",
+}
+
+# ---------------------------------------------------------------------------- Stage B
+# metric -> (table, which rows count, column, how). Written from each metric's description.
+# how: sum | count (non-empty values, like SQL COUNT) | nunique | mean.
+# Sums over only empty values stay empty (April's actual cost is unknown, not zero).
+_ALL = None
+STAGE_B_SPECS = {
+    # Purchasing
+    "purchase_value": ("purchase_orders", _ALL, "_purchase_value", "sum"),
+    "units_ordered": ("purchase_orders", _ALL, "quantity_ordered", "sum"),
+    "units_received": ("purchase_orders", _ALL, "quantity_received", "sum"),
+    "purchase_order_count": ("purchase_orders", _ALL, "po_number", "nunique"),
+    "received_purchase_order_count": (
+        "purchase_orders",
+        lambda d: ~d["status"].isin(["open", "cancelled"]),
+        "po_number",
+        "nunique",
+    ),
+    "late_purchase_order_count": (
+        "purchase_orders",
+        lambda d: d["days_late"] > 0,
+        "po_number",
+        "nunique",
+    ),
+    "open_purchase_order_count": (
+        "purchase_orders",
+        lambda d: d["status"] == "open",
+        "po_number",
+        "nunique",
+    ),
+    "supplier_count": ("suppliers", _ALL, "supplier_id", "nunique"),
+    "average_lead_time_days": ("suppliers", _ALL, "lead_time_days", "mean"),
+    # Stock (point in time: filter to one day)
+    "units_on_hand": ("inventory_snapshots", _ALL, "units_on_hand", "sum"),
+    "units_on_order": ("inventory_snapshots", _ALL, "units_on_order", "sum"),
+    "stockout_days": (
+        "inventory_snapshots",
+        lambda d: d["units_on_hand"] == 0,
+        "product_id",
+        "count",
+    ),
+    # Promotions
+    "promotion_count": ("promotions", _ALL, "promo_code", "nunique"),
+    "average_discount_pct": ("promotions", _ALL, "discount_pct", "mean"),
+    # People
+    "headcount": ("staff", lambda d: d["end_date"].isna(), "employee_id", "nunique"),
+    "employees_any_time": ("staff", _ALL, "employee_id", "nunique"),
+    "contracted_hours": ("staff", lambda d: d["end_date"].isna(), "weekly_contract_hours", "sum"),
+    "shift_count": ("shifts", _ALL, "shift_id", "count"),
+    "hours_scheduled": ("shifts", _ALL, "scheduled_hours", "sum"),
+    "hours_worked": ("shifts", _ALL, "worked_hours", "sum"),
+    "absence_count": ("shifts", lambda d: d["worked_hours"] == 0, "shift_id", "count"),
+    "sick_shift_count": ("shifts", lambda d: d["absence_reason"] == "sick", "shift_id", "count"),
+    # Deliveries
+    "shipment_count": ("shipments", _ALL, "shipment_id", "count"),
+    "delivered_count": ("shipments", lambda d: d["delivered_date"].notna(), "shipment_id", "count"),
+    "on_time_count": (
+        "shipments",
+        lambda d: d["delivered_date"].notna() & (d["delivered_date"] <= d["promised_date"]),
+        "shipment_id",
+        "count",
+    ),
+    "average_delivery_days": ("shipments", _ALL, "delivery_days", "mean"),
+    # Customer service
+    "ticket_count": ("support_tickets", _ALL, "ticket_id", "count"),
+    "open_ticket_count": ("support_tickets", lambda d: d["closed_at"].isna(), "ticket_id", "count"),
+    "average_first_response_minutes": ("support_tickets", _ALL, "first_response_minutes", "mean"),
+    "average_resolution_hours": ("support_tickets", _ALL, "resolution_hours", "mean"),
+    "average_csat": ("support_tickets", _ALL, "csat_score", "mean"),
+    "csat_responses": ("support_tickets", _ALL, "csat_score", "count"),
+    # Dashboards, plans and budgets
+    "dashboard_revenue": ("sales_daily_summary", _ALL, "dashboard_revenue", "sum"),
+    "dashboard_orders": ("sales_daily_summary", _ALL, "orders_placed", "sum"),
+    "net_sales_target": ("sales_targets", _ALL, "net_sales_target", "sum"),
+    "budgeted_cost": ("budgets", _ALL, "budget_eur", "sum"),
+    "actual_cost": ("budgets", _ALL, "actual_eur", "sum"),
+}
+STAGE_B_DERIVED = {
+    "absence_rate": ("absence_count", "shift_count"),
+    "on_time_delivery_rate": ("on_time_count", "delivered_count"),
+    "supplier_late_rate": ("late_purchase_order_count", "received_purchase_order_count"),
+}
+STAGE_B_DATE = {
+    "purchase_orders": "ordered_date",
+    "inventory_snapshots": "snapshot_date",
+    "promotions": "start_date",
+    "staff": "start_date",
+    "shifts": "shift_date",
+    "shipments": "shipped_date",
+    "support_tickets": "opened_at",
+    "sales_daily_summary": "summary_date",
+    "sales_targets": "target_month",
+    "budgets": "budget_month",
+}
+# key column -> the table it links to (the declared relationships)
+LINKS = {
+    "store_id": "stores",
+    "product_id": "products",
+    "supplier_id": "suppliers",
+    "employee_id": "staff",
+}
+
+RATIO_METRICS = {"cancellation_rate", *STAGE_B_DERIVED}
+COUNT_METRICS = {
+    "units_sold",
+    "order_count",
+    "cancelled_order_count",
+    "units_returned",
+    *(m for m, (_, _, _, how) in STAGE_B_SPECS.items() if how in {"count", "nunique"}),
+    "units_ordered",
+    "units_received",
+    "units_on_hand",
+    "units_on_order",
+    "dashboard_orders",
+}
+METRICS = STAGE_A_METRICS | set(STAGE_B_SPECS) | set(STAGE_B_DERIVED)
 
 
 @dataclass
@@ -54,15 +187,22 @@ class Query:
     def __post_init__(self) -> None:
         if self.metric not in METRICS:
             raise ValueError(f"unknown metric {self.metric!r}")
-        unknown = (set(self.group_by) | set(self.filters)) - DIMENSIONS
-        if unknown:
-            raise ValueError(f"unknown dimensions {sorted(unknown)}")
+        if self.metric in STAGE_A_METRICS:
+            unknown = (set(self.group_by) | set(self.filters)) - STAGE_A_DIMENSIONS
+            if unknown:
+                raise ValueError(f"unknown dimensions {sorted(unknown)}")
 
 
 class Oracle:
-    def __init__(self, data_dir: Path = DEFAULT_DATA) -> None:
+    def __init__(self, data_dir: Path = DEFAULT_DATA, stage_b_dir: Path | None = None) -> None:
         self.data_dir = data_dir
+        self.stage_b_dir = stage_b_dir
 
+    @classmethod
+    def for_stage(cls, stage: str) -> "Oracle":
+        return cls(DEFAULT_DATA, STAGE_B_DATA if stage == "stage_b" else None)
+
+    # ------------------------------------------------------------------ Stage A (unchanged)
     @cached_property
     def _facts(self) -> dict[str, pd.DataFrame]:
         d = self.data_dir
@@ -104,6 +244,55 @@ class Oracle:
         total = grouped.sum()
         return -total if how == "neg_sum" else total
 
+    # ------------------------------------------------------------------ Stage B
+    @cached_property
+    def _stage_b_tables(self) -> dict[str, pd.DataFrame]:
+        if self.stage_b_dir is None:
+            raise ValueError("this oracle has no Stage B data (use Oracle.for_stage('stage_b'))")
+        tables = {p.stem: pd.read_csv(p) for p in sorted(self.stage_b_dir.glob("*.csv"))}
+        tables["stores"] = pd.read_csv(self.data_dir / "stores.csv")
+        tables["products"] = pd.read_csv(self.data_dir / "products.csv")
+        for df in tables.values():
+            for col in ("end_date", "promised_date", "delivered_date", "closed_at"):
+                if col in df:
+                    df[col] = pd.to_datetime(df[col])
+        po = tables["purchase_orders"]
+        po["_purchase_value"] = po["quantity_ordered"] * po["unit_cost"]
+        return tables
+
+    def _stage_b_frame(self, table: str, needed: set[str]) -> pd.DataFrame:
+        tables = self._stage_b_tables
+        df = tables[table].copy()
+        if table in STAGE_B_DATE:
+            when = pd.to_datetime(df[STAGE_B_DATE[table]])
+            df["month"], df["day"] = when.dt.strftime("%Y-%m"), when.dt.strftime("%Y-%m-%d")
+        own = set(df.columns)
+        linked = {key: LINKS[key] for key in LINKS if key in own and LINKS[key] != table}
+        for dim in sorted(needed - own):
+            holders = [t for t in linked.values() if dim in tables[t].columns]
+            if len(holders) != 1:
+                raise ValueError(f"dimension {dim!r} for {table}: found on {holders or 'nothing'}")
+            key = next(k for k, t in linked.items() if t == holders[0])
+            lookup = tables[holders[0]][[key, dim]]
+            df = df.merge(lookup, on=key, how="left", validate="many_to_one")
+        return df
+
+    def _stage_b_base(self, metric: str, q: Query) -> pd.Series:
+        table, rows, column, how = STAGE_B_SPECS[metric]
+        frame = self._stage_b_frame(table, set(q.group_by) | set(q.filters))
+        if rows is not None:
+            frame = frame[rows(frame)]
+        for dim, values in q.filters.items():
+            frame = frame[frame[dim].astype(str).isin([str(v) for v in values])]
+        if q.group_by:  # like SQL GROUP BY, an empty value is a group of its own
+            grouped = frame.groupby(q.group_by, dropna=False)[column]
+        else:
+            grouped = frame.assign(_all="all").groupby("_all")[column]
+        if how == "sum":
+            return grouped.sum(min_count=1)
+        return {"count": grouped.count, "nunique": grouped.nunique, "mean": grouped.mean}[how]()
+
+    # ------------------------------------------------------------------ both
     def run(self, q: Query) -> list[dict]:
         if q.metric in DERIVED_METRICS:
             parts = {m: self._base(m, q) for m in DERIVED_METRICS[q.metric]}
@@ -116,8 +305,14 @@ class Oracle:
             else:
                 num, den = DERIVED_METRICS[q.metric]
                 value = joined[num].fillna(0) / joined[den]
-        else:
+        elif q.metric in BASE_METRICS:
             value = self._base(q.metric, q)
+        elif q.metric in STAGE_B_DERIVED:
+            num, den = STAGE_B_DERIVED[q.metric]
+            joined = pd.concat({m: self._stage_b_base(m, q) for m in (num, den)}, axis=1)
+            value = (joined[num].fillna(0) / joined[den]).replace([np.inf, -np.inf], np.nan)
+        else:
+            value = self._stage_b_base(q.metric, q)
 
         df = value.rename(q.metric).reset_index()
         df = df.drop(columns=["_all"], errors="ignore")
@@ -132,10 +327,18 @@ class Oracle:
     @staticmethod
     def _clean(row: dict, metric: str) -> dict:
         value = row[metric]
-        if metric in CURRENCY_METRICS:
-            row[metric] = round(float(value), 2)
+        if value is None or pd.isna(value):
+            row[metric] = None
         elif metric in RATIO_METRICS:
             row[metric] = round(float(value), 4)
-        else:
+        elif metric in COUNT_METRICS:
             row[metric] = int(value)
-        return {k: (v if not hasattr(v, "item") else v.item()) for k, v in row.items()}
+        else:  # currency, hours, days, averages
+            row[metric] = round(float(value), 2)
+
+        def plain(v):
+            if isinstance(v, float) and np.isnan(v):
+                return None  # an empty group key (e.g. central staff have no store)
+            return v.item() if hasattr(v, "item") else v
+
+        return {k: plain(v) for k, v in row.items()}

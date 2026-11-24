@@ -121,7 +121,7 @@ def test_new_metrics_match_an_independent_calculation(db, stage_b):
     rows = run(
         db, fin, metric="actual_cost", time_range={"start": "2026-04-01", "end": "2026-05-01"}
     )
-    assert rows == [] or rows[0]["actual_cost"] in (None, 0)
+    assert rows == [{"actual_cost": None}]
 
 
 def test_a_restricted_metric_can_not_be_queried_by_the_other_group(db, stage_b):
@@ -132,3 +132,65 @@ def test_a_restricted_metric_can_not_be_queried_by_the_other_group(db, stage_b):
         run(db, users["finance"], metric="headcount")
     with pytest.raises(PlanError):
         run(db, users["operations"], metric="net_sales_target")
+
+
+def plan_from_oracle_spec(spec: dict) -> dict:
+    """The correct query plan for an answer-key entry (what a perfect planner would produce)."""
+    from datetime import date, timedelta
+
+    filters = dict(spec.get("filters", {}))
+    plan: dict = {"metric": spec["metric"], "dimensions": [], "filters": []}
+    for dim in spec.get("group_by", []):
+        if dim in {"month", "day"}:
+            plan["time_grain"] = dim
+        else:
+            plan["dimensions"].append(dim)
+    if months := filters.pop("month", None):
+        first, last = min(months), max(months)
+        y, m = map(int, last.split("-"))
+        plan["time_range"] = {"start": f"{first}-01", "end": f"{y + m // 12}-{m % 12 + 1:02d}-01"}
+    if days := filters.pop("day", None):
+        (day,) = days
+        end = date.fromisoformat(day) + timedelta(days=1)
+        plan["time_range"] = {"start": day, "end": end.isoformat()}
+    plan["filters"] = [{"dimension": d, "op": "in", "values": v} for d, v in filters.items()]
+    if spec.get("order_by_value"):
+        plan["order"] = "metric_desc"
+    if spec.get("limit"):
+        plan["limit"] = spec["limit"]
+    return plan
+
+
+def test_the_engine_agrees_with_the_answer_key_on_every_stage_b_question(db, stage_b):
+    """Given the right plan, the query engine reproduces every expected answer. So a failure in
+    the real-model evaluation is the model's choice, not a disagreement between engine and key."""
+    import json
+
+    from evals.answer_eval import rows_match
+    from evals.golden import GOLDEN_DIR, iter_steps, load_golden
+
+    _, users = stage_b
+    expected = json.loads((GOLDEN_DIR / "stage_b.expected.json").read_text())
+    checked = 0
+    for case in load_golden("stage_b")["cases"]:
+        for step, _question, _exp in iter_steps(case):
+            options = [o for i in expected.get(step, []) for o in i.get("any_of", [i])]
+            for item in options:
+                spec = item["query"]
+                rows = run(db, users[case["persona"]], **plan_from_oracle_spec(spec))
+                ordered = bool(spec.get("order_by_value"))
+                assert rows_match(item["rows"], rows, spec["metric"], ordered), (
+                    step,
+                    item["rows"],
+                    rows,
+                )
+                checked += 1
+    assert checked == 39
+
+
+def test_the_evaluation_refuses_a_database_from_another_stage(db, stage_b):
+    from evals.run_answer_eval import check_stage
+
+    check_stage(db, "stage_b")  # matches: no error
+    with pytest.raises(SystemExit, match="from another stage.*staff"):
+        check_stage(db, "stage_a")

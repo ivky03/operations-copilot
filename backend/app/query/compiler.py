@@ -215,7 +215,12 @@ def compile_plan(plan: QueryPlan, catalog: Catalog) -> CompiledQuery:
     else:
         # ON TRUE (not CROSS JOIN): one component having no data must not erase the others.
         from_sql = cte_names[0] + "".join(f" FULL JOIN {c} ON TRUE" for c in cte_names[1:])
-    value_sql = _formula_sql(formula, refs)
+    if isinstance(metric, DerivedMetric):
+        value_sql = _formula_sql(formula, refs)
+    else:
+        # A base metric is reported as computed. If every value is empty (April's actual cost
+        # before the month is closed), the answer is "not available", not 0.
+        value_sql = f"{refs[metric.name]}.v"
 
     order = {
         "dimensions": ", ".join(q(g) for g in group_names),

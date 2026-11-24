@@ -1,13 +1,19 @@
 """Validate the golden set and write its expected numeric answers.
 
-Usage (from backend/):  uv run python -m evals.build_expected
+Usage (from backend/):  uv run python -m evals.build_expected [stage_a | stage_b | ...]
 """
 
 import sys
 from collections import Counter
 
-from evals.golden import GOLDEN_DIR, build_expected, load_golden, render_expected, validate
-from evals.oracle import Oracle
+from evals.golden import (
+    GOLDEN_DIR,
+    build_expected,
+    load_golden,
+    oracle_for,
+    render_expected,
+    validate,
+)
 
 
 def main(name: str = "stage_a") -> int:
@@ -16,7 +22,7 @@ def main(name: str = "stage_a") -> int:
     if problems:
         print("Golden set has problems:", *problems, sep="\n  - ")
         return 1
-    expected = build_expected(golden, Oracle())
+    expected = build_expected(golden, oracle_for(golden))
     out = GOLDEN_DIR / f"{name}.expected.json"
     out.write_text(render_expected(expected), encoding="utf-8")
 
@@ -29,4 +35,4 @@ def main(name: str = "stage_a") -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(*sys.argv[1:2]))

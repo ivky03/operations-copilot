@@ -25,6 +25,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.answer.context import build_context
@@ -34,10 +35,11 @@ from app.answer.passages import Passage, document_titles, retrieve_passages
 from app.answer.planner import AnswerPlan, plan_question
 from app.answer.verify import cited_ids, normalise_citations, verify
 from app.answer.writer import template_answer, write_answer
+from app.ingest.publish import DATASET_SCHEMA
 from app.llm.client import CallRecord, LLMClient, LLMOutputError, LLMUnavailableError
 from app.models import AnswerRun, Conversation, LlmCall, User
 from app.query.catalog import Catalog, PlanError
-from app.query.compiler import compile_plan
+from app.query.compiler import compile_plan, q
 from app.query.executor import QueryTimeoutError, execute
 from app.query.grounding import ground
 from app.query.plan import QueryPlan
@@ -83,6 +85,22 @@ def _user_phrase(value: str, question: str) -> str | None:
     return " ".join(shared)
 
 
+def _missing_values(db: Session, resolved, f) -> list[str]:
+    """Filter values that appear nowhere in the column (compared as text)."""
+    table = f"{DATASET_SCHEMA}.{q(resolved.dataset.table)}"
+    column = q(resolved.column.name)
+    found = set(
+        db.scalars(
+            text(  # identifiers come from the catalog, values are bound
+                f"SELECT DISTINCT {column}::text FROM {table} "  # noqa: S608
+                f"WHERE {column}::text = ANY(:values)"
+            ),
+            {"values": list(f.values)},
+        )
+    )
+    return [v for v in f.values if v not in found]
+
+
 def _ground_plan(
     db: Session, catalog: Catalog, plan: QueryPlan, question: str, notes: list[str]
 ) -> QueryPlan:
@@ -92,6 +110,17 @@ def _ground_plan(
     for f in plan.filters:
         resolved = catalog.resolve_dimension(dataset, f.dimension)
         if not resolved.column.value_index:
+            # No value index to ground against (ids, dates, flags): at least make sure the value
+            # exists, or a made-up value ("oak tables" as a product id) silently matches nothing
+            # and the answer reports zero.
+            missing = _missing_values(db, resolved, f) if f.op in {"=", "in"} else []
+            if missing:
+                label = resolved.column.name.replace("_", " ")
+                raise _Stop(
+                    "unanswerable",
+                    f"I couldn't find {', '.join(f'“{v}”' for v in missing)} in "
+                    f"{resolved.dataset.slug} ({label}), so I can't answer that.",
+                )
             new_filters.append(f)
             continue
         values = []
