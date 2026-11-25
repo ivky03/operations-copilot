@@ -91,11 +91,24 @@ def _sha256(*parts: bytes) -> str:
 
 
 def _lock_source(db: Session, slug: str, kind: SourceKind) -> Source | None:
-    """Row lock: a second publish of the same source waits here until the first commits."""
+    """Row lock: a second publish of the same source waits here until the first commits, and
+    so does a delete (app.ingest.lifecycle), so a version is never prepared for a source that
+    is being deleted."""
     source = db.scalar(select(Source).where(Source.slug == slug).with_for_update())
     if source is None or source.kind != kind or source.status != SourceStatus.ACTIVE:
         return None
     return source
+
+
+def _unavailable(db: Session, slug: str, kind: SourceKind) -> str:
+    """Why a version can't be prepared for `slug`, in the steward's terms."""
+    noun = kind.value
+    source = db.scalar(select(Source).where(Source.slug == slug))
+    if source is None or source.kind != kind:
+        return f"{noun} {slug!r} is not registered (an administrator registers sources)"
+    if source.status == SourceStatus.ARCHIVED:
+        return f"{noun} {slug!r} is archived; restore it before uploading a new version"
+    return f"{noun} {slug!r} was deleted"
 
 
 def _next_version(db: Session, source: Source) -> int:
@@ -128,10 +141,16 @@ def _previously_invalid(db: Session, source: Source, content_hash: str) -> Sourc
 
 
 def published_version(db: Session, slug: str) -> SourceVersion | None:
+    """The version answers use, or None if there is none or the source is archived/deleted
+    (then nothing may link to it either)."""
     return db.scalar(
         select(SourceVersion)
         .join(Source)
-        .where(Source.slug == slug, SourceVersion.status == VersionStatus.PUBLISHED)
+        .where(
+            Source.slug == slug,
+            Source.status == SourceStatus.ACTIVE,
+            SourceVersion.status == VersionStatus.PUBLISHED,
+        )
     )
 
 
@@ -169,9 +188,8 @@ def _check_references(db: Session, manifest: Manifest, rows: list[tuple]) -> lis
     for rel in manifest.relationships:
         target = published_version(db, rel.target_source)
         if target is None:
-            issues.append(
-                Issue(None, rel.column, f"{rel.target_source} has no published version yet")
-            )
+            msg = f"{rel.target_source} has no published version (or is archived)"
+            issues.append(Issue(None, rel.column, msg))
             continue
         target_cols = {c["name"] for c in target.meta["manifest"]["columns"]}
         if rel.target_column not in target_cols:
@@ -289,7 +307,7 @@ def prepare_dataset(
 
     source = _lock_source(db, manifest.source, SourceKind.DATASET)
     if source is None:
-        msg = f"dataset {manifest.source!r} is not registered (an administrator registers sources)"
+        msg = _unavailable(db, manifest.source, SourceKind.DATASET)
         return PublishResult(manifest.source, "invalid", issues=[msg], issue_count=1)
 
     canonical_manifest = json.dumps(manifest.model_dump(mode="json"), sort_keys=True).encode()
@@ -359,7 +377,9 @@ def _missing_references_now(db: Session, manifest: Manifest, table: str) -> list
     for rel in manifest.relationships:
         target = published_version(db, rel.target_source)
         if target is None:
-            issues.append(f"{rel.column}: {rel.target_source} has no published version")
+            issues.append(
+                f"{rel.column}: {rel.target_source} has no published version (or is archived)"
+            )
             continue
         target_table = f"{DATASET_SCHEMA}.{_quote(target.meta['table'])}"
         col, tcol = _quote(rel.column), _quote(rel.target_column)
@@ -397,6 +417,7 @@ def _dependents_broken_now(db: Session, slug: str, manifest: Manifest, table: st
         .join(Source)
         .where(
             SourceVersion.status == VersionStatus.PUBLISHED,
+            Source.status == SourceStatus.ACTIVE,
             Source.kind == SourceKind.DATASET,
             Source.slug != slug,
         )
@@ -527,7 +548,7 @@ def prepare_document(
 
     source = _lock_source(db, slug, SourceKind.DOCUMENT)
     if source is None:
-        msg = f"document {slug!r} is not registered (an administrator registers sources)"
+        msg = _unavailable(db, slug, SourceKind.DOCUMENT)
         return PublishResult(slug, "invalid", issues=[msg], issue_count=1)
 
     content_hash = _sha256(content)

@@ -44,6 +44,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/sources/{slug}/delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete Source
+         * @description Permanently remove a source's content: every version, its tables, index entries, search
+         *     passages, uploaded files, and the content of saved answers that used it (for every user).
+         *     A tombstone (name, title, when) remains. Can't be undone; archive is the reversible option.
+         */
+        post: operations["delete_source_api_admin_sources__slug__delete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/admin/sources/{slug}/grants": {
         parameters: {
             query?: never;
@@ -386,6 +408,44 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/steward/sources/{slug}/archive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Archive
+         * @description Hide a source from every answer, search and listing, for everyone. Nothing is deleted:
+         *     restoring it brings it back as it was. Saved answers that used it are hidden meanwhile.
+         */
+        post: operations["archive_api_steward_sources__slug__archive_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/steward/sources/{slug}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore */
+        post: operations["restore_api_steward_sources__slug__restore_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/steward/sources/{slug}/uploads": {
         parameters: {
             query?: never;
@@ -514,6 +574,8 @@ export interface components {
          * @description Admins see every source and who can read it, but not its content (no data access).
          */
         AdminSourceOut: {
+            /** Deleted At */
+            deleted_at?: string | null;
             /** Groups */
             groups: string[];
             /** Kind */
@@ -675,6 +737,28 @@ export interface components {
             password: string;
             /** @default employee */
             role: components["schemas"]["Role"];
+        };
+        /** DeleteOut */
+        DeleteOut: {
+            /** Answers Erased */
+            answers_erased: number;
+            /** Dependents */
+            dependents: string[];
+            /** Files Removed */
+            files_removed: number | null;
+            /** Jobs Closed */
+            jobs_closed: number;
+            /** Source */
+            source: string;
+            /** Tables Dropped */
+            tables_dropped: number;
+            /** Versions */
+            versions: number;
+        };
+        /** DeleteSource */
+        DeleteSource: {
+            /** Confirm */
+            confirm: string;
         };
         /** EvidenceOut */
         EvidenceOut: {
@@ -932,8 +1016,12 @@ export interface components {
             ready_versions: number[];
             /** Slug */
             slug: string;
+            /** Status */
+            status: string;
             /** Title */
             title: string;
+            /** Used By */
+            used_by: string[];
         };
         /**
          * TimeRange
@@ -1106,6 +1194,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AdminSourceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_source_api_admin_sources__slug__delete_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DeleteSource"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeleteOut"];
                 };
             };
             /** @description Validation Error */
@@ -1758,6 +1881,68 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["StewardSourceOut"][];
+                };
+            };
+        };
+    };
+    archive_api_steward_sources__slug__archive_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StewardSourceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    restore_api_steward_sources__slug__restore_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StewardSourceOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

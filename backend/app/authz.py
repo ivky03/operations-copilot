@@ -47,6 +47,22 @@ def readable_sources_query(user: User):
     )
 
 
+def managed_sources_query(user: User):
+    """Sources a steward manages: the ones their groups are granted, including archived ones
+    (so they can be restored). Deleted sources are gone for everyone. Answers never use this:
+    they use readable_sources_query, which sees active sources only."""
+    return (
+        select(Source)
+        .join(SourceGrant, SourceGrant.source_id == Source.id)
+        .join(UserGroup, UserGroup.group_id == SourceGrant.group_id)
+        .where(
+            UserGroup.user_id == user.id,
+            Source.status.in_([SourceStatus.ACTIVE, SourceStatus.ARCHIVED]),
+        )
+        .distinct()
+    )
+
+
 def readable_source_ids(db: Session, user: User) -> set[uuid.UUID]:
     if not user.is_active:
         return set()

@@ -3,11 +3,13 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
   ApiError,
+  archiveSource,
   discardVersion,
   getVersion,
   listJobs,
   listVersions,
   publishVersion,
+  restoreSource,
   retryJob,
   stewardSources,
   uploadVersion,
@@ -23,6 +25,9 @@ import {
  *
  * Nothing a steward uploads is visible to anyone else until they press Publish: the worker
  * only prepares a version ("ready"); answers keep using the published one.
+ *
+ * A source can also be archived: hidden from every answer, for everyone, until restored.
+ * Deleting for good is an administrator's decision (Sources page).
  */
 
 type Props = { onSessionExpired: () => void };
@@ -45,6 +50,7 @@ const VERSION_LABEL: Record<string, string> = {
   discarded: "Discarded",
   uploaded: "Uploaded",
   validating: "Validating",
+  deleted: "Deleted",
 };
 
 export function StewardPage({ onSessionExpired }: Props) {
@@ -103,8 +109,9 @@ export function StewardPage({ onSessionExpired }: Props) {
                 <span className="slug">
                   {s.kind} · {s.published_version ? `v${s.published_version} published` : "not published"}
                 </span>
-                {(s.ready_versions.length > 0 || s.active_jobs > 0) && (
+                {(s.status === "archived" || s.ready_versions.length > 0 || s.active_jobs > 0) && (
                   <span className="source-flags">
+                    {s.status === "archived" && <span className="badge archived">Archived</span>}
                     {s.active_jobs > 0 && <span className="badge working">Processing</span>}
                     {s.ready_versions.length > 0 && (
                       <span className="badge ready">{s.ready_versions.length} to review</span>
@@ -192,16 +199,19 @@ function SourcePanel({
         <h2>
           {source.title} <span className="slug">{source.slug}</span>
         </h2>
-        <UploadForm
-          source={source}
-          onUploaded={(job) => {
-            watching.current.add(job.id);
-            setPreview(null);
-            refresh();
-            onChanged();
-          }}
-          onError={onError}
-        />
+        <ArchiveBar source={source} onChanged={onChanged} onError={onError} />
+        {source.status === "active" && (
+          <UploadForm
+            source={source}
+            onUploaded={(job) => {
+              watching.current.add(job.id);
+              setPreview(null);
+              refresh();
+              onChanged();
+            }}
+            onError={onError}
+          />
+        )}
       </div>
 
       {jobs.length > 0 && (
@@ -467,6 +477,60 @@ function Preview({
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{detail.body}</ReactMarkdown>
           </div>
         </>
+      )}
+    </div>
+  );
+}
+
+function ArchiveBar({
+  source,
+  onChanged,
+  onError,
+}: {
+  source: StewardSource;
+  onChanged: () => void;
+  onError: (e: unknown) => void;
+}) {
+  const [problem, setProblem] = useState<string | null>(null);
+  const archived = source.status === "archived";
+
+  async function toggle() {
+    if (!archived) {
+      const linked = source.used_by.length
+        ? `\n\n${source.used_by.join(", ")} link to it and can't use its columns while it's archived.`
+        : "";
+      const ok = window.confirm(
+        `Archive ${source.title}? It disappears from every answer and search, for everyone, until you restore ` +
+          `it. Nothing is deleted.${linked}`,
+      );
+      if (!ok) return;
+    }
+    try {
+      setProblem(null);
+      await (archived ? restoreSource(source.slug) : archiveSource(source.slug));
+      onChanged();
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 409) setProblem(e.message);
+      else onError(e);
+    }
+  }
+
+  return (
+    <div className={`archive-bar${archived ? " is-archived" : ""}`}>
+      <p>
+        {archived
+          ? "Archived: hidden from every answer, search and list. Saved answers that used it are hidden too."
+          : source.used_by.length > 0
+            ? `Used by ${source.used_by.join(", ")}.`
+            : "Not used by other datasets."}
+      </p>
+      <button type="button" className="secondary" onClick={toggle}>
+        {archived ? "Restore" : "Archive"}
+      </button>
+      {problem && (
+        <p className="error" role="alert">
+          Can't restore yet: {problem}
+        </p>
       )}
     </div>
   );

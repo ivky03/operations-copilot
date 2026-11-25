@@ -36,6 +36,7 @@ const STATUS_LABEL: Record<string, { label: string; tone: string }> = {
   clarification: { label: "Needs clarification", tone: "info" },
   unanswerable: { label: "Can't answer from your data or documents", tone: "warn" },
   redacted: { label: "Hidden · uses a source you no longer have access to", tone: "info" },
+  erased: { label: "Erased · a source it used was deleted", tone: "info" },
   error: { label: "Something went wrong", tone: "error" },
 };
 

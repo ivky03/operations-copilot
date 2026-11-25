@@ -38,7 +38,10 @@ def readable_slugs(db: Session, user: User) -> set[str]:
 
 
 def visible(run: AnswerRun, readable: set[str]) -> bool:
-    """A turn is visible only if the user can still read every source it used."""
+    """A turn is visible only if the user can still read every source it used, and its content
+    wasn't erased because one of them was deleted."""
+    if run.redacted_reason:
+        return False
     return all(s["source"] in readable for s in run.source_versions)
 
 

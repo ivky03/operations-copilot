@@ -4,6 +4,18 @@
       "AdminSourceOut": {
         "description": "Admins see every source and who can read it, but not its content (no data access).",
         "properties": {
+          "deleted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Deleted At"
+          },
           "groups": {
             "items": {
               "type": "string"
@@ -429,6 +441,72 @@
           "password"
         ],
         "title": "CreateUser",
+        "type": "object"
+      },
+      "DeleteOut": {
+        "properties": {
+          "answers_erased": {
+            "title": "Answers Erased",
+            "type": "integer"
+          },
+          "dependents": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Dependents",
+            "type": "array"
+          },
+          "files_removed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Files Removed"
+          },
+          "jobs_closed": {
+            "title": "Jobs Closed",
+            "type": "integer"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "tables_dropped": {
+            "title": "Tables Dropped",
+            "type": "integer"
+          },
+          "versions": {
+            "title": "Versions",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "source",
+          "versions",
+          "tables_dropped",
+          "answers_erased",
+          "jobs_closed",
+          "files_removed",
+          "dependents"
+        ],
+        "title": "DeleteOut",
+        "type": "object"
+      },
+      "DeleteSource": {
+        "properties": {
+          "confirm": {
+            "title": "Confirm",
+            "type": "string"
+          }
+        },
+        "required": [
+          "confirm"
+        ],
+        "title": "DeleteSource",
         "type": "object"
       },
       "EvidenceOut": {
@@ -1264,15 +1342,28 @@
             "title": "Slug",
             "type": "string"
           },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
           "title": {
             "title": "Title",
             "type": "string"
+          },
+          "used_by": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Used By",
+            "type": "array"
           }
         },
         "required": [
           "slug",
           "kind",
           "title",
+          "status",
+          "used_by",
           "published_version",
           "ready_versions",
           "active_jobs"
@@ -1647,6 +1738,59 @@
           }
         },
         "summary": "Register Source",
+        "tags": [
+          "admin"
+        ]
+      }
+    },
+    "/api/admin/sources/{slug}/delete": {
+      "post": {
+        "description": "Permanently remove a source's content: every version, its tables, index entries, search\npassages, uploaded files, and the content of saved answers that used it (for every user).\nA tombstone (name, title, when) remains. Can't be undone; archive is the reversible option.",
+        "operationId": "delete_source_api_admin_sources__slug__delete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteSource"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Source",
         "tags": [
           "admin"
         ]
@@ -2506,6 +2650,91 @@
           }
         },
         "summary": "List Sources",
+        "tags": [
+          "steward"
+        ]
+      }
+    },
+    "/api/steward/sources/{slug}/archive": {
+      "post": {
+        "description": "Hide a source from every answer, search and listing, for everyone. Nothing is deleted:\nrestoring it brings it back as it was. Saved answers that used it are hidden meanwhile.",
+        "operationId": "archive_api_steward_sources__slug__archive_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StewardSourceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Archive",
+        "tags": [
+          "steward"
+        ]
+      }
+    },
+    "/api/steward/sources/{slug}/restore": {
+      "post": {
+        "operationId": "restore_api_steward_sources__slug__restore_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StewardSourceOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Restore",
         "tags": [
           "steward"
         ]

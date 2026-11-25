@@ -341,7 +341,7 @@ def test_an_admin_registers_a_new_dataset_and_a_steward_publishes_it(worker_thre
     assert page.get_by_role("button", name="Register").is_disabled()
     page.get_by_label("Name").fill("suppliers")
     page.get_by_label("Title").fill("Suppliers")
-    page.get_by_label("operations").check()
+    page.get_by_role("checkbox", name="operations").check()
     page.get_by_role("button", name="Register").click()
     page.get_by_text("Registered suppliers").wait_for()
     page.get_by_role("button", name="Sign out").click()
@@ -366,3 +366,43 @@ def test_an_admin_registers_a_new_dataset_and_a_steward_publishes_it(worker_thre
     page.get_by_text("Welcome, Felix").wait_for()
     open_sources(page)
     assert page.get_by_text("suppliers", exact=True).count() == 0
+
+
+def test_a_steward_archives_and_restores_and_an_admin_deletes(live_app, page):
+    """Archive hides a document from an employee; restore brings it back; delete asks for the
+    name to be typed, then removes it for good."""
+    url, passwords = live_app
+    page.on("dialog", lambda d: d.accept())  # the archive confirmation
+    page.goto(url)
+    sign_in(page, STEWARD, passwords[STEWARD])
+    page.get_by_role("button", name="Manage sources").click()
+    page.get_by_role("button", name="Shipping and Delivery").click()
+    page.get_by_role("button", name="Archive").click()
+    page.get_by_text("Archived: hidden from every answer").wait_for()
+    assert page.get_by_role("button", name="Upload new version").count() == 0
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, OPS, passwords[OPS])
+    open_sources(page)
+    assert page.get_by_text("shipping-and-delivery", exact=True).count() == 0
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, STEWARD, passwords[STEWARD])
+    page.get_by_role("button", name="Manage sources").click()
+    page.get_by_role("button", name="Shipping and Delivery").click()
+    page.get_by_role("button", name="Restore").click()
+    page.get_by_role("button", name="Archive").wait_for()
+    page.get_by_role("button", name="Sign out").click()
+
+    sign_in(page, ADMIN, passwords[ADMIN])
+    page.get_by_role("button", name="Sources", exact=True).click()
+    page.get_by_role("button", name="Delete shipping-and-delivery").click()
+    confirm = page.get_by_role("button", name="Delete permanently")
+    assert confirm.is_disabled()
+    page.get_by_label("to confirm").fill("shipping")
+    assert confirm.is_disabled()
+    page.get_by_label("to confirm").fill("shipping-and-delivery")
+    confirm.click()
+    page.get_by_text("Deleted shipping-and-delivery").wait_for()
+    # The list reloads just after the banner appears: wait for the row's button to go.
+    page.get_by_role("button", name="Delete shipping-and-delivery").wait_for(state="detached")

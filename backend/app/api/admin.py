@@ -1,27 +1,33 @@
-"""Administrator endpoints: users, group membership, source registration and grants.
+"""Administrator endpoints: users, group membership, source registration, grants and deletion.
 
 Every route depends on `require_admin`, so non-admins get 403 and anonymous callers get 401.
 Every change is written to the audit log in the same transaction.
 """
 
 import re
+from datetime import datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from psycopg.errors import LockNotAvailable
 from pydantic import BaseModel, Field
 from sqlalchemy import select
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
 from app import audit
 from app.auth import UserOut
 from app.authz import require_admin
 from app.db import get_db
+from app.ingest import lifecycle
 from app.ingest.manifest import DATASET_SLUG, SLUG
+from app.ingest.publish import PublishError
 from app.models import (
     Group,
     Role,
     Source,
     SourceGrant,
     SourceKind,
+    SourceStatus,
     SourceVersion,
     User,
     VersionStatus,
@@ -54,6 +60,20 @@ class RegisterSource(BaseModel):
     groups: list[str] = Field(min_length=1)  # who may read it; a source nobody can read is useless
 
 
+class DeleteSource(BaseModel):
+    confirm: str  # the source's slug, typed again: deleting can't be undone
+
+
+class DeleteOut(BaseModel):
+    source: str
+    versions: int  # versions whose content was removed
+    tables_dropped: int
+    answers_erased: int  # saved answers (any user's) whose content used the source
+    jobs_closed: int
+    files_removed: int | None  # None: the storage clean-up will be retried by the worker
+    dependents: list[str]  # datasets that linked to it and can no longer use its columns
+
+
 class GroupOut(BaseModel):
     slug: str
     name: str
@@ -68,6 +88,7 @@ class AdminSourceOut(BaseModel):
     status: str
     groups: list[str]
     published_version: int | None
+    deleted_at: datetime | None = None
 
 
 def _groups_by_slug(db: Session, slugs: list[str]) -> list[Group]:
@@ -143,6 +164,8 @@ def set_source_grants(
     source = db.scalar(select(Source).where(Source.slug == slug))
     if source is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Source not found.")
+    if source.status == SourceStatus.DELETED:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This source was deleted.")
     before = sorted(g.slug for g in source.granted_groups)
     groups = _groups_by_slug(db, body.groups)
     db.query(SourceGrant).filter(SourceGrant.source_id == source.id).delete()
@@ -172,6 +195,7 @@ def _admin_source(db: Session, source: Source) -> AdminSourceOut:
         status=source.status.value,
         groups=sorted(g.slug for g in source.granted_groups),
         published_version=published,
+        deleted_at=source.deleted_at,
     )
 
 
@@ -193,7 +217,13 @@ def register_source(
             "Dataset names may use lowercase letters, digits and underscores "
             "(e.g. purchase_orders): queries refer to them as dataset.column.",
         )
-    if db.scalar(select(Source).where(Source.slug == body.slug)):
+    if existing := db.scalar(select(Source).where(Source.slug == body.slug)):
+        if existing.status == SourceStatus.DELETED:
+            # The tombstone keeps the name: old audit entries and conversations refer to it.
+            raise HTTPException(
+                status.HTTP_409_CONFLICT,
+                f"A source called {body.slug!r} was deleted; its name can't be reused.",
+            )
         raise HTTPException(status.HTTP_409_CONFLICT, f"A source called {body.slug!r} exists.")
     groups = _groups_by_slug(db, body.groups)
     source = Source(slug=body.slug, kind=body.kind, title=body.title, granted_groups=groups)
@@ -203,3 +233,40 @@ def register_source(
     )
     db.commit()
     return _admin_source(db, source)
+
+
+@router.post("/sources/{slug}/delete")
+def delete_source(
+    slug: str,
+    body: DeleteSource,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+) -> DeleteOut:
+    """Permanently remove a source's content: every version, its tables, index entries, search
+    passages, uploaded files, and the content of saved answers that used it (for every user).
+    A tombstone (name, title, when) remains. Can't be undone; archive is the reversible option.
+    """
+    source = db.scalar(select(Source).where(Source.slug == slug))
+    if source is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Source not found.")
+    if body.confirm != slug:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT, "Type the source's name to confirm."
+        )
+    try:
+        report = lifecycle.delete_source(db, source, admin)
+    except PublishError as e:
+        db.rollback()
+        raise HTTPException(status.HTTP_409_CONFLICT, "; ".join(e.issues)) from e
+    except OperationalError as e:
+        db.rollback()
+        if not isinstance(e.orig, LockNotAvailable):
+            raise
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "The source is in use (a question or upload is reading it). Try again shortly.",
+        ) from e
+    db.commit()
+    # Files are removed after the commit: if this fails, the worker's sweeper retries.
+    report.files_removed = lifecycle.try_purge_uploads(slug)
+    return DeleteOut(**report.__dict__)

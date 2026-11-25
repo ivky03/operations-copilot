@@ -142,6 +142,10 @@ cd frontend && nvm use && npm ci && npm run dev  # web app on http://localhost:5
 
 Stewards upload new versions under **Manage sources**. The API stores the files in S3 and records a job, and the worker validates and loads them in the background. The new version stays invisible to answers until the steward reviews it and presses **Publish**. A duplicated message, a worker crash mid-job and a lost send are each covered by a test. `data/reference/sample_uploads/` has files to try it with.
 
+A steward can **archive** a source: it disappears from every answer, search and saved conversation, for everyone, until it is restored. An administrator can **delete** a source permanently by typing its name to confirm. This removes every version's table, index entries, passages and uploaded files, and erases the content of saved answers that used it. A tombstone keeps the name, so a late background job can't recreate the source and the name can't be reused.
+
+The leakage suite (`backend/tests/test_leakage.py`) plants words found nowhere else in a dataset and a document. It then hides them in four ways: never granted, access revoked, archived, deleted. For each, it probes everything an employee and a steward can reach for those words: listings, the steward console, the model's prompts, search, value matching, answers and saved conversations. After a delete, it also checks every database table and the file store. Each scenario first confirms that the probes find the words while access is granted.
+
 `GET /health` returns `200` when the API can reach PostgreSQL and the S3/SQS emulator, and `503` with per-dependency status otherwise. The application refuses to start if it's configured to target real AWS without an explicit `ALLOW_REAL_AWS=true`.
 
 ## Repository layout

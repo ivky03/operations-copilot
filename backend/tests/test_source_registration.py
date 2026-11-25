@@ -83,6 +83,7 @@ def test_a_new_dataset_goes_from_registration_to_answers(client, db, people):
         "status": "active",
         "groups": ["operations"],
         "published_version": None,
+        "deleted_at": None,
     }
     assert db.scalar(
         select(AuditLog).where(AuditLog.action == "source.register", AuditLog.target == "suppliers")
