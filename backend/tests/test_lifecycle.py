@@ -280,3 +280,31 @@ def test_files_left_in_storage_by_a_failed_clean_up_are_removed_by_the_sweeper(
     assert s3.list_objects_v2(Bucket=bucket, Prefix="uploads/stores/").get("KeyCount")
     assert lifecycle.purge_deleted_uploads(db) >= 2
     assert not s3.list_objects_v2(Bucket=bucket, Prefix="uploads/stores/").get("KeyCount")
+
+
+def test_only_the_turns_that_used_a_deleted_source_are_erased(client, setup):
+    from app.answer.pipeline import answer_question
+    from app.models import AnswerRun, Conversation
+    from tests.test_answer_pipeline import IRELAND_MARCH, fake
+
+    db = setup
+    olivia = ops(db)
+    chat = Conversation(user_id=olivia.id, title="Mixed")
+    db.add(chat)
+    db.commit()
+    delivery = {"kind": "documents", "doc_searches": ["standard delivery time"]}
+    for plan, answer in ((delivery, "2–4 business days [C1]."), (IRELAND_MARCH, "-€509.00 [D1].")):
+        planner, _ = fake(plan)
+        writer, _ = fake({"answer": answer})
+        assert answer_question(db, olivia, "q?", planner, writer, chat).status == "answered"
+
+    as_user(client, ADMIN)
+    assert delete(client, "shipping-and-delivery").json()["answers_erased"] == 1
+    as_user(client, OPS)
+    turns = client.get(f"/api/conversations/{chat.id}").json()["turns"]
+    assert [t["status"] for t in turns] == ["erased", "answered"]
+    assert "deleted" in turns[0]["answer"] and turns[0]["passages"] == []
+    assert "509" in turns[1]["answer"]
+    db.expire_all()
+    erased = db.scalars(select(AnswerRun).where(AnswerRun.redacted_reason.is_not(None))).all()
+    assert len(erased) == 1 and erased[0].answer is None and erased[0].question == "q?"

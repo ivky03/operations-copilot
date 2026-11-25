@@ -189,6 +189,9 @@ export const discardVersion = (slug: string, version: number) =>
 export const listJobs = (slug: string) =>
   request<Job[]>("GET", `/api/steward/jobs?source=${encodeURIComponent(slug)}&limit=20`);
 export const retryJob = (id: string) => request<Job>("POST", `/api/steward/jobs/${id}/retry`);
+/** Hide a source from every answer (reversible), or bring it back. */
+export const archiveSource = (slug: string) => request<StewardSource>("POST", `${sourcePath(slug)}/archive`);
+export const restoreSource = (slug: string) => request<StewardSource>("POST", `${sourcePath(slug)}/restore`);
 
 /** Upload files for a new version: {manifest, data} for a dataset, {document} for a document. */
 export function uploadVersion(slug: string, files: Record<string, File>): Promise<Job> {
@@ -206,3 +209,8 @@ export type RegisterSource = components["schemas"]["RegisterSource"];
 export const adminSources = () => request<AdminSource[]>("GET", "/api/admin/sources");
 export const adminGroups = () => request<Group[]>("GET", "/api/admin/groups");
 export const registerSource = (body: RegisterSource) => request<AdminSource>("POST", "/api/admin/sources", body);
+
+export type DeleteResult = components["schemas"]["DeleteOut"];
+/** Permanent: `confirm` must repeat the source's name. */
+export const deleteSource = (slug: string) =>
+  request<DeleteResult>("POST", `/api/admin/sources/${encodeURIComponent(slug)}/delete`, { confirm: slug });

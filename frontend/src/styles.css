@@ -293,3 +293,16 @@ button.link {
 .hint.bad { color: var(--danger-text); }
 tr.highlight td { background: var(--badge-bg); }
 .banner strong { font-family: ui-monospace, monospace; }
+
+/* Archive / restore (steward) and delete (admin) */
+.badge.archived { background: var(--danger-bg); color: var(--danger-text); }
+.archive-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; margin: 0 0 1rem; }
+.archive-bar p { margin: 0; flex: 1 1 16rem; color: var(--muted); }
+.archive-bar.is-archived { padding: 0.6rem 0.75rem; border-radius: 8px; background: var(--danger-bg); }
+.archive-bar.is-archived p { color: var(--danger-text); }
+.archive-bar .error { flex-basis: 100%; }
+button.danger { background: var(--danger-text); color: var(--surface); }
+tr.deleted td { color: var(--muted); }
+.delete-box { margin: 0.5rem 0 0; padding: 0.75rem; border: 1px solid var(--danger-text); border-radius: 8px; }
+.delete-box ul { margin: 0.25rem 0 0.5rem; padding-left: 1.2rem; }
+.delete-box .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }

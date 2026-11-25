@@ -147,9 +147,10 @@ def _from_run(run: AnswerRun, readable: set[str]) -> AskResponse:
         "latency_ms": run.latency_ms or 0,
     }
     if not visible(run, readable):
-        message = ERASED if run.redacted_reason else REDACTED
+        erased = run.redacted_reason is not None
         return AskResponse(
-            **base, status="redacted", answer=message, options=[], notes=[], evidence=[],
+            **base, status="erased" if erased else "redacted",
+            answer=ERASED if erased else REDACTED, options=[], notes=[], evidence=[],
             passages=[], sources=[],
         )  # fmt: skip
     restated = run.plan.get("standalone_question") if run.conversation_id else None
