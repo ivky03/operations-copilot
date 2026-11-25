@@ -12,8 +12,10 @@ from pathlib import Path
 
 import pytest
 import uvicorn
+import yaml
 
 from app.cli import publish_reference, seed_reference
+from app.ingest.publish import publish_dataset
 
 DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist" / "index.html"
 OPS = "ops.employee@brindlewood.example"
@@ -406,3 +408,26 @@ def test_a_steward_archives_and_restores_and_an_admin_deletes(live_app, page):
     page.get_by_text("Deleted shipping-and-delivery").wait_for()
     # The list reloads just after the banner appears: wait for the row's button to go.
     page.get_by_role("button", name="Delete shipping-and-delivery").wait_for(state="detached")
+
+
+def test_following_a_source_brings_a_notification_when_it_changes(live_app, page, db):
+    url, passwords = live_app
+    page.goto(url)
+    sign_in(page, OPS, passwords[OPS])
+    open_sources(page)
+    page.get_by_role("button", name="Follow Stores and sales channels").click()
+    page.get_by_role("button", name="Unfollow Stores and sales channels").wait_for()
+
+    # A steward publishes a new version (in-process here; the upload path has its own test).
+    manifest = yaml.safe_load((SAMPLES / "manifests" / "stores.yaml").read_text())
+    csv = (SAMPLES / "sample_uploads" / "stores_with_lisbon.csv").read_bytes()
+    assert publish_dataset(db, manifest, csv).status == "published"
+
+    page.reload()
+    bell = page.get_by_role("button", name="Notifications")
+    bell.get_by_label("1 unread").wait_for()
+    bell.click()
+    panel = page.get_by_role("region", name="Notifications")
+    panel.get_by_text("Stores and sales channels: version 2 was published").wait_for()
+    panel.get_by_role("button", name="Mark all read").click()
+    bell.get_by_label("1 unread").wait_for(state="detached")

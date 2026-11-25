@@ -47,6 +47,7 @@ const STEP_LABEL: Record<string, string> = {
   writing: "Writing the answer",
   verifying: "Checking every number and citation",
   rewriting: "A draft failed the checks; rewriting",
+  cached: "Already answered with exactly these source versions; reusing it",
 };
 
 type Progress = {
@@ -133,6 +134,14 @@ function Turn({
       <div className="answer" aria-live={latest ? "polite" : undefined}>
         <div className="answer-head">
           <span className={`status ${status.tone}`}>{status.label}</span>
+          {turn.cached && (
+            <span
+              className="badge"
+              title="The same question was answered before, and no source you can read has changed since. No model was called."
+            >
+              Reused · sources unchanged
+            </span>
+          )}
           <span className="muted small">{(turn.latency_ms / 1000).toFixed(1)} s</span>
         </div>
         <div className="markdown">

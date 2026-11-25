@@ -85,6 +85,20 @@ export async function logout(): Promise<void> {
 
 export const listSources = () => request<SourceItem[]>("GET", "/api/sources");
 
+// --- Following sources and notifications --------------------------------------------------
+
+export type NotificationsList = components["schemas"]["NotificationsOut"];
+export type NotificationItem = components["schemas"]["NotificationOut"];
+type Subscription = components["schemas"]["SubscriptionOut"];
+
+const subscriptionPath = (slug: string) => `/api/sources/${encodeURIComponent(slug)}/subscription`;
+export const followSource = (slug: string) => request<Subscription>("PUT", subscriptionPath(slug));
+export const unfollowSource = (slug: string) => request<void>("DELETE", subscriptionPath(slug));
+export const listNotifications = () => request<NotificationsList>("GET", "/api/notifications");
+/** Mark the given notifications read, or all of them when no ids are given. */
+export const markNotificationsRead = (ids?: string[]) =>
+  request<NotificationsList>("POST", "/api/notifications/read", ids ? { ids } : {});
+
 export type AskResponse = components["schemas"]["AskResponse"];
 export type Evidence = components["schemas"]["EvidenceOut"];
 export type Passage = components["schemas"]["PassageOut"];
