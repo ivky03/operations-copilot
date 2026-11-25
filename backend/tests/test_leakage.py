@@ -14,8 +14,9 @@ ways, and every surface they can reach is probed for those words:
 Surfaces: source listings and lookups, the steward console (versions, jobs, "used by"), the
 catalog and the schema description the planner reads, document titles, document search,
 value grounding, everything sent to the language model (plan and answer prompts, including
-conversation history), the answers and saved conversations themselves, and error messages,
-which must not differ between "restricted" and "doesn't exist".
+conversation history), the answers and saved conversations themselves, cached answers,
+notifications, and error messages, which must not differ between "restricted" and "doesn't
+exist".
 
 Each scenario first runs the same probes while access is granted and requires them to FIND
 the canaries, so the suite can't pass by probing the wrong place. Pass threshold: zero leaks.
@@ -25,7 +26,7 @@ import json
 
 import pytest
 import yaml
-from sqlalchemy import select, text
+from sqlalchemy import func, select, text
 
 from app.answer.context import build_context
 from app.answer.passages import document_titles
@@ -35,7 +36,18 @@ from app.cli import publish_reference, seed_reference
 from app.config import get_settings
 from app.documents.search import search
 from app.ingest.publish import publish_dataset, publish_document
-from app.models import Base, Conversation, Group, Source, SourceKind, User
+from app.models import (
+    AnswerCacheEntry,
+    AnswerRun,
+    Base,
+    Conversation,
+    Group,
+    Notification,
+    Source,
+    SourceKind,
+    Subscription,
+    User,
+)
 from app.query.catalog import Catalog
 from app.query.grounding import ground
 from tests.conftest import login
@@ -113,6 +125,7 @@ DATA_PLAN = {
     "queries": [{"metric": "rebate_value", "dimensions": ["zanzibar_tier"]}],
 }
 DOC_PLAN = {"kind": "documents", "doc_searches": ["vendor rebate tiers"]}
+CACHED_QUESTION = "Which vendor tiers earn the most?"  # asked on its own, so it's cached
 IRELAND = {
     "kind": "data",
     "queries": [
@@ -167,16 +180,20 @@ def as_user(client, email):
     return client
 
 
-def ask(db, who: User, question, plan, conversation=None, answer="See [D1]."):
+def ask(db, who: User, question, plan, conversation=None, answer="See [D1].", cached=False):
     planner, p = fake(plan, plan)  # twice: the planner is asked again after an unknown name
     writer, w = fake({"answer": answer}, {"answer": answer})
-    result = answer_question(db, who, question, planner, writer, conversation)
+    result = answer_question(db, who, question, planner, writer, conversation, use_cache=cached)
     return result, p.prompts, w.prompts
 
 
 def use_it(db, client) -> Conversation:
-    """Olga (Operations) uses both canary sources in a conversation, while she still can."""
+    """Olga (Operations) uses both canary sources while she still can: in a conversation, by
+    following them (and being told about a new version), and with an answer that's cached."""
     olga = user(db, OPS)
+    as_user(client, OPS)
+    for slug in (DATASET, DOCUMENT):
+        assert client.put(f"/api/sources/{slug}/subscription").status_code == 200
     chat = Conversation(user_id=olga.id, title="Vendor deals")
     db.add(chat)
     db.commit()
@@ -191,6 +208,10 @@ def use_it(db, client) -> Conversation:
     }
     assert client.post(f"/api/steward/sources/{DATASET}/uploads", files=files).status_code == 202
     work()
+    resp = client.post(f"/api/steward/sources/{DATASET}/versions/2/publish")
+    assert resp.status_code == 200, resp.text  # Olga follows it: she's notified
+    cached, _, _ = ask(db, olga, CACHED_QUESTION, DOC_PLAN, answer="Gold [C1].", cached=True)
+    assert cached.status == "answered" and not cached.cached
     return chat
 
 
@@ -208,6 +229,7 @@ def probe(db, client, conversation: Conversation | None) -> dict[str, str]:
         seen[f"GET /api/sources/{slug}"] = client.get(f"/api/sources/{slug}").text
     if conversation:
         seen["saved conversation"] = client.get(f"/api/conversations/{conversation.id}").text
+    seen["notifications"] = client.get("/api/notifications").text
 
     as_user(client, STEWARD)
     seen["steward sources"] = client.get("/api/steward/sources").text
@@ -224,6 +246,10 @@ def probe(db, client, conversation: Conversation | None) -> dict[str, str]:
     seen["document search"] = json.dumps([h.__dict__ for h in hits], default=str)
     g = ground(db, catalog, "Zanzibar Gold")
     seen["value grounding"] = json.dumps([c.__dict__ for c in g.candidates], default=str)
+
+    # The cached question again: reused only while nothing about Olga's access has changed.
+    again, _, _ = ask(db, olga, CACHED_QUESTION, DOC_PLAN, answer="Gold [C1].", cached=True)
+    seen["cached answer"] = json.dumps(again.__dict__, default=lambda o: o.__dict__)
 
     # A new question, in the old conversation if there is one (so history is in the prompt).
     result, plan_prompts, write_prompts = ask(
@@ -276,6 +302,17 @@ def storage_traces(db) -> dict[str, int]:
     )
     if listed.get("KeyCount"):
         found["s3"] = listed["KeyCount"]
+    # Rows that hold no canary text themselves but point at the deleted sources.
+    erased = select(AnswerRun.id).where(AnswerRun.redacted_reason.is_not(None))
+    gone = select(Source.id).where(Source.slug.in_([DATASET, DOCUMENT]))
+    for name, query in (
+        ("cache entries for erased answers", AnswerCacheEntry.answer_run_id.in_(erased)),
+        ("notifications", Notification.source_id.in_(gone)),
+        ("subscriptions", Subscription.source_id.in_(gone)),
+    ):
+        table = query.left.table
+        if n := db.scalar(select(func.count()).select_from(table).where(query)):
+            found[name] = n
     db.rollback()  # end the read: an open transaction would hold locks a delete has to wait for
     return found
 
@@ -309,6 +346,8 @@ def test_a_source_taken_away_leaks_nowhere(world, client, scenario):
     for surface in (
         "GET /api/sources",
         "saved conversation",
+        "notifications",
+        "cached answer",
         "steward sources",
         "steward preview vendor_rebates",
         "steward jobs",
@@ -356,4 +395,4 @@ def test_restoring_an_archived_source_brings_everything_back(world, client):
     for slug in (DATASET, DOCUMENT):
         assert client.post(f"/api/steward/sources/{slug}/restore").status_code == 200
     seen = leaks(probe(db, client, chat))
-    assert "saved conversation" in seen and "schema context" in seen
+    assert {"saved conversation", "schema context", "notifications", "cached answer"} <= set(seen)
