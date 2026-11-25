@@ -3,9 +3,10 @@
 Run locally:  cd backend && uv run python -m app.worker
 
 It long-polls the queue, processes each message (see app/ingest/jobs.py), and every
-`SWEEP_EVERY` seconds runs the safety nets: re-send jobs whose message was lost, and mark
-dead-lettered jobs failed. Ctrl+C / SIGTERM finishes the current job, then exits, so a normal
-shutdown never abandons work halfway (and an abnormal one is covered by the job lock expiring).
+`SWEEP_EVERY` seconds runs the safety nets: re-send jobs whose message was lost, mark
+dead-lettered jobs failed, and remove uploaded files still stored for deleted sources.
+Ctrl+C / SIGTERM finishes the current job, then exits, so a normal shutdown never abandons
+work halfway (and an abnormal one is covered by the job lock expiring).
 """
 
 import signal
@@ -14,7 +15,7 @@ import time
 import structlog
 
 from app.db import _session_factory
-from app.ingest import jobs
+from app.ingest import jobs, lifecycle
 
 log = structlog.get_logger()
 
@@ -45,6 +46,7 @@ class Worker:
         with _session_factory()() as db:
             jobs.sweep(db)
             jobs.drain_dead_letters(db)
+            lifecycle.purge_deleted_uploads(db)
 
     def run_forever(self) -> None:
         jobs.ensure_infrastructure()

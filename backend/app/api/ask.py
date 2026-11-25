@@ -8,7 +8,8 @@ GET  /api/conversations/{id}       one conversation with every turn's answer and
 PATCH/DELETE /api/conversations/{id}
 
 Conversations are private to their owner: anyone else gets 404, as if it didn't exist.
-A saved turn that used a source the viewer can no longer read is redacted when shown.
+A saved turn that used a source the viewer can no longer read is redacted when shown; one that
+used a since-deleted source has had its content erased for everyone.
 The language-model clients are FastAPI dependencies so tests can replace them with a fake.
 """
 
@@ -37,6 +38,7 @@ router = APIRouter(prefix="/api", tags=["ask"])
 log = logging.getLogger(__name__)
 
 REDACTED = "This answer used a source you no longer have access to, so it's hidden."
+ERASED = "This answer used a source that has since been deleted, so its content was erased."
 TITLE_LENGTH = 80
 
 
@@ -145,8 +147,9 @@ def _from_run(run: AnswerRun, readable: set[str]) -> AskResponse:
         "latency_ms": run.latency_ms or 0,
     }
     if not visible(run, readable):
+        message = ERASED if run.redacted_reason else REDACTED
         return AskResponse(
-            **base, status="redacted", answer=REDACTED, options=[], notes=[], evidence=[],
+            **base, status="redacted", answer=message, options=[], notes=[], evidence=[],
             passages=[], sources=[],
         )  # fmt: skip
     restated = run.plan.get("standalone_question") if run.conversation_id else None

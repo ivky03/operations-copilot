@@ -57,6 +57,7 @@ class VersionStatus(StrEnum):
     PUBLISHED = "published"  # the version answers use (at most one per source)
     SUPERSEDED = "superseded"  # an older published version
     DISCARDED = "discarded"  # a ready version the steward chose not to publish; content removed
+    DELETED = "deleted"  # its source was deleted: content removed, the row kept as a record
 
 
 class JobStatus(StrEnum):
@@ -148,6 +149,7 @@ class Source(Base):
         _enum(SourceStatus, "source_status"), nullable=False, default=SourceStatus.ACTIVE
     )
     created_at: Mapped[datetime] = _created_at()
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     versions: Mapped[list["SourceVersion"]] = relationship(back_populates="source")
     granted_groups: Mapped[list[Group]] = relationship(secondary="source_grants")
@@ -333,6 +335,9 @@ class AnswerRun(Base):
     )
     source_versions: Mapped[list] = mapped_column(JSONB, nullable=False, default=list)
     verification: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    # Set when the answer's content was erased because a source it used was deleted. The
+    # question stays (the user typed it); the answer, rows and passages are gone for everyone.
+    redacted_reason: Mapped[str | None] = mapped_column(String(30))
     latency_ms: Mapped[int | None] = mapped_column(Integer)
 
 

@@ -4,7 +4,9 @@ Rules, enforced here on the server:
 - Only stewards (role) can call these routes (403 otherwise; 401 if not logged in).
 - A steward manages only sources they can read through their groups. Other sources return
   404, the same as a source that doesn't exist, so their existence isn't confirmed.
-- Registering new sources and changing who can read them stay with administrators.
+- A steward can archive a source (hidden from every answer, reversible) and restore it.
+- Registering new sources, changing who can read them and deleting them permanently stay with
+  administrators.
 """
 
 import uuid
@@ -16,10 +18,10 @@ from pydantic import BaseModel
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from app.authz import readable_sources_query, require_role
+from app.authz import managed_sources_query, readable_sources_query, require_role
 from app.config import get_settings
 from app.db import get_db
-from app.ingest import jobs
+from app.ingest import jobs, lifecycle
 from app.ingest.publish import DATASET_SCHEMA, PublishError, discard_version, publish_version
 from app.models import (
     DocChunk,
@@ -29,6 +31,7 @@ from app.models import (
     Role,
     Source,
     SourceKind,
+    SourceStatus,
     SourceVersion,
     User,
     VersionStatus,
@@ -69,6 +72,8 @@ class StewardSourceOut(BaseModel):
     slug: str
     kind: str
     title: str
+    status: str  # active | archived
+    used_by: list[str]  # datasets (that you can see) linking to this one
     published_version: int | None
     ready_versions: list[int]  # prepared, waiting for a publish decision
     active_jobs: int  # pending or running
@@ -150,11 +155,25 @@ class VersionDetail(BaseModel):
 # ----------------------------------------------------------------------------- helpers
 
 
-def _source(db: Session, user: User, slug: str) -> Source:
-    source = db.scalar(readable_sources_query(user).where(Source.slug == slug))
+def _source(db: Session, user: User, slug: str, active: bool = True) -> Source:
+    """A source this steward manages. `active=True` for anything that changes its content:
+    an archived source must be restored first."""
+    source = db.scalar(managed_sources_query(user).where(Source.slug == slug))
     if source is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Source not found.")
+    if active and source.status != SourceStatus.ACTIVE:
+        raise HTTPException(status.HTTP_409_CONFLICT, "This source is archived. Restore it first.")
     return source
+
+
+def _used_by(db: Session, user: User) -> dict[str, list[str]]:
+    """{dataset: datasets linking to it}, limited to datasets this steward can read: naming a
+    restricted dataset here would reveal that it exists."""
+    readable = {s.slug for s in db.scalars(readable_sources_query(user))}
+    return {
+        target: [d for d in deps if d in readable]
+        for target, deps in lifecycle.links_to(db).items()
+    }
 
 
 def _version(db: Session, source: Source, number: int) -> SourceVersion:
@@ -169,8 +188,8 @@ def _version(db: Session, source: Source, number: int) -> SourceVersion:
 
 
 def _job(db: Session, user: User, job_id: uuid.UUID) -> Job:
-    readable = readable_sources_query(user).with_only_columns(Source.id)
-    job = db.scalar(select(Job).where(Job.id == job_id, Job.source_id.in_(readable)))
+    managed = managed_sources_query(user).with_only_columns(Source.id)
+    job = db.scalar(select(Job).where(Job.id == job_id, Job.source_id.in_(managed)))
     if job is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Job not found.")
     return job
@@ -229,7 +248,7 @@ def _published(db: Session, source: Source) -> SourceVersion | None:
 def list_sources(
     user: User = Depends(require_steward), db: Session = Depends(get_db)
 ) -> list[StewardSourceOut]:
-    sources = list(db.scalars(readable_sources_query(user).order_by(Source.slug)))
+    sources = list(db.scalars(managed_sources_query(user).order_by(Source.slug)))
     ids = [s.id for s in sources]
     versions = list(db.scalars(select(SourceVersion).where(SourceVersion.source_id.in_(ids))))
     active = list(
@@ -239,6 +258,7 @@ def list_sources(
             )
         )
     )
+    used_by = _used_by(db, user)
     out = []
     for s in sources:
         mine = [v for v in versions if v.source_id == s.id]
@@ -248,6 +268,8 @@ def list_sources(
                 slug=s.slug,
                 kind=s.kind.value,
                 title=s.title,
+                status=s.status.value,
+                used_by=used_by.get(s.slug, []),
                 published_version=published,
                 ready_versions=sorted(v.version for v in mine if v.status == VersionStatus.READY),
                 active_jobs=active.count(s.id),
@@ -260,7 +282,7 @@ def list_sources(
 def list_versions(
     slug: str, user: User = Depends(require_steward), db: Session = Depends(get_db)
 ) -> list[VersionOut]:
-    source = _source(db, user, slug)
+    source = _source(db, user, slug, active=False)
     rows = db.scalars(
         select(SourceVersion)
         .where(SourceVersion.source_id == source.id)
@@ -274,7 +296,7 @@ def get_version(
     slug: str, number: int, user: User = Depends(require_steward), db: Session = Depends(get_db)
 ) -> VersionDetail:
     """Everything needed to decide whether to publish: issues, or a preview and what changed."""
-    source = _source(db, user, slug)
+    source = _source(db, user, slug, active=False)
     v = _version(db, source, number)
     detail = VersionDetail(
         source=source.slug,
@@ -354,6 +376,43 @@ def discard(
     return VersionOut.of(v)
 
 
+# ----------------------------------------------------------------------------- archive, restore
+
+
+def _summary(db: Session, user: User, source: Source) -> StewardSourceOut:
+    return next(s for s in list_sources(user, db) if s.slug == source.slug)
+
+
+@router.post("/sources/{slug}/archive")
+def archive(
+    slug: str, user: User = Depends(require_steward), db: Session = Depends(get_db)
+) -> StewardSourceOut:
+    """Hide a source from every answer, search and listing, for everyone. Nothing is deleted:
+    restoring it brings it back as it was. Saved answers that used it are hidden meanwhile."""
+    source = _source(db, user, slug)
+    try:
+        lifecycle.archive_source(db, source, user)
+    except PublishError as e:
+        db.rollback()
+        raise HTTPException(status.HTTP_409_CONFLICT, "; ".join(e.issues)) from e
+    db.commit()
+    return _summary(db, user, source)
+
+
+@router.post("/sources/{slug}/restore")
+def restore(
+    slug: str, user: User = Depends(require_steward), db: Session = Depends(get_db)
+) -> StewardSourceOut:
+    source = _source(db, user, slug, active=False)
+    try:
+        lifecycle.restore_source(db, source, user)
+    except PublishError as e:
+        db.rollback()
+        raise HTTPException(status.HTTP_409_CONFLICT, "; ".join(e.issues)) from e
+    db.commit()
+    return _summary(db, user, source)
+
+
 # ----------------------------------------------------------------------------- uploads, jobs
 
 
@@ -384,12 +443,12 @@ def list_jobs(
     user: User = Depends(require_steward),
     db: Session = Depends(get_db),
 ) -> list[JobOut]:
-    readable = readable_sources_query(user)
+    managed = managed_sources_query(user)
     if source:
-        readable = readable.where(Source.slug == source)
+        managed = managed.where(Source.slug == source)
     query = (
         select(Job)
-        .where(Job.source_id.in_(readable.with_only_columns(Source.id)))
+        .where(Job.source_id.in_(managed.with_only_columns(Source.id)))
         .order_by(Job.created_at.desc())
         .limit(min(max(limit, 1), 200))
     )
