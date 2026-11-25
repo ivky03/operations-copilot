@@ -11,7 +11,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.api import admin, ask, query, sources, steward
+from app.api import admin, ask, notifications, query, sources, steward
 from app.auth import router as auth_router
 from app.aws import check_aws
 from app.db import check_database
@@ -25,6 +25,7 @@ app.include_router(admin.router)
 app.include_router(query.router)
 app.include_router(ask.router)
 app.include_router(steward.router)
+app.include_router(notifications.router)
 
 
 @app.get("/health")

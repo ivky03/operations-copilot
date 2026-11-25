@@ -86,6 +86,7 @@ class AskResponse(BaseModel):
     passages: list[PassageOut]
     sources: list[dict[str, str | int]]
     latency_ms: int
+    cached: bool = False  # reused: the same question, with exactly the same versions readable
 
 
 class ConversationSummary(BaseModel):
@@ -136,6 +137,7 @@ def _from_result(result: AnswerResult, conversation: Conversation) -> AskRespons
         passages=[PassageOut(**p.as_dict()) for p in result.passages],
         sources=result.sources,
         latency_ms=result.latency_ms,
+        cached=result.cached,
     )
 
 
@@ -164,6 +166,7 @@ def _from_run(run: AnswerRun, readable: set[str]) -> AskResponse:
         evidence=[EvidenceOut(**e) for e in run.evidence],
         passages=[PassageOut(**p) for p in run.passages],
         sources=run.source_versions,
+        cached=run.cached_from is not None,
     )
 
 
@@ -217,6 +220,7 @@ async def ask_stream(
                 result = answer_question(
                     own, me, body.question, planner, writer, convo,
                     on_event=lambda event, data: put((event, _public(event, data))),
+                    use_cache=get_settings().answer_cache_enabled,
                 )  # fmt: skip
                 put(("answer", _from_result(result, convo).model_dump(mode="json")))
             except Exception:
@@ -248,8 +252,9 @@ async def ask(
     conversation = _conversation_for(db, user, body)
     # The pipeline makes blocking network and database calls: keep them off the event loop.
     result = await run_in_threadpool(
-        answer_question, db, user, body.question, planner, writer, conversation
-    )
+        answer_question, db, user, body.question, planner, writer, conversation,
+        use_cache=get_settings().answer_cache_enabled,
+    )  # fmt: skip
     return _from_result(result, conversation)
 
 

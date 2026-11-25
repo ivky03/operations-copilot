@@ -14,6 +14,7 @@ import time
 
 import structlog
 
+from app.answer import cache
 from app.db import _session_factory
 from app.ingest import jobs, lifecycle
 
@@ -47,6 +48,7 @@ class Worker:
             jobs.sweep(db)
             jobs.drain_dead_letters(db)
             lifecycle.purge_deleted_uploads(db)
+            cache.purge_expired(db)
 
     def run_forever(self) -> None:
         jobs.ensure_infrastructure()

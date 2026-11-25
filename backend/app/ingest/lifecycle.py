@@ -6,7 +6,8 @@
 - **Delete** (administrator, permanent): every version's content is removed in ONE
   transaction: dataset tables dropped, value index, document text and search chunks deleted,
   version details erased. Saved answers that used the source are erased too, for every user,
-  because they contain its rows and passages. What remains is a **tombstone**: the source row
+  because they contain its rows and passages, along with the cache entries pointing at them
+  and the source's subscriptions and notifications. What remains is a **tombstone**: the source row
   (slug, title, `deleted`, when) and its version rows with status `deleted`. The tombstone is
   why a late background job can see the source is gone instead of quietly recreating it, and
   why the slug can't be reused by accident.
@@ -25,7 +26,8 @@ import structlog
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from app import audit
+from app import audit, notifications
+from app.answer import cache
 from app.aws import get_client
 from app.config import get_settings
 from app.ingest.manifest import Manifest
@@ -161,6 +163,7 @@ def _erase_answers(db: Session, slug: str) -> int:
         run.evidence, run.passages, run.verification = [], [], {}
         run.plan = {"standalone_question": standalone} if standalone else {}
         run.redacted_reason = SOURCE_DELETED
+    cache.forget_runs(db, [run.id for run in runs])  # copies are erased too: same source list
     return len(runs)
 
 
@@ -196,6 +199,7 @@ def delete_source(db: Session, source: Source, actor: User | None) -> DeleteRepo
     report.answers_erased = _erase_answers(db, source.slug)
     report.jobs_closed = _close_jobs(db, source)
     db.query(SourceGrant).filter(SourceGrant.source_id == source.id).delete()
+    notifications.forget_source(db, source.id)
     source.status = SourceStatus.DELETED
     source.deleted_at = datetime.now(UTC)
     audit.record(
