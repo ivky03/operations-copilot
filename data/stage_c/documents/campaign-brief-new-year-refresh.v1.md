@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-New year refresh (CMP-01) runs on email from 2026-01-02 to 2026-01-31 with a media budget of EUR 4,000.
+New year refresh (CMP-01) runs on email from 2026-01-02 to 2026-01-31 with a media budget of EUR 400.
 
 ## Audience
 

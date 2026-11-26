@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Winter lighting (CMP-02) runs on social from 2026-01-10 to 2026-02-15 with a media budget of EUR 6,500.
+Winter lighting (CMP-02) runs on social from 2026-01-10 to 2026-02-15 with a media budget of EUR 650.
 
 ## Audience
 

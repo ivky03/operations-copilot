@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Spring textiles social (CMP-06) runs on social from 2026-04-01 to 2026-04-30 with a media budget of EUR 5,500.
+Spring textiles social (CMP-06) runs on social from 2026-04-01 to 2026-04-30 with a media budget of EUR 550.
 
 ## Audience
 

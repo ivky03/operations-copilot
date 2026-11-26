@@ -11,7 +11,7 @@ synthetic: true
 
 ## Revenue
 
-4000 Sales revenue, recognised on posting date and excluding VAT; 4100 Gift card breakage.
+4000 Sales revenue, booked at month end net of cancellations; 4100 Gift card breakage; 4900 Sales returns (refunds).
 
 ## Costs
 

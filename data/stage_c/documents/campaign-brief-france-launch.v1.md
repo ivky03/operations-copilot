@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-France launch (CMP-07) runs on search from 2026-03-02 to 2026-04-30 with a media budget of EUR 9,000.
+France launch (CMP-07) runs on search from 2026-03-02 to 2026-04-30 with a media budget of EUR 900.
 
 ## Audience
 

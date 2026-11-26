@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Furniture showcase (CMP-08) runs on display from 2026-03-01 to 2026-03-31 with a media budget of EUR 4,500.
+Furniture showcase (CMP-08) runs on display from 2026-03-01 to 2026-03-31 with a media budget of EUR 450.
 
 ## Audience
 

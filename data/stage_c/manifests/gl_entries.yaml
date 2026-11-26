@@ -2,8 +2,9 @@
 source: gl_entries
 title: General ledger
 description: Monthly ledger postings by account and store, as booked by Finance at month end. Accounting
-  sales revenue (account 4000) is recognised by posting date and excludes VAT; it is reconciled to net
-  sales only after close and can differ from it. April is provisional until the month is closed.
+  sales revenue (account 4000) is booked net of cancellations, with returns on their own account (4900);
+  before reconciliation it differs from the sales system by a few percent, so it is not net sales. April
+  is provisional until the month is closed.
 grain: One row per account, store and month-end posting.
 primary_key:
 - entry_id
@@ -28,6 +29,7 @@ columns:
   value_index: true
   allowed_values:
   - Sales revenue
+  - Sales returns
   - Gift card breakage
   - Cost of goods sold
   - Staff costs

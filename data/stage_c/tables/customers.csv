@@ -9,19 +9,19 @@ C1015,United Kingdom,2022-09-27,online,false,NEW,S02,900.04
 C1017,Germany,2020-03-12,store,true,NEW,S04,704.00
 C1019,United Kingdom,2021-12-11,store,false,NEW,S01,531.74
 C1022,Germany,2023-07-28,online,true,NEW,S05,666.43
-C1024,France,2024-10-04,online,false,REG,S08,709.57
+C1024,France,2024-10-04,online,false,REG,S08,598.33
 C1025,United Kingdom,2022-01-13,store,true,B2B,S01,580.18
-C1027,Germany,2023-10-03,store,false,REG,S04,367.99
+C1027,Germany,2023-10-03,store,false,REG,S04,302.49
 C1028,United Kingdom,2024-01-24,online,true,REG,S02,673.92
 C1030,Germany,2025-04-06,store,true,REG,S04,892.17
 C1031,Germany,2024-02-25,online,false,NEW,S05,577.77
 C1034,United Kingdom,2025-04-10,store,true,NEW,S01,285.68
 C1036,United Kingdom,2024-08-08,store,true,REG,S01,877.98
-C1037,Ireland,2021-07-07,store,true,REG,S03,252.24
+C1037,Ireland,2021-07-07,store,true,NEW,S03,175.38
 C1038,Germany,2024-12-24,online,true,REG,S05,429.00
 C1043,Germany,2020-01-30,store,false,REG,S04,360.56
 C1044,Germany,2020-05-09,online,true,NEW,S05,239.87
-C1048,United Kingdom,2022-01-05,store,true,REG,S01,215.89
+C1048,United Kingdom,2022-01-05,store,true,NEW,S01,174.73
 C1049,Germany,2024-05-23,online,true,NEW,S05,320.81
 C1050,Netherlands,2021-06-05,store,true,REG,S06,769.66
 C1052,Netherlands,2021-05-05,store,true,REG,S06,811.34
@@ -31,7 +31,7 @@ C1060,Ireland,2021-06-22,store,true,REG,S03,790.54
 C1067,Germany,2024-12-29,online,false,NEW,S05,252.20
 C1069,France,2020-11-12,online,false,B2B,S08,378.61
 C1070,United Kingdom,2022-10-24,online,true,NEW,S02,795.10
-C1072,United Kingdom,2020-11-17,store,false,REG,S01,763.53
+C1072,United Kingdom,2020-11-17,store,false,NEW,S01,614.31
 C1073,Germany,2020-06-02,online,false,REG,S05,644.71
 C1074,France,2023-09-22,online,true,NEW,S08,895.27
 C1076,Germany,2022-06-07,online,false,NEW,S05,127.21
@@ -49,12 +49,12 @@ C1090,France,2022-07-08,online,true,NEW,S08,470.45
 C1097,United Kingdom,2022-06-06,online,true,NEW,S02,552.83
 C1098,United Kingdom,2021-07-07,online,false,REG,S02,1005.01
 C1099,Germany,2024-07-16,online,false,B2B,S05,718.07
-C1100,Germany,2020-11-11,online,false,REG,S05,1092.52
+C1100,Germany,2020-11-11,online,false,REG,S05,963.16
 C1101,Germany,2023-11-22,store,true,REG,S04,218.43
 C1104,Netherlands,2025-02-04,store,false,REG,S06,727.52
 C1106,United Kingdom,2023-03-22,online,true,NEW,S02,727.44
 C1108,Spain,2023-01-27,store,false,NEW,S07,289.57
-C1109,United Kingdom,2022-12-05,online,false,REG,S02,815.83
+C1109,United Kingdom,2022-12-05,online,false,NEW,S02,768.43
 C1110,Germany,2020-12-10,online,true,NEW,S05,456.03
 C1111,Germany,2022-01-12,online,false,NEW,S05,1029.20
 C1112,Germany,2025-09-09,online,false,REG,S05,312.45
@@ -65,7 +65,7 @@ C1119,Germany,2023-02-14,online,true,REG,S05,559.77
 C1120,Spain,2025-06-12,store,true,REG,S07,830.65
 C1122,United Kingdom,2024-06-24,store,true,NEW,S01,562.73
 C1123,United Kingdom,2021-01-24,store,false,NEW,S01,542.45
-C1124,France,2021-08-13,online,true,REG,S08,437.17
+C1124,France,2021-08-13,online,true,NEW,S08,388.79
 C1126,Germany,2020-02-16,online,true,NEW,S05,624.85
 C1130,Germany,2022-12-28,online,false,NEW,S05,858.16
 C1134,Germany,2020-09-20,online,false,REG,S05,1012.43
@@ -74,14 +74,14 @@ C1141,Germany,2023-10-14,online,true,REG,S05,690.48
 C1142,Germany,2022-09-19,online,false,REG,S05,1386.12
 C1145,Germany,2022-10-11,online,true,NEW,S05,258.61
 C1147,Ireland,2020-03-26,store,true,REG,S03,937.92
-C1148,Germany,2021-04-20,online,true,REG,S05,1027.41
+C1148,Germany,2021-04-20,online,true,NEW,S05,930.58
 C1150,United Kingdom,2025-09-28,online,true,REG,S02,443.24
 C1153,United Kingdom,2022-11-14,online,true,REG,S02,958.19
 C1154,United Kingdom,2020-03-17,online,true,NEW,S02,172.52
 C1155,Ireland,2022-07-10,store,true,NEW,S03,499.76
 C1156,United Kingdom,2023-04-10,online,false,NEW,S02,1033.35
 C1157,Germany,2024-09-23,store,false,NEW,S04,854.74
-C1160,France,2020-06-03,online,true,REG,S08,978.61
+C1160,France,2020-06-03,online,true,NEW,S08,922.29
 C1161,Germany,2022-03-07,online,true,NEW,S05,650.99
 C1169,United Kingdom,2021-02-27,online,true,NEW,S02,988.62
 C1170,Germany,2020-12-11,online,true,REG,S05,215.58

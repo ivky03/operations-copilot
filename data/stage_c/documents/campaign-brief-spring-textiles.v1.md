@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Spring textiles (CMP-05) runs on email from 2026-04-01 to 2026-04-30 with a media budget of EUR 3,000.
+Spring textiles (CMP-05) runs on email from 2026-04-01 to 2026-04-30 with a media budget of EUR 300.
 
 ## Audience
 

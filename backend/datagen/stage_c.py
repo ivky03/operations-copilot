@@ -170,6 +170,35 @@ class StageC:
         self.opened = {s["store_id"]: date.fromisoformat(s["opened_date"]) for s in self.stores}
         self.price = {p["product_id"]: float(p["list_price"]) for p in self.products}
         self.category = {p["product_id"]: p["category"] for p in self.products}
+        # Facts other tables must agree with: every order as the checkout saw it (before any
+        # cancellation), and sales by store and month. A cancellation is a separate invoice
+        # (CINV-...) with negative quantities.
+        self.checkout: dict[str, dict] = {}
+        self.sales_month: dict[tuple[str, date], dict[str, float]] = {}
+        for t in self.transactions:
+            when = datetime.fromisoformat(t["invoice_date"])
+            value = int(t["quantity"]) * float(t["unit_price"])
+            key = (t["store_id"], when.date().replace(day=1))
+            totals = self.sales_month.setdefault(
+                key, {"gross": 0.0, "cancelled": 0.0, "refunds": 0.0}
+            )
+            if t["is_cancellation"] == "true":
+                totals["cancelled"] += -value  # stored as a positive amount
+                continue
+            totals["gross"] += value
+            order = self.checkout.setdefault(
+                t["invoice_no"], {"store_id": t["store_id"], "day": when.date(), "value": 0.0}
+            )
+            order["value"] += value
+        for r in self.returns:
+            key = (r["store_id"], datetime.fromisoformat(r["return_date"]).date().replace(day=1))
+            totals = self.sales_month.setdefault(
+                key, {"gross": 0.0, "cancelled": 0.0, "refunds": 0.0}
+            )
+            totals["refunds"] += float(r["refund_amount"])
+        self.segment_sizes: dict[
+            str, int
+        ] = {}  # opted-in customers per segment, set by customers()
 
     def open_on(self, store_id: str, day: date) -> bool:
         return self.opened[store_id] <= day
@@ -213,7 +242,7 @@ class StageC:
         first_store = {}
         orders = {}
         for t in self.transactions:
-            if t["customer_id"]:
+            if t["customer_id"] and t["is_cancellation"] != "true":
                 first_store.setdefault(t["customer_id"], t["store_id"])
                 orders.setdefault(t["customer_id"], set()).add(t["invoice_no"])
         rows = []
@@ -228,13 +257,16 @@ class StageC:
                 signup = START + timedelta(days=self.rng.randint(0, 119))
             # Lifetime value covers every year since sign-up, not just 2026: a look-alike.
             ltv = round(n * self.rng.uniform(40, 160) + self.rng.uniform(0, 900), 2)
+            opted_in = self.rng.random() < 0.62
+            if opted_in:
+                self.segment_sizes[segment] = self.segment_sizes.get(segment, 0) + 1
             rows.append(
                 [
                     cid,
                     countries[store],
                     signup,
                     "online" if store in {s["store_id"] for s in self.online} else "store",
-                    self.rng.random() < 0.62,
+                    opted_in,
                     segment,
                     store,
                     ltv,
@@ -486,7 +518,7 @@ class StageC:
         topics = ["Product quality", "Staff", "Delivery", "Price", "Store layout", "Website"]
         rows, n = [], 0
         for t in self.transactions:
-            if t["line_no"] != "1" or self.rng.random() > 0.45:
+            if t["line_no"] != "1" or t["is_cancellation"] == "true" or self.rng.random() > 0.45:
                 continue
             n += 1
             day = datetime.fromisoformat(t["invoice_date"]).date() + timedelta(
@@ -583,7 +615,7 @@ class StageC:
                 "email",
                 date(2026, 1, 2),
                 date(2026, 1, 31),
-                4000.0,
+                400.0,
                 "Retention",
                 None,
                 None,
@@ -594,7 +626,7 @@ class StageC:
                 "social",
                 date(2026, 1, 10),
                 date(2026, 2, 15),
-                6500.0,
+                650.0,
                 "Awareness",
                 "Lighting",
                 None,
@@ -605,7 +637,7 @@ class StageC:
                 "search",
                 date(2026, 1, 1),
                 date(2026, 4, 30),
-                12000.0,
+                1200.0,
                 "Acquisition",
                 None,
                 None,
@@ -616,7 +648,7 @@ class StageC:
                 "display",
                 date(2026, 2, 1),
                 date(2026, 2, 28),
-                3500.0,
+                350.0,
                 "Acquisition",
                 "Kitchen",
                 None,
@@ -627,7 +659,7 @@ class StageC:
                 "email",
                 date(2026, 4, 1),
                 date(2026, 4, 30),
-                3000.0,
+                300.0,
                 "Promotion",
                 "Textiles",
                 "SPRING10",
@@ -638,7 +670,7 @@ class StageC:
                 "social",
                 date(2026, 4, 1),
                 date(2026, 4, 30),
-                5500.0,
+                550.0,
                 "Promotion",
                 "Textiles",
                 "SPRING10",
@@ -649,7 +681,7 @@ class StageC:
                 "search",
                 date(2026, 3, 2),
                 date(2026, 4, 30),
-                9000.0,
+                900.0,
                 "Acquisition",
                 None,
                 None,
@@ -660,13 +692,20 @@ class StageC:
                 "display",
                 date(2026, 3, 1),
                 date(2026, 3, 31),
-                4500.0,
+                450.0,
                 "Awareness",
                 "Furniture",
                 None,
             ),
         ]
         camp_rows = [list(c) for c in campaigns]
+        # Ad platforms credit a real online order to any campaign the customer clicked
+        # recently, so one order is often credited to several campaigns at once.
+        online_ids = {st["store_id"] for st in self.online}
+        orders_on: dict[date, list[float]] = {}
+        for order in self.checkout.values():
+            if order["store_id"] in online_ids:
+                orders_on.setdefault(order["day"], []).append(order["value"])
         spend = []
         for c in campaigns:
             cid, _, channel, start, end, budget = c[:6]
@@ -675,9 +714,9 @@ class StageC:
                 s = round(budget / n_days * self.rng.uniform(0.7, 1.25), 2)
                 impressions = int(s * self.rng.uniform(80, 220))
                 clicks = int(impressions * self.rng.uniform(0.005, 0.03))
-                orders = int(clicks * self.rng.uniform(0.01, 0.05))
-                revenue = round(orders * self.rng.uniform(45, 140), 2)
-                spend.append([d, cid, impressions, clicks, s, orders, revenue])
+                credited = [v for v in orders_on.get(d, []) if self.rng.random() < 0.35]
+                revenue = round(sum(credited) * 1.2, 2)  # incl. VAT, before cancellations
+                spend.append([d, cid, impressions, clicks, s, len(credited), revenue])
         sends, n = [], 0
         for c in campaigns:
             if c[2] != "email":
@@ -686,7 +725,9 @@ class StageC:
                 n += 1
                 day = c[3] + timedelta(days=7 * week)
                 for seg in ("NEW", "REG", "VIP", "LAP"):
-                    recipients = self.rng.randint(300, 2500)
+                    recipients = self.segment_sizes.get(seg, 0)
+                    if recipients == 0:
+                        continue
                     delivered = int(recipients * self.rng.uniform(0.95, 0.99))
                     opens = int(delivered * self.rng.uniform(0.18, 0.45))
                     clicks = int(opens * self.rng.uniform(0.05, 0.2))
@@ -872,36 +913,40 @@ class StageC:
             "vase",
         ]
         catalogue = {"sofa", "curtains"}  # searched for, not sold
+        cells = [(dev, src) for dev in devices for src in sources]
+        weights = [device_share[dev] * source_share[src] for dev, src in cells]
+        checkout_on: dict[tuple[str, date], list[float]] = {}
+        for order in self.checkout.values():
+            checkout_on.setdefault((order["store_id"], order["day"]), []).append(order["value"])
         for d in days():
             for s in self.online:
                 sid = s["store_id"]
                 if not self.open_on(sid, d):
                     continue
-                base = 900 if sid != "S08" else 300
-                for dev in devices:
-                    for src in sources:
-                        sessions = max(
-                            1,
-                            int(
-                                base
-                                * device_share[dev]
-                                * source_share[src]
-                                * self.rng.uniform(0.7, 1.3)
-                            ),
-                        )
-                        users = int(sessions * self.rng.uniform(0.75, 0.92))
-                        bounces = int(sessions * self.rng.uniform(0.3, 0.6))
-                        orders = int(sessions * self.rng.uniform(0.004, 0.02))
-                        revenue = round(orders * self.rng.uniform(40, 150) * 1.2, 2)  # incl. VAT
-                        sessions_rows.append(
-                            [d, sid, dev, src, sessions, users, bounces, orders, revenue]
-                        )
-                        for p in self.products:
-                            views = int(sessions * self.rng.uniform(0.01, 0.08))
-                            if views == 0:
-                                continue
-                            carts = int(views * self.rng.uniform(0.02, 0.12))
-                            views_rows.append([d, sid, p["product_id"], dev, src, views, carts])
+                # Every real order placed that day, as the browser saw it at checkout (incl.
+                # VAT, before any cancellation), lands in one device/source cell.
+                tracked: dict[tuple[str, str], list[float]] = {}
+                for value in checkout_on.get((sid, d), []):
+                    cell = self.rng.choices(cells, weights)[0]
+                    tracked.setdefault(cell, []).append(value * 1.2)
+                base = 40 if sid != "S08" else 25
+                for dev, src in cells:
+                    share = device_share[dev] * source_share[src]
+                    sessions = max(1, round(base * share * self.rng.uniform(0.6, 1.4)))
+                    orders = tracked.get((dev, src), [])
+                    sessions = max(sessions, 3 * len(orders))
+                    users = max(1, round(sessions * self.rng.uniform(0.75, 0.95)))
+                    bounces = round(sessions * self.rng.uniform(0.3, 0.6))
+                    revenue = round(sum(orders), 2)
+                    sessions_rows.append(
+                        [d, sid, dev, src, sessions, users, bounces, len(orders), revenue]
+                    )
+                    for p in self.products:
+                        views = sum(self.rng.random() < 0.12 for _ in range(sessions))
+                        if views == 0:
+                            continue
+                        carts = sum(self.rng.random() < 0.08 for _ in range(views))
+                        views_rows.append([d, sid, p["product_id"], dev, src, views, carts])
                 for term in self.rng.sample(terms, 8):
                     n = self.rng.randint(3, 60)
                     found = term not in catalogue
@@ -1363,7 +1408,7 @@ class StageC:
                 sid = s["store_id"]
                 if not self.open_on(sid, d):
                     continue
-                base = {"S01": 1400, "S03": 650, "S04": 800, "S06": 700, "S07": 600}.get(sid, 600)
+                base = {"S01": 70, "S03": 30, "S04": 40, "S06": 35, "S07": 30}.get(sid, 30)
                 weekend = 1.35 if d.weekday() >= 5 else 1.0
                 visitors = int(base * weekend * self.rng.uniform(0.8, 1.2))
                 footfall.append(
@@ -2084,7 +2129,7 @@ class StageC:
                     [
                         m,
                         e["employee_id"],
-                        e["store_id"],
+                        e["store_id"] or None,
                         gross,
                         ot,
                         ot_pay,
@@ -2245,7 +2290,7 @@ class StageC:
                         [
                             f"SS-{n:03d}",
                             m,
-                            e["store_id"],
+                            e["store_id"] or None,
                             min(5, max(1, round(self.rng.gauss(3.7, 0.9)))),
                             self.rng.random() < 0.72,
                             self.rng.choice(topics),
@@ -2306,6 +2351,7 @@ class StageC:
     def finance(self) -> list[Table]:
         accounts = {
             "4000": ("Sales revenue", "Revenue"),
+            "4900": ("Sales returns", "Revenue"),
             "4100": ("Gift card breakage", "Revenue"),
             "5000": ("Cost of goods sold", "Cost of sales"),
             "6100": ("Staff costs", "Operating expense"),
@@ -2323,13 +2369,21 @@ class StageC:
             for s in self.stores:
                 if not self.open_on(s["store_id"], month_end):
                     continue
+                # Booked from the month's sales: revenue net of cancellations, returns on their
+                # own account, cost of sales from revenue. Before reconciliation the booking
+                # differs from the sales system by up to 3%.
+                sales = self.sales_month.get(
+                    (s["store_id"], m), {"gross": 0.0, "cancelled": 0.0, "refunds": 0.0}
+                )
+                booked = (sales["gross"] - sales["cancelled"]) * self.rng.uniform(0.97, 1.03)
                 for code, (name, kind) in accounts.items():
                     if code == "4100" and self.rng.random() < 0.7:
                         continue
                     amount = {
-                        "4000": self.rng.uniform(2000, 9000),
+                        "4000": max(booked, 0.0),
+                        "4900": sales["refunds"],
                         "4100": self.rng.uniform(10, 120),
-                        "5000": self.rng.uniform(900, 4200),
+                        "5000": max(booked, 0.0) * self.rng.uniform(0.42, 0.48),
                         "6100": self.rng.uniform(6000, 16000),
                         "6200": 0.0 if s["channel"] == "Online" else self.rng.uniform(4000, 11000),
                         "6300": 0.0 if s["channel"] == "Online" else self.rng.uniform(2000, 6500),
@@ -2361,9 +2415,10 @@ class StageC:
             "gl_entries",
             "General ledger",
             """Monthly ledger postings by account and store, as booked by Finance at month end.
-            Accounting sales revenue (account 4000) is recognised by posting date and excludes
-            VAT; it is reconciled to net sales only after close and can differ from it. April
-            is provisional until the month is closed.""",
+            Accounting sales revenue (account 4000) is booked net of cancellations, with
+            returns on their own account (4900); before reconciliation it differs from the
+            sales system by a few percent, so it is not net sales. April is provisional until
+            the month is closed.""",
             "One row per account, store and month-end posting.",
             ["entry_id"],
             [
@@ -2528,7 +2583,7 @@ class StageC:
                 [
                     f"EX-{n:04d}",
                     e["employee_id"],
-                    e["store_id"],
+                    e["store_id"] or None,
                     d,
                     cat,
                     amount,

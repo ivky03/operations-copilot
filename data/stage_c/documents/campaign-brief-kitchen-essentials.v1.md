@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Kitchen essentials (CMP-04) runs on display from 2026-02-01 to 2026-02-28 with a media budget of EUR 3,500.
+Kitchen essentials (CMP-04) runs on display from 2026-02-01 to 2026-02-28 with a media budget of EUR 350.
 
 ## Audience
 

@@ -11,7 +11,7 @@ synthetic: true
 
 ## Campaign
 
-Brand search (CMP-03) runs on search from 2026-01-01 to 2026-04-30 with a media budget of EUR 12,000.
+Brand search (CMP-03) runs on search from 2026-01-01 to 2026-04-30 with a media budget of EUR 1,200.
 
 ## Audience
 
