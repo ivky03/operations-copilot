@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import { ApiError, listSources, type Session, type SourceItem } from "./api/client";
+import {
+  ApiError,
+  followSource,
+  listSources,
+  unfollowSource,
+  type Session,
+  type SourceItem,
+} from "./api/client";
 import { Chat } from "./Chat";
 import { AdminSourcesPage } from "./AdminSourcesPage";
+import { NotificationBell } from "./Notifications";
 import { StewardPage } from "./StewardPage";
 
 /** The second page each role gets besides Ask (the server enforces who may use it). */
@@ -28,7 +36,9 @@ function formatDate(iso: string | null) {
   return iso ? new Date(iso).toLocaleDateString(undefined, { dateStyle: "medium" }) : "Not published";
 }
 
-function SourceTable({ title, items }: { title: string; items: SourceItem[] }) {
+type TableProps = { title: string; items: SourceItem[]; onFollow: (s: SourceItem) => void };
+
+function SourceTable({ title, items, onFollow }: TableProps) {
   return (
     <section className="card">
       <h2>
@@ -43,6 +53,9 @@ function SourceTable({ title, items }: { title: string; items: SourceItem[] }) {
               <th scope="col">Name</th>
               <th scope="col">Version</th>
               <th scope="col">Published</th>
+              <th scope="col">
+                <span className="visually-hidden">Follow</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +67,17 @@ function SourceTable({ title, items }: { title: string; items: SourceItem[] }) {
                 </td>
                 <td>{s.published_version ? `v${s.published_version}` : "–"}</td>
                 <td>{formatDate(s.published_at)}</td>
+                <td>
+                  <button
+                    className={s.subscribed ? "secondary" : "secondary follow"}
+                    aria-pressed={s.subscribed}
+                    aria-label={`${s.subscribed ? "Unfollow" : "Follow"} ${s.title}`}
+                    title={s.subscribed ? "You'll be notified of new versions" : "Be notified of new versions"}
+                    onClick={() => onFollow(s)}
+                  >
+                    {s.subscribed ? "Following" : "Follow"}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -79,6 +103,16 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
       });
   }, [onSessionExpired]);
 
+  async function toggleFollow(s: SourceItem) {
+    try {
+      await (s.subscribed ? unfollowSource(s.slug) : followSource(s.slug));
+      setSources((all) => all?.map((x) => (x.slug === s.slug ? { ...x, subscribed: !s.subscribed } : x)) ?? null);
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 401) onSessionExpired();
+      else setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
   const datasets = sources?.filter((s) => s.kind === "dataset") ?? [];
   const documents = sources?.filter((s) => s.kind === "document") ?? [];
 
@@ -97,6 +131,7 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
           </nav>
         )}
         <div className="user">
+          <NotificationBell onSessionExpired={onSessionExpired} />
           <span>
             {user.display_name} <span className="muted">· {user.role}</span>
           </span>
@@ -141,8 +176,8 @@ export function HomePage({ session, onSignOut, onSessionExpired }: Props) {
           {!sources && !error && <p className="muted">Loading sources…</p>}
           {sources && (
             <div className="grid">
-              <SourceTable title="Datasets" items={datasets} />
-              <SourceTable title="Documents" items={documents} />
+              <SourceTable title="Datasets" items={datasets} onFollow={toggleFollow} />
+              <SourceTable title="Documents" items={documents} onFollow={toggleFollow} />
             </div>
           )}
           </details>

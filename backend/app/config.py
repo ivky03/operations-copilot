@@ -71,6 +71,11 @@ class Settings(BaseSettings):
     llm_fallback_model: str = "gemini-3.5-flash-lite"
     llm_timeout_seconds: float = 45.0
 
+    # Answer cache (app/answer/cache.py). Keys change whenever a readable source gets a new
+    # version, so the lifetime only bounds how long a model's phrasing is reused.
+    answer_cache_enabled: bool = True
+    answer_cache_ttl_hours: int = 24
+
     # Document embeddings run locally on the CPU (no API, no quota). The model (~64 MB) is
     # downloaded once into the cache directory.
     embedding_model: str = "BAAI/bge-small-en-v1.5"

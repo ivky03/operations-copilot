@@ -12,6 +12,8 @@
       → save the full trace (answer_runs, llm_calls)
 
 At most 4 model calls per question, so latency and cost are bounded and every step is testable.
+With `use_cache`, a first question whose answer is already known for exactly the same readable
+source versions is answered from the cache (app/answer/cache.py) with no model calls at all.
 
 Progress events (`on_event`) report each step as it finishes, with the code-computed data and
 the passages as soon as they exist, so a streaming client can show them early. The answer text
@@ -28,6 +30,7 @@ from datetime import UTC, datetime
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from app.answer import cache
 from app.answer.context import build_context
 from app.answer.evidence import EvidenceItem, build_evidence
 from app.answer.history import prior_turns, render
@@ -58,6 +61,7 @@ class AnswerResult:
     notes: list[str] = field(default_factory=list)
     sources: list[dict] = field(default_factory=list)
     latency_ms: int = 0
+    cached: bool = False  # reused from an identical earlier question (same versions readable)
 
 
 class _Stop(Exception):  # noqa: N818 - control flow: end the pipeline early with a result
@@ -179,6 +183,59 @@ def _plan_with_retry(
 NOT_IN_DOCUMENTS = "I couldn't find anything about that in the documents you have access to."
 
 
+def _replay(
+    db: Session,
+    user: User,
+    question: str,
+    hit: AnswerRun,
+    conversation: Conversation | None,
+    emit: Callable[..., None],
+    start: float,
+) -> AnswerResult:
+    """Answer from the cache: the same events a fresh answer sends, then a new saved run for
+    this user (a copy, so it's erased with the original if a source it used is deleted)."""
+    emit("step", step="cached")
+    evidence = [EvidenceItem(**e) for e in hit.evidence]
+    passages = [Passage(**p) for p in hit.passages]
+    notes = hit.verification.get("notes", [])
+    if evidence:
+        emit("evidence", items=[e.as_dict() for e in evidence], notes=notes)
+    if passages:
+        emit("passages", items=[p.as_dict() for p in passages])
+    latency = int((time.monotonic() - start) * 1000)
+    run = AnswerRun(
+        user_id=user.id,
+        conversation_id=conversation.id if conversation else None,
+        question=question,
+        status=hit.status,
+        answer=hit.answer,
+        plan=hit.plan,
+        evidence=hit.evidence,
+        passages=hit.passages,
+        source_versions=hit.source_versions,
+        verification=hit.verification,
+        latency_ms=latency,
+        cached_from=hit.cached_from or hit.id,
+    )
+    db.add(run)
+    if conversation:
+        conversation.updated_at = datetime.now(UTC)
+    db.commit()
+    return AnswerResult(
+        run_id=str(run.id),
+        question=question,
+        status=hit.status,
+        answer=hit.answer or "",
+        options=hit.verification.get("options", []),
+        evidence=evidence,
+        passages=passages,
+        notes=notes,
+        sources=hit.source_versions,
+        latency_ms=latency,
+        cached=True,
+    )
+
+
 def answer_question(
     db: Session,
     user: User,
@@ -187,6 +244,7 @@ def answer_question(
     writer: LLMClient,
     conversation: Conversation | None = None,
     on_event: Callable[[str, dict], None] | None = None,
+    use_cache: bool = False,
 ) -> AnswerResult:
     def emit(event: str, **data) -> None:
         if on_event:
@@ -202,10 +260,16 @@ def answer_question(
     verification: dict = {}
     status, answer, options = "error", "", []
     standalone = question
+    key: str | None = None
     try:
+        history = render(prior_turns(db, user, conversation.id)) if conversation else ""
+        if use_cache and not history:  # follow-ups depend on the conversation: never cached
+            readable = cache.readable_versions(db, user)
+            key = cache.cache_key(question, readable, planner, writer)
+            if (hit := cache.lookup(db, key, readable)) is not None:
+                return _replay(db, user, question, hit, conversation, emit, start)
         emit("step", step="planning")
         catalog = Catalog.for_user(db, user)
-        history = render(prior_turns(db, user, conversation.id)) if conversation else ""
         plan = _plan_with_retry(planner, db, user, catalog, question, calls, history)
         if history and plan.standalone_question:
             standalone = plan.standalone_question  # "And April?" → "Net sales by country, April"
@@ -310,6 +374,8 @@ def answer_question(
         conversation.updated_at = datetime.now(UTC)
     db.flush()
     db.add_all(LlmCall(answer_run_id=run_id, **c.__dict__) for c in calls)
+    if key and status == "answered":
+        cache.store(db, key, run_id)
     db.commit()
     return AnswerResult(
         run_id=str(run_id),

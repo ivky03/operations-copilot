@@ -30,7 +30,7 @@ import yaml
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 
-from app import audit
+from app import audit, notifications
 from app.documents.index import index_document
 from app.ingest.manifest import Column, Manifest, parse_manifest
 from app.ingest.validate import Issue, validate_csv
@@ -473,6 +473,7 @@ def publish_version(db: Session, version: SourceVersion, actor: User | None = No
         if issues:
             raise PublishError(issues)
     _mark_published(db, source, version)
+    notifications.notify_published(db, source, version, actor)
     audit.record(db, actor, "version.publish", f"{source.slug} v{version.version}")
 
 

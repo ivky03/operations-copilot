@@ -339,6 +339,62 @@ class AnswerRun(Base):
     # question stays (the user typed it); the answer, rows and passages are gone for everyone.
     redacted_reason: Mapped[str | None] = mapped_column(String(30))
     latency_ms: Mapped[int | None] = mapped_column(Integer)
+    # Set when this answer was reused from the cache: the earlier run it was copied from.
+    cached_from: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("answer_runs.id", ondelete="SET NULL")
+    )
+
+
+class AnswerCacheEntry(Base):
+    """A reusable answer. The key is a hash of the question, every source version the asker can
+    read, and the models and prompts used (see app/answer/cache.py), so a new version, a change
+    of access or a new prompt gives a new key and the old entry simply never matches again.
+    The entry holds no content of its own: it points at the saved run."""
+
+    __tablename__ = "answer_cache"
+
+    key: Mapped[str] = mapped_column(String(64), primary_key=True)
+    answer_run_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("answer_runs.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    created_at: Mapped[datetime] = _created_at()
+    hits: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    last_hit_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class Subscription(Base):
+    """A user follows a source, to be told when a new version is published."""
+
+    __tablename__ = "subscriptions"
+
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    )
+    source_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sources.id", ondelete="CASCADE"), primary_key=True, index=True
+    )
+    created_at: Mapped[datetime] = _created_at()
+
+
+class Notification(Base):
+    """An in-app notice for one user about one source ("v3 was published"). No text is stored:
+    the message is built when it's read, from the source's current title, and only for sources
+    the reader can still read."""
+
+    __tablename__ = "notifications"
+    __table_args__ = (Index("ix_notifications_user_created", "user_id", "created_at"),)
+
+    id: Mapped[uuid.UUID] = _uuid_pk()
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    source_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sources.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    kind: Mapped[str] = mapped_column(String(30), nullable=False)  # published
+    version: Mapped[int | None] = mapped_column(Integer)
+    created_at: Mapped[datetime] = _created_at()
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class LlmCall(Base):
