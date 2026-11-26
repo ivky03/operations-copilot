@@ -1,0 +1,1034 @@
+{
+  "c15-01": [
+    {
+      "query": {
+        "group_by": [
+          "carrier"
+        ],
+        "metric": "on_time_delivery_rate"
+      },
+      "rows": [
+        {
+          "carrier": "Hexa Express",
+          "on_time_delivery_rate": 0.85
+        },
+        {
+          "carrier": "Parcelwise UK",
+          "on_time_delivery_rate": 0.8182
+        },
+        {
+          "carrier": "Rhein Logistik",
+          "on_time_delivery_rate": 0.8723
+        }
+      ]
+    }
+  ],
+  "c15-02": [
+    {
+      "query": {
+        "filters": {
+          "day": [
+            "2026-03-31"
+          ]
+        },
+        "metric": "units_on_hand"
+      },
+      "rows": [
+        {
+          "units_on_hand": 1461
+        }
+      ]
+    }
+  ],
+  "c15-03": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "purchase_order_count"
+      },
+      "rows": [
+        {
+          "purchase_order_count": 31
+        }
+      ]
+    }
+  ],
+  "c15-04": [
+    {
+      "query": {
+        "metric": "average_csat"
+      },
+      "rows": [
+        {
+          "average_csat": 4.04
+        }
+      ]
+    }
+  ],
+  "c15-05": [
+    {
+      "query": {
+        "filters": {
+          "store_name": [
+            "Berlin Store"
+          ]
+        },
+        "metric": "headcount"
+      },
+      "rows": [
+        {
+          "headcount": 5
+        }
+      ]
+    }
+  ],
+  "c15-06": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02"
+          ]
+        },
+        "group_by": [
+          "store_name"
+        ],
+        "metric": "hours_worked"
+      },
+      "rows": [
+        {
+          "hours_worked": 433.0,
+          "store_name": "Amsterdam Store"
+        },
+        {
+          "hours_worked": 552.5,
+          "store_name": "Berlin Store"
+        },
+        {
+          "hours_worked": 296.0,
+          "store_name": "DE Online"
+        },
+        {
+          "hours_worked": 584.0,
+          "store_name": "Dublin Store"
+        },
+        {
+          "hours_worked": 534.5,
+          "store_name": "London Flagship"
+        },
+        {
+          "hours_worked": 487.0,
+          "store_name": "Madrid Store"
+        },
+        {
+          "hours_worked": 279.0,
+          "store_name": "UK Online"
+        },
+        {
+          "hours_worked": 420.0,
+          "store_name": null
+        }
+      ]
+    }
+  ],
+  "c15-07": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "budgeted_cost"
+      },
+      "rows": [
+        {
+          "budgeted_cost": 358500.0
+        }
+      ]
+    }
+  ],
+  "c15-08": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "ticket_count"
+      },
+      "rows": [
+        {
+          "ticket_count": 86
+        }
+      ]
+    }
+  ],
+  "c30-01": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "media_spend"
+      },
+      "rows": [
+        {
+          "media_spend": 1211.79
+        }
+      ]
+    }
+  ],
+  "c30-02": [
+    {
+      "query": {
+        "filters": {
+          "device": [
+            "mobile"
+          ],
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "sessions"
+      },
+      "rows": [
+        {
+          "sessions": 1592
+        }
+      ]
+    }
+  ],
+  "c30-03": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "London Flagship"
+          ]
+        },
+        "metric": "visitors"
+      },
+      "rows": [
+        {
+          "visitors": 2434
+        }
+      ]
+    }
+  ],
+  "c30-04": [
+    {
+      "query": {
+        "group_by": [
+          "product_name"
+        ],
+        "metric": "average_landed_cost"
+      },
+      "rows": [
+        {
+          "average_landed_cost": 16.64,
+          "product_name": "Blue Desk Lamp"
+        },
+        {
+          "average_landed_cost": 57.09,
+          "product_name": "Brass Floor Lamp"
+        },
+        {
+          "average_landed_cost": 21.26,
+          "product_name": "Cast Iron Skillet"
+        },
+        {
+          "average_landed_cost": 11.23,
+          "product_name": "Ceramic Planter"
+        },
+        {
+          "average_landed_cost": 8.95,
+          "product_name": "Cotton Bath Towel"
+        },
+        {
+          "average_landed_cost": 6.77,
+          "product_name": "Desk Lamp Shade"
+        },
+        {
+          "average_landed_cost": 23.29,
+          "product_name": "Enamel Kettle"
+        },
+        {
+          "average_landed_cost": 29.84,
+          "product_name": "Framed Print"
+        },
+        {
+          "average_landed_cost": 5.36,
+          "product_name": "Glass Storage Jar"
+        },
+        {
+          "average_landed_cost": 17.08,
+          "product_name": "Glass Vase"
+        },
+        {
+          "average_landed_cost": 72.34,
+          "product_name": "Jute Area Rug"
+        },
+        {
+          "average_landed_cost": 9.2,
+          "product_name": "Linen Napkin Set"
+        },
+        {
+          "average_landed_cost": 22.79,
+          "product_name": "Linen Throw"
+        },
+        {
+          "average_landed_cost": 167.8,
+          "product_name": "Oak Coffee Table"
+        },
+        {
+          "average_landed_cost": 93.85,
+          "product_name": "Oak Side Table"
+        },
+        {
+          "average_landed_cost": 13.64,
+          "product_name": "Olive Wood Board"
+        },
+        {
+          "average_landed_cost": 21.46,
+          "product_name": "Paper Pendant Light"
+        },
+        {
+          "average_landed_cost": 76.48,
+          "product_name": "Pine Bookshelf"
+        },
+        {
+          "average_landed_cost": 132.65,
+          "product_name": "Rattan Lounge Chair"
+        },
+        {
+          "average_landed_cost": 6.45,
+          "product_name": "Scented Candle"
+        },
+        {
+          "average_landed_cost": 4.67,
+          "product_name": "Stoneware Mug"
+        },
+        {
+          "average_landed_cost": 59.45,
+          "product_name": "Wall Mirror"
+        },
+        {
+          "average_landed_cost": 108.46,
+          "product_name": "Walnut Bench"
+        },
+        {
+          "average_landed_cost": 18.16,
+          "product_name": "White Desk Lamp"
+        },
+        {
+          "average_landed_cost": 10.88,
+          "product_name": "Wool Cushion Cover"
+        }
+      ]
+    }
+  ],
+  "c30-05": [
+    {
+      "query": {
+        "filters": {
+          "day": [
+            "2026-03-30"
+          ],
+          "warehouse_name": [
+            "Rhine DC"
+          ]
+        },
+        "metric": "warehouse_units_available"
+      },
+      "rows": [
+        {
+          "warehouse_units_available": 5383
+        }
+      ]
+    }
+  ],
+  "c30-06": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "points_redeemed"
+      },
+      "rows": [
+        {
+          "points_redeemed": -6500
+        }
+      ]
+    }
+  ],
+  "c30-07": [
+    {
+      "query": {
+        "group_by": [
+          "category"
+        ],
+        "metric": "average_rating"
+      },
+      "rows": [
+        {
+          "average_rating": 3.7,
+          "category": "Decor"
+        },
+        {
+          "average_rating": 3.49,
+          "category": "Furniture"
+        },
+        {
+          "average_rating": 3.89,
+          "category": "Kitchen"
+        },
+        {
+          "average_rating": 4.07,
+          "category": "Lighting"
+        },
+        {
+          "average_rating": 3.88,
+          "category": "Textiles"
+        }
+      ]
+    }
+  ],
+  "c30-08": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "accounting_revenue"
+      },
+      "rows": [
+        {
+          "accounting_revenue": 19924.22
+        }
+      ]
+    }
+  ],
+  "c30-09": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02"
+          ]
+        },
+        "metric": "overtime_pay"
+      },
+      "rows": [
+        {
+          "overtime_pay": 1822.5
+        }
+      ]
+    }
+  ],
+  "c30-10": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "transfer_count"
+      },
+      "rows": [
+        {
+          "transfer_count": 42
+        }
+      ]
+    }
+  ],
+  "c30-11": [
+    {
+      "query": {
+        "metric": "opted_in_customer_count"
+      },
+      "rows": [
+        {
+          "opted_in_customer_count": 142
+        }
+      ]
+    }
+  ],
+  "c30-12": [
+    {
+      "query": {
+        "group_by": [
+          "campaign_name"
+        ],
+        "metric": "attributed_revenue"
+      },
+      "rows": [
+        {
+          "attributed_revenue": 23552.64,
+          "campaign_name": "Brand search"
+        },
+        {
+          "attributed_revenue": 13207.56,
+          "campaign_name": "France launch"
+        },
+        {
+          "attributed_revenue": 7066.2,
+          "campaign_name": "Furniture showcase"
+        },
+        {
+          "attributed_revenue": 4100.4,
+          "campaign_name": "Kitchen essentials"
+        },
+        {
+          "attributed_revenue": 1520.4,
+          "campaign_name": "New year refresh"
+        },
+        {
+          "attributed_revenue": 5042.28,
+          "campaign_name": "Spring textiles"
+        },
+        {
+          "attributed_revenue": 1579.08,
+          "campaign_name": "Spring textiles social"
+        },
+        {
+          "attributed_revenue": 2427.0,
+          "campaign_name": "Winter lighting"
+        }
+      ]
+    }
+  ],
+  "c30-13": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "store_name": [
+            "DE Online"
+          ]
+        },
+        "metric": "online_revenue"
+      },
+      "rows": [
+        {
+          "online_revenue": 6477.6
+        }
+      ]
+    }
+  ],
+  "c30-14": [
+    {
+      "query": {
+        "group_by": [
+          "month"
+        ],
+        "metric": "price_change_count"
+      },
+      "rows": [
+        {
+          "month": "2026-01",
+          "price_change_count": 2
+        },
+        {
+          "month": "2026-02",
+          "price_change_count": 5
+        },
+        {
+          "month": "2026-03",
+          "price_change_count": 2
+        }
+      ]
+    }
+  ],
+  "c30-15": [
+    {
+      "query": {
+        "group_by": [
+          "device"
+        ],
+        "metric": "conversion_rate"
+      },
+      "rows": [
+        {
+          "conversion_rate": 0.0092,
+          "device": "desktop"
+        },
+        {
+          "conversion_rate": 0.0108,
+          "device": "mobile"
+        },
+        {
+          "conversion_rate": 0.0095,
+          "device": "tablet"
+        }
+      ]
+    }
+  ],
+  "c4-01": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 19058.0
+        }
+      ]
+    }
+  ],
+  "c4-02": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ],
+          "store_name": [
+            "UK Online"
+          ]
+        },
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "net_sales": 2643.7
+        }
+      ]
+    }
+  ],
+  "c4-03": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-02"
+          ]
+        },
+        "metric": "order_count"
+      },
+      "rows": [
+        {
+          "order_count": 37
+        }
+      ]
+    }
+  ],
+  "c4-04": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "refund_value"
+      },
+      "rows": [
+        {
+          "refund_value": 2093.2
+        }
+      ]
+    }
+  ],
+  "c4-05": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "product_name": [
+            "Linen Throw"
+          ]
+        },
+        "metric": "units_sold"
+      },
+      "rows": [
+        {
+          "units_sold": 6
+        }
+      ]
+    }
+  ],
+  "c4-06": [
+    {
+      "query": {
+        "group_by": [
+          "country"
+        ],
+        "metric": "average_order_value"
+      },
+      "rows": [
+        {
+          "average_order_value": 404.42,
+          "country": "France"
+        },
+        {
+          "average_order_value": 367.5,
+          "country": "Germany"
+        },
+        {
+          "average_order_value": 511.25,
+          "country": "Ireland"
+        },
+        {
+          "average_order_value": 450.32,
+          "country": "Netherlands"
+        },
+        {
+          "average_order_value": 385.45,
+          "country": "Spain"
+        },
+        {
+          "average_order_value": 406.78,
+          "country": "United Kingdom"
+        }
+      ]
+    }
+  ],
+  "c4-07": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "cancellation_rate"
+      },
+      "rows": [
+        {
+          "cancellation_rate": 0.0426
+        }
+      ]
+    }
+  ],
+  "c4-08": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "group_by": [
+          "category"
+        ],
+        "metric": "net_sales"
+      },
+      "rows": [
+        {
+          "category": "Decor",
+          "net_sales": 2735.0
+        },
+        {
+          "category": "Furniture",
+          "net_sales": 5837.0
+        },
+        {
+          "category": "Kitchen",
+          "net_sales": 2050.0
+        },
+        {
+          "category": "Lighting",
+          "net_sales": 1423.5
+        },
+        {
+          "category": "Textiles",
+          "net_sales": 1839.8
+        }
+      ]
+    }
+  ],
+  "c50-01": [
+    {
+      "query": {
+        "metric": "net_promoter_score"
+      },
+      "rows": [
+        {
+          "net_promoter_score": 0.2
+        }
+      ]
+    }
+  ],
+  "c50-02": [
+    {
+      "query": {
+        "group_by": [
+          "campaign_name"
+        ],
+        "metric": "email_open_rate"
+      },
+      "rows": [
+        {
+          "campaign_name": "New year refresh",
+          "email_open_rate": 0.334
+        },
+        {
+          "campaign_name": "Spring textiles",
+          "email_open_rate": 0.2667
+        }
+      ]
+    }
+  ],
+  "c50-03": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "zero_result_searches"
+      },
+      "rows": [
+        {
+          "zero_result_searches": 2465
+        }
+      ]
+    }
+  ],
+  "c50-04": [
+    {
+      "query": {
+        "metric": "gift_card_liability"
+      },
+      "rows": [
+        {
+          "gift_card_liability": 8977.55
+        }
+      ]
+    }
+  ],
+  "c50-05": [
+    {
+      "query": {
+        "group_by": [
+          "incident_type"
+        ],
+        "metric": "incident_count"
+      },
+      "rows": [
+        {
+          "incident_count": 13,
+          "incident_type": "aggressive customer"
+        },
+        {
+          "incident_count": 9,
+          "incident_type": "damaged stock"
+        },
+        {
+          "incident_count": 13,
+          "incident_type": "fire alarm"
+        },
+        {
+          "incident_count": 21,
+          "incident_type": "slip or fall"
+        },
+        {
+          "incident_count": 17,
+          "incident_type": "theft"
+        }
+      ]
+    }
+  ],
+  "c50-06": [
+    {
+      "query": {
+        "metric": "maintenance_cost"
+      },
+      "rows": [
+        {
+          "maintenance_cost": 143937.75
+        }
+      ]
+    }
+  ],
+  "c50-07": [
+    {
+      "query": {
+        "metric": "failed_audit_count"
+      },
+      "rows": [
+        {
+          "failed_audit_count": 14
+        }
+      ]
+    }
+  ],
+  "c50-08": [
+    {
+      "query": {
+        "metric": "training_overdue"
+      },
+      "rows": [
+        {
+          "training_overdue": 21
+        }
+      ]
+    }
+  ],
+  "c50-09": [
+    {
+      "query": {
+        "metric": "open_vacancy_count"
+      },
+      "rows": [
+        {
+          "open_vacancy_count": 7
+        }
+      ]
+    }
+  ],
+  "c50-10": [
+    {
+      "query": {
+        "metric": "unpaid_invoice_amount"
+      },
+      "rows": [
+        {
+          "unpaid_invoice_amount": 12362.46
+        }
+      ]
+    }
+  ],
+  "c50-11": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ]
+        },
+        "metric": "expenses_approved"
+      },
+      "rows": [
+        {
+          "expenses_approved": 10322.23
+        }
+      ]
+    }
+  ],
+  "c50-12": [
+    {
+      "query": {
+        "metric": "write_off_value"
+      },
+      "rows": [
+        {
+          "write_off_value": 1861.9
+        }
+      ]
+    }
+  ],
+  "c50-13": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-01"
+          ]
+        },
+        "group_by": [
+          "store_name"
+        ],
+        "metric": "energy_cost"
+      },
+      "rows": [
+        {
+          "energy_cost": 5702.31,
+          "store_name": "Amsterdam Store"
+        },
+        {
+          "energy_cost": 4216.41,
+          "store_name": "Berlin Store"
+        },
+        {
+          "energy_cost": 5250.06,
+          "store_name": "Dublin Store"
+        },
+        {
+          "energy_cost": 5855.13,
+          "store_name": "London Flagship"
+        },
+        {
+          "energy_cost": 3798.45,
+          "store_name": "Madrid Store"
+        }
+      ]
+    }
+  ],
+  "c50-14": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-04"
+          ]
+        },
+        "metric": "average_engagement"
+      },
+      "rows": [
+        {
+          "average_engagement": 3.6
+        }
+      ]
+    }
+  ],
+  "c50-15": [
+    {
+      "query": {
+        "filters": {
+          "month": [
+            "2026-03"
+          ],
+          "product_name": [
+            "Oak Coffee Table"
+          ]
+        },
+        "metric": "page_views"
+      },
+      "rows": [
+        {
+          "page_views": 370
+        }
+      ]
+    }
+  ],
+  "c50-16": [
+    {
+      "query": {
+        "metric": "member_count"
+      },
+      "rows": [
+        {
+          "member_count": 63
+        }
+      ]
+    }
+  ]
+}
