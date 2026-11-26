@@ -1,0 +1,74 @@
+incident_id,store_id,incident_date,incident_type,severity,injuries,loss_value,reported_by
+INC-001,S04,2026-03-07,slip or fall,low,0,0.00,E016
+INC-002,S07,2026-02-08,theft,high,0,605.03,E025
+INC-003,S07,2026-03-01,theft,low,0,581.52,E025
+INC-004,S07,2026-03-03,slip or fall,medium,0,0.00,E027
+INC-005,S06,2026-04-23,fire alarm,low,0,0.00,E020
+INC-006,S01,2026-03-02,slip or fall,medium,0,0.00,E005
+INC-007,S06,2026-01-19,slip or fall,medium,0,0.00,E020
+INC-008,S06,2026-04-18,theft,medium,0,65.31,E022
+INC-009,S03,2026-02-05,theft,low,0,475.81,E009
+INC-010,S07,2026-02-24,damaged stock,low,0,537.78,E026
+INC-011,S01,2026-02-10,fire alarm,medium,0,0.00,E004
+INC-012,S04,2026-02-20,fire alarm,medium,0,0.00,E015
+INC-013,S04,2026-03-10,damaged stock,medium,0,457.40,E013
+INC-014,S03,2026-01-10,theft,low,0,244.68,E012
+INC-015,S07,2026-03-20,aggressive customer,high,1,0.00,E027
+INC-016,S07,2026-03-19,theft,low,0,401.20,E024
+INC-017,S06,2026-02-27,aggressive customer,high,1,0.00,E023
+INC-018,S04,2026-03-22,damaged stock,low,0,427.92,E013
+INC-019,S06,2026-03-02,aggressive customer,low,0,0.00,E020
+INC-020,S04,2026-03-31,fire alarm,medium,0,0.00,E034
+INC-021,S07,2026-02-06,slip or fall,medium,0,0.00,E026
+INC-022,S06,2026-04-19,damaged stock,medium,0,292.93,E021
+INC-023,S01,2026-04-06,slip or fall,low,0,0.00,E002
+INC-024,S01,2026-03-02,theft,low,0,330.09,E001
+INC-025,S06,2026-02-26,slip or fall,high,1,0.00,E020
+INC-026,S06,2026-03-25,damaged stock,medium,0,37.54,E021
+INC-027,S04,2026-04-10,fire alarm,medium,0,0.00,E017
+INC-028,S03,2026-01-30,slip or fall,high,1,0.00,E009
+INC-029,S04,2026-02-24,damaged stock,medium,0,426.19,E013
+INC-030,S01,2026-03-18,theft,low,0,293.06,E001
+INC-031,S04,2026-01-15,damaged stock,high,0,785.42,E014
+INC-032,S01,2026-02-12,damaged stock,medium,0,565.84,E002
+INC-033,S06,2026-03-02,fire alarm,medium,0,0.00,E021
+INC-034,S06,2026-02-25,damaged stock,low,0,426.72,E023
+INC-035,S06,2026-02-05,aggressive customer,medium,0,0.00,E021
+INC-036,S06,2026-04-24,fire alarm,low,0,0.00,E020
+INC-037,S06,2026-03-10,fire alarm,medium,0,0.00,E021
+INC-038,S04,2026-04-02,damaged stock,high,0,668.65,E015
+INC-039,S03,2026-03-26,damaged stock,medium,0,253.38,E012
+INC-040,S01,2026-01-13,fire alarm,low,0,0.00,E001
+INC-041,S01,2026-03-27,theft,medium,0,330.02,E002
+INC-042,S07,2026-03-23,fire alarm,medium,0,0.00,E027
+INC-043,S07,2026-01-07,slip or fall,high,1,0.00,E025
+INC-044,S01,2026-01-25,damaged stock,low,0,109.37,E005
+INC-045,S06,2026-02-08,slip or fall,medium,0,0.00,E021
+INC-046,S07,2026-01-29,damaged stock,high,0,788.25,E027
+INC-047,S01,2026-01-10,theft,low,0,331.11,E004
+INC-048,S04,2026-03-17,theft,medium,0,439.89,E016
+INC-049,S06,2026-02-06,damaged stock,low,0,145.26,E022
+INC-050,S07,2026-03-22,damaged stock,low,0,171.98,E026
+INC-051,S07,2026-02-14,damaged stock,low,0,186.28,E025
+INC-052,S06,2026-03-14,aggressive customer,medium,0,0.00,E020
+INC-053,S03,2026-01-19,theft,low,0,446.28,E010
+INC-054,S07,2026-03-14,fire alarm,low,0,0.00,E024
+INC-055,S01,2026-01-20,damaged stock,medium,0,515.66,E003
+INC-056,S01,2026-02-22,damaged stock,medium,0,74.52,E001
+INC-057,S07,2026-03-16,theft,high,0,720.96,E025
+INC-058,S07,2026-03-20,theft,medium,0,78.74,E027
+INC-059,S03,2026-02-26,theft,high,0,877.88,E008
+INC-060,S07,2026-02-04,fire alarm,low,0,0.00,E027
+INC-061,S07,2026-01-13,slip or fall,low,0,0.00,E025
+INC-062,S04,2026-03-30,damaged stock,low,0,392.15,E015
+INC-063,S06,2026-03-04,aggressive customer,low,0,0.00,E022
+INC-064,S04,2026-01-05,damaged stock,high,0,600.83,E013
+INC-065,S01,2026-01-15,fire alarm,medium,0,0.00,E001
+INC-066,S04,2026-01-28,theft,low,0,566.66,E013
+INC-067,S03,2026-02-03,aggressive customer,low,0,0.00,E009
+INC-068,S01,2026-04-12,aggressive customer,low,0,0.00,E003
+INC-069,S06,2026-03-04,damaged stock,high,0,792.91,E023
+INC-070,S01,2026-01-04,fire alarm,low,0,0.00,E004
+INC-071,S04,2026-04-26,aggressive customer,high,1,0.00,E014
+INC-072,S01,2026-02-02,damaged stock,low,0,440.23,E005
+INC-073,S01,2026-04-27,slip or fall,low,0,0.00,E002

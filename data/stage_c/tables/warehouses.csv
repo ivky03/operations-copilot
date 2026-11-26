@@ -1,0 +1,4 @@
+warehouse_id,warehouse_name,country,capacity_pallets,operator,serves_region
+WH1,Midlands DC,United Kingdom,4200,Northline Logistics,UK & Ireland
+WH2,Rhine DC,Germany,5600,Kontor 3PL,Central Europe
+WH3,Zaragoza DC,Spain,3100,Iberia Fulfilment,Southwest Europe

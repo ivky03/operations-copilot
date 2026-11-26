@@ -1,0 +1,6 @@
+segment_code,segment_name,definition,min_orders,standing_discount_pct
+NEW,New customers,First order in the last 90 days.,1,0.00
+REG,Regulars,Two to five orders in the last 12 months.,2,0.00
+VIP,VIP,Six or more orders in the last 12 months.,6,5.00
+LAP,Lapsed,No order in the last 12 months.,0,0.00
+B2B,Trade accounts,Interior designers and businesses on trade terms.,1,12.00

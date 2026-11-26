@@ -1,0 +1,5 @@
+carrier_name,service_level,countries_served,rate_per_parcel,contract_days,insurance_limit
+Parcelwise UK,standard,United Kingdom; Ireland,4.90,4,250.00
+Rhein Logistik,standard,Germany; Netherlands,4.40,5,500.00
+Hexa Express,standard,France; Spain,5.20,6,300.00
+TwoMen Freight,two-person,All,39.00,10,2500.00

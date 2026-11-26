@@ -1,0 +1,2401 @@
+search_date,store_id,search_term,searches,results_found,result_clicks
+2026-01-01,S02,gift card,50,true,16
+2026-01-01,S02,curtains,19,false,0
+2026-01-01,S02,delivery,4,true,1
+2026-01-01,S02,bookshelf,20,true,13
+2026-01-01,S02,linen,14,true,3
+2026-01-01,S02,desk lamp,50,true,20
+2026-01-01,S02,mug,31,true,12
+2026-01-01,S02,oak table,60,true,39
+2026-01-01,S05,vase,26,true,13
+2026-01-01,S05,kettle,15,true,4
+2026-01-01,S05,linen,53,true,19
+2026-01-01,S05,gift card,16,true,3
+2026-01-01,S05,candle,13,true,8
+2026-01-01,S05,lamp,12,true,5
+2026-01-01,S05,oak table,50,true,12
+2026-01-01,S05,mug,22,true,9
+2026-01-02,S02,candle,14,true,7
+2026-01-02,S02,delivery,48,true,24
+2026-01-02,S02,desk lamp,39,true,18
+2026-01-02,S02,vase,52,true,22
+2026-01-02,S02,curtains,53,false,0
+2026-01-02,S02,oak table,15,true,3
+2026-01-02,S02,mug,11,true,4
+2026-01-02,S02,returns,33,true,7
+2026-01-02,S05,returns,28,true,14
+2026-01-02,S05,lamp,59,true,18
+2026-01-02,S05,mirror,24,true,12
+2026-01-02,S05,gift card,60,true,35
+2026-01-02,S05,sofa,35,false,0
+2026-01-02,S05,vase,32,true,21
+2026-01-02,S05,curtains,46,false,0
+2026-01-02,S05,mug,57,true,26
+2026-01-03,S02,delivery,17,true,5
+2026-01-03,S02,kettle,23,true,12
+2026-01-03,S02,vase,32,true,18
+2026-01-03,S02,curtains,29,false,0
+2026-01-03,S02,mirror,56,true,13
+2026-01-03,S02,desk lamp,39,true,27
+2026-01-03,S02,returns,33,true,17
+2026-01-03,S02,sofa,41,false,0
+2026-01-03,S05,gift card,36,true,23
+2026-01-03,S05,lamp,5,true,2
+2026-01-03,S05,curtains,26,false,0
+2026-01-03,S05,vase,28,true,17
+2026-01-03,S05,bookshelf,50,true,13
+2026-01-03,S05,sofa,55,false,0
+2026-01-03,S05,kettle,21,true,12
+2026-01-03,S05,desk lamp,10,true,3
+2026-01-04,S02,returns,30,true,19
+2026-01-04,S02,sofa,15,false,0
+2026-01-04,S02,kettle,17,true,4
+2026-01-04,S02,mirror,26,true,11
+2026-01-04,S02,linen,14,true,8
+2026-01-04,S02,desk lamp,23,true,9
+2026-01-04,S02,curtains,27,false,0
+2026-01-04,S02,rug,23,true,11
+2026-01-04,S05,mug,29,true,16
+2026-01-04,S05,mirror,19,true,5
+2026-01-04,S05,returns,45,true,29
+2026-01-04,S05,vase,25,true,13
+2026-01-04,S05,linen,21,true,14
+2026-01-04,S05,lamp,52,true,33
+2026-01-04,S05,rug,56,true,15
+2026-01-04,S05,candle,15,true,8
+2026-01-05,S02,vase,27,true,10
+2026-01-05,S02,mug,10,true,4
+2026-01-05,S02,lamp,56,true,24
+2026-01-05,S02,linen,38,true,16
+2026-01-05,S02,desk lamp,4,true,1
+2026-01-05,S02,rug,13,true,6
+2026-01-05,S02,curtains,39,false,0
+2026-01-05,S02,returns,27,true,5
+2026-01-05,S05,kettle,48,true,31
+2026-01-05,S05,bookshelf,52,true,31
+2026-01-05,S05,curtains,35,false,0
+2026-01-05,S05,returns,21,true,5
+2026-01-05,S05,delivery,34,true,22
+2026-01-05,S05,candle,5,true,2
+2026-01-05,S05,linen,11,true,4
+2026-01-05,S05,mirror,36,true,23
+2026-01-06,S02,vase,37,true,23
+2026-01-06,S02,rug,56,true,12
+2026-01-06,S02,returns,48,true,27
+2026-01-06,S02,gift card,15,true,3
+2026-01-06,S02,delivery,24,true,10
+2026-01-06,S02,linen,46,true,14
+2026-01-06,S02,kettle,28,true,17
+2026-01-06,S02,desk lamp,26,true,8
+2026-01-06,S05,candle,36,true,24
+2026-01-06,S05,sofa,26,false,0
+2026-01-06,S05,delivery,25,true,5
+2026-01-06,S05,desk lamp,12,true,5
+2026-01-06,S05,vase,52,true,34
+2026-01-06,S05,kettle,10,true,5
+2026-01-06,S05,curtains,26,false,0
+2026-01-06,S05,returns,8,true,4
+2026-01-07,S02,bookshelf,6,true,3
+2026-01-07,S02,oak table,43,true,28
+2026-01-07,S02,returns,52,true,19
+2026-01-07,S02,candle,35,true,19
+2026-01-07,S02,kettle,7,true,4
+2026-01-07,S02,sofa,35,false,0
+2026-01-07,S02,curtains,17,false,0
+2026-01-07,S02,vase,7,true,2
+2026-01-07,S05,delivery,32,true,11
+2026-01-07,S05,bookshelf,56,true,13
+2026-01-07,S05,gift card,25,true,5
+2026-01-07,S05,returns,55,true,17
+2026-01-07,S05,candle,8,true,4
+2026-01-07,S05,lamp,21,true,7
+2026-01-07,S05,kettle,5,true,1
+2026-01-07,S05,desk lamp,9,true,5
+2026-01-08,S02,kettle,53,true,13
+2026-01-08,S02,sofa,6,false,0
+2026-01-08,S02,mug,52,true,23
+2026-01-08,S02,delivery,20,true,13
+2026-01-08,S02,mirror,58,true,27
+2026-01-08,S02,returns,33,true,11
+2026-01-08,S02,linen,50,true,29
+2026-01-08,S02,lamp,51,true,29
+2026-01-08,S05,rug,5,true,2
+2026-01-08,S05,gift card,55,true,23
+2026-01-08,S05,desk lamp,8,true,1
+2026-01-08,S05,kettle,53,true,17
+2026-01-08,S05,mirror,45,true,30
+2026-01-08,S05,curtains,14,false,0
+2026-01-08,S05,vase,30,true,14
+2026-01-08,S05,linen,8,true,2
+2026-01-09,S02,lamp,20,true,10
+2026-01-09,S02,curtains,32,false,0
+2026-01-09,S02,vase,12,true,4
+2026-01-09,S02,desk lamp,33,true,9
+2026-01-09,S02,gift card,54,true,22
+2026-01-09,S02,mirror,31,true,7
+2026-01-09,S02,returns,59,true,21
+2026-01-09,S02,rug,17,true,4
+2026-01-09,S05,gift card,39,true,19
+2026-01-09,S05,oak table,52,true,16
+2026-01-09,S05,returns,58,true,14
+2026-01-09,S05,desk lamp,46,true,30
+2026-01-09,S05,sofa,58,false,0
+2026-01-09,S05,rug,60,true,17
+2026-01-09,S05,candle,45,true,15
+2026-01-09,S05,curtains,26,false,0
+2026-01-10,S02,linen,49,true,21
+2026-01-10,S02,candle,32,true,21
+2026-01-10,S02,mug,21,true,13
+2026-01-10,S02,vase,19,true,10
+2026-01-10,S02,sofa,56,false,0
+2026-01-10,S02,kettle,56,true,31
+2026-01-10,S02,gift card,14,true,8
+2026-01-10,S02,delivery,36,true,9
+2026-01-10,S05,lamp,39,true,22
+2026-01-10,S05,linen,11,true,6
+2026-01-10,S05,desk lamp,57,true,36
+2026-01-10,S05,mug,6,true,2
+2026-01-10,S05,delivery,46,true,29
+2026-01-10,S05,vase,30,true,8
+2026-01-10,S05,mirror,47,true,9
+2026-01-10,S05,rug,35,true,9
+2026-01-11,S02,curtains,55,false,0
+2026-01-11,S02,vase,41,true,26
+2026-01-11,S02,candle,50,true,33
+2026-01-11,S02,returns,37,true,23
+2026-01-11,S02,oak table,42,true,24
+2026-01-11,S02,rug,14,true,4
+2026-01-11,S02,sofa,33,false,0
+2026-01-11,S02,linen,57,true,24
+2026-01-11,S05,returns,41,true,18
+2026-01-11,S05,oak table,42,true,10
+2026-01-11,S05,vase,47,true,27
+2026-01-11,S05,delivery,31,true,13
+2026-01-11,S05,kettle,16,true,5
+2026-01-11,S05,gift card,30,true,11
+2026-01-11,S05,bookshelf,53,true,24
+2026-01-11,S05,desk lamp,17,true,6
+2026-01-12,S02,mug,18,true,5
+2026-01-12,S02,returns,18,true,12
+2026-01-12,S02,vase,6,true,2
+2026-01-12,S02,rug,27,true,8
+2026-01-12,S02,sofa,59,false,0
+2026-01-12,S02,kettle,32,true,9
+2026-01-12,S02,gift card,16,true,7
+2026-01-12,S02,candle,10,true,5
+2026-01-12,S05,candle,40,true,15
+2026-01-12,S05,delivery,36,true,24
+2026-01-12,S05,oak table,15,true,6
+2026-01-12,S05,mug,24,true,8
+2026-01-12,S05,linen,35,true,15
+2026-01-12,S05,lamp,10,true,3
+2026-01-12,S05,rug,9,true,1
+2026-01-12,S05,mirror,41,true,14
+2026-01-13,S02,linen,11,true,2
+2026-01-13,S02,kettle,32,true,21
+2026-01-13,S02,mug,46,true,30
+2026-01-13,S02,curtains,13,false,0
+2026-01-13,S02,sofa,25,false,0
+2026-01-13,S02,bookshelf,37,true,11
+2026-01-13,S02,returns,49,true,10
+2026-01-13,S02,delivery,22,true,12
+2026-01-13,S05,desk lamp,40,true,17
+2026-01-13,S05,oak table,50,true,30
+2026-01-13,S05,linen,30,true,10
+2026-01-13,S05,delivery,4,true,1
+2026-01-13,S05,mug,48,true,32
+2026-01-13,S05,gift card,17,true,5
+2026-01-13,S05,rug,14,true,7
+2026-01-13,S05,curtains,38,false,0
+2026-01-14,S02,rug,25,true,11
+2026-01-14,S02,returns,38,true,26
+2026-01-14,S02,desk lamp,8,true,1
+2026-01-14,S02,bookshelf,16,true,4
+2026-01-14,S02,gift card,60,true,17
+2026-01-14,S02,candle,51,true,22
+2026-01-14,S02,sofa,12,false,0
+2026-01-14,S02,oak table,46,true,27
+2026-01-14,S05,oak table,47,true,32
+2026-01-14,S05,gift card,20,true,6
+2026-01-14,S05,sofa,58,false,0
+2026-01-14,S05,delivery,60,true,40
+2026-01-14,S05,lamp,8,true,3
+2026-01-14,S05,rug,8,true,2
+2026-01-14,S05,curtains,7,false,0
+2026-01-14,S05,mug,14,true,4
+2026-01-15,S02,curtains,25,false,0
+2026-01-15,S02,sofa,4,false,0
+2026-01-15,S02,linen,42,true,23
+2026-01-15,S02,mug,9,true,3
+2026-01-15,S02,rug,48,true,13
+2026-01-15,S02,returns,43,true,9
+2026-01-15,S02,kettle,12,true,5
+2026-01-15,S02,bookshelf,25,true,5
+2026-01-15,S05,curtains,19,false,0
+2026-01-15,S05,mug,8,true,2
+2026-01-15,S05,bookshelf,7,true,3
+2026-01-15,S05,mirror,44,true,13
+2026-01-15,S05,returns,13,true,8
+2026-01-15,S05,desk lamp,27,true,17
+2026-01-15,S05,linen,16,true,7
+2026-01-15,S05,sofa,7,false,0
+2026-01-16,S02,rug,54,true,31
+2026-01-16,S02,bookshelf,37,true,7
+2026-01-16,S02,desk lamp,51,true,29
+2026-01-16,S02,mug,25,true,9
+2026-01-16,S02,gift card,23,true,7
+2026-01-16,S02,linen,52,true,29
+2026-01-16,S02,mirror,24,true,14
+2026-01-16,S02,delivery,49,true,13
+2026-01-16,S05,desk lamp,46,true,22
+2026-01-16,S05,delivery,55,true,20
+2026-01-16,S05,candle,8,true,2
+2026-01-16,S05,curtains,47,false,0
+2026-01-16,S05,lamp,27,true,14
+2026-01-16,S05,rug,52,true,23
+2026-01-16,S05,sofa,26,false,0
+2026-01-16,S05,gift card,12,true,4
+2026-01-17,S02,desk lamp,6,true,4
+2026-01-17,S02,candle,23,true,6
+2026-01-17,S02,curtains,47,false,0
+2026-01-17,S02,gift card,9,true,4
+2026-01-17,S02,oak table,52,true,31
+2026-01-17,S02,bookshelf,33,true,16
+2026-01-17,S02,returns,39,true,14
+2026-01-17,S02,rug,3,true,1
+2026-01-17,S05,candle,45,true,13
+2026-01-17,S05,linen,33,true,21
+2026-01-17,S05,mirror,30,true,17
+2026-01-17,S05,vase,43,true,19
+2026-01-17,S05,returns,21,true,6
+2026-01-17,S05,oak table,32,true,18
+2026-01-17,S05,lamp,55,true,29
+2026-01-17,S05,mug,37,true,25
+2026-01-18,S02,vase,28,true,6
+2026-01-18,S02,candle,55,true,14
+2026-01-18,S02,gift card,33,true,11
+2026-01-18,S02,mirror,17,true,6
+2026-01-18,S02,mug,3,true,1
+2026-01-18,S02,returns,42,true,18
+2026-01-18,S02,curtains,6,false,0
+2026-01-18,S02,rug,18,true,6
+2026-01-18,S05,delivery,59,true,20
+2026-01-18,S05,mirror,6,true,3
+2026-01-18,S05,oak table,47,true,31
+2026-01-18,S05,mug,53,true,33
+2026-01-18,S05,rug,3,true,1
+2026-01-18,S05,kettle,35,true,21
+2026-01-18,S05,vase,36,true,11
+2026-01-18,S05,sofa,49,false,0
+2026-01-19,S02,oak table,40,true,16
+2026-01-19,S02,lamp,10,true,5
+2026-01-19,S02,bookshelf,32,true,18
+2026-01-19,S02,rug,54,true,29
+2026-01-19,S02,delivery,8,true,1
+2026-01-19,S02,sofa,43,false,0
+2026-01-19,S02,vase,55,true,20
+2026-01-19,S02,candle,25,true,15
+2026-01-19,S05,vase,18,true,11
+2026-01-19,S05,bookshelf,33,true,8
+2026-01-19,S05,delivery,39,true,26
+2026-01-19,S05,curtains,4,false,0
+2026-01-19,S05,rug,43,true,24
+2026-01-19,S05,mug,39,true,22
+2026-01-19,S05,sofa,41,false,0
+2026-01-19,S05,desk lamp,41,true,25
+2026-01-20,S02,bookshelf,40,true,25
+2026-01-20,S02,mug,55,true,11
+2026-01-20,S02,curtains,55,false,0
+2026-01-20,S02,delivery,45,true,21
+2026-01-20,S02,lamp,31,true,10
+2026-01-20,S02,oak table,36,true,10
+2026-01-20,S02,vase,31,true,15
+2026-01-20,S02,candle,11,true,6
+2026-01-20,S05,sofa,56,false,0
+2026-01-20,S05,oak table,52,true,20
+2026-01-20,S05,linen,17,true,10
+2026-01-20,S05,desk lamp,46,true,30
+2026-01-20,S05,mug,30,true,12
+2026-01-20,S05,rug,46,true,30
+2026-01-20,S05,bookshelf,43,true,20
+2026-01-20,S05,delivery,31,true,16
+2026-01-21,S02,gift card,9,true,3
+2026-01-21,S02,returns,12,true,6
+2026-01-21,S02,linen,53,true,34
+2026-01-21,S02,kettle,19,true,4
+2026-01-21,S02,mirror,26,true,17
+2026-01-21,S02,delivery,8,true,1
+2026-01-21,S02,mug,8,true,3
+2026-01-21,S02,sofa,15,false,0
+2026-01-21,S05,kettle,17,true,10
+2026-01-21,S05,bookshelf,20,true,13
+2026-01-21,S05,lamp,33,true,10
+2026-01-21,S05,gift card,18,true,12
+2026-01-21,S05,linen,33,true,15
+2026-01-21,S05,desk lamp,18,true,8
+2026-01-21,S05,mug,8,true,2
+2026-01-21,S05,returns,11,true,6
+2026-01-22,S02,kettle,12,true,5
+2026-01-22,S02,sofa,39,false,0
+2026-01-22,S02,rug,28,true,13
+2026-01-22,S02,vase,19,true,11
+2026-01-22,S02,bookshelf,31,true,19
+2026-01-22,S02,linen,48,true,18
+2026-01-22,S02,gift card,40,true,9
+2026-01-22,S02,mirror,24,true,13
+2026-01-22,S05,mirror,45,true,16
+2026-01-22,S05,returns,41,true,21
+2026-01-22,S05,sofa,42,false,0
+2026-01-22,S05,lamp,20,true,8
+2026-01-22,S05,gift card,40,true,27
+2026-01-22,S05,kettle,58,true,22
+2026-01-22,S05,delivery,4,true,2
+2026-01-22,S05,candle,5,true,2
+2026-01-23,S02,oak table,39,true,13
+2026-01-23,S02,curtains,49,false,0
+2026-01-23,S02,delivery,34,true,22
+2026-01-23,S02,returns,11,true,5
+2026-01-23,S02,vase,4,true,2
+2026-01-23,S02,candle,52,true,35
+2026-01-23,S02,desk lamp,23,true,9
+2026-01-23,S02,sofa,31,false,0
+2026-01-23,S05,desk lamp,59,true,35
+2026-01-23,S05,delivery,32,true,21
+2026-01-23,S05,sofa,47,false,0
+2026-01-23,S05,vase,59,true,41
+2026-01-23,S05,mug,50,true,23
+2026-01-23,S05,rug,26,true,6
+2026-01-23,S05,mirror,51,true,26
+2026-01-23,S05,oak table,18,true,8
+2026-01-24,S02,kettle,55,true,11
+2026-01-24,S02,linen,30,true,17
+2026-01-24,S02,curtains,12,false,0
+2026-01-24,S02,oak table,20,true,7
+2026-01-24,S02,desk lamp,8,true,5
+2026-01-24,S02,gift card,5,true,2
+2026-01-24,S02,bookshelf,41,true,15
+2026-01-24,S02,mirror,8,true,3
+2026-01-24,S05,candle,40,true,17
+2026-01-24,S05,rug,17,true,9
+2026-01-24,S05,linen,49,true,22
+2026-01-24,S05,returns,36,true,18
+2026-01-24,S05,kettle,6,true,2
+2026-01-24,S05,curtains,52,false,0
+2026-01-24,S05,bookshelf,57,true,21
+2026-01-24,S05,desk lamp,30,true,11
+2026-01-25,S02,returns,44,true,29
+2026-01-25,S02,bookshelf,51,true,22
+2026-01-25,S02,curtains,23,false,0
+2026-01-25,S02,delivery,46,true,23
+2026-01-25,S02,sofa,55,false,0
+2026-01-25,S02,candle,55,true,14
+2026-01-25,S02,oak table,15,true,3
+2026-01-25,S02,rug,43,true,9
+2026-01-25,S05,desk lamp,5,true,2
+2026-01-25,S05,bookshelf,29,true,15
+2026-01-25,S05,linen,19,true,10
+2026-01-25,S05,oak table,6,true,3
+2026-01-25,S05,sofa,53,false,0
+2026-01-25,S05,lamp,9,true,5
+2026-01-25,S05,curtains,23,false,0
+2026-01-25,S05,kettle,35,true,7
+2026-01-26,S02,vase,40,true,15
+2026-01-26,S02,oak table,15,true,7
+2026-01-26,S02,returns,17,true,5
+2026-01-26,S02,lamp,3,true,1
+2026-01-26,S02,bookshelf,34,true,23
+2026-01-26,S02,linen,28,true,18
+2026-01-26,S02,rug,9,true,3
+2026-01-26,S02,kettle,18,true,8
+2026-01-26,S05,gift card,35,true,15
+2026-01-26,S05,linen,39,true,20
+2026-01-26,S05,delivery,12,true,5
+2026-01-26,S05,desk lamp,15,true,7
+2026-01-26,S05,lamp,28,true,19
+2026-01-26,S05,oak table,22,true,6
+2026-01-26,S05,mug,51,true,29
+2026-01-26,S05,candle,50,true,32
+2026-01-27,S02,rug,19,true,12
+2026-01-27,S02,returns,12,true,5
+2026-01-27,S02,curtains,48,false,0
+2026-01-27,S02,gift card,3,true,1
+2026-01-27,S02,mirror,49,true,22
+2026-01-27,S02,mug,53,true,14
+2026-01-27,S02,candle,42,true,14
+2026-01-27,S02,vase,14,true,6
+2026-01-27,S05,linen,16,true,4
+2026-01-27,S05,candle,28,true,11
+2026-01-27,S05,delivery,27,true,13
+2026-01-27,S05,oak table,47,true,12
+2026-01-27,S05,kettle,7,true,3
+2026-01-27,S05,returns,36,true,20
+2026-01-27,S05,gift card,32,true,15
+2026-01-27,S05,bookshelf,51,true,33
+2026-01-28,S02,curtains,16,false,0
+2026-01-28,S02,gift card,52,true,15
+2026-01-28,S02,oak table,45,true,16
+2026-01-28,S02,linen,12,true,5
+2026-01-28,S02,returns,46,true,14
+2026-01-28,S02,candle,42,true,19
+2026-01-28,S02,mug,6,true,1
+2026-01-28,S02,delivery,34,true,15
+2026-01-28,S05,mirror,58,true,25
+2026-01-28,S05,mug,8,true,4
+2026-01-28,S05,gift card,18,true,5
+2026-01-28,S05,returns,17,true,7
+2026-01-28,S05,lamp,53,true,31
+2026-01-28,S05,oak table,21,true,8
+2026-01-28,S05,kettle,57,true,32
+2026-01-28,S05,candle,25,true,10
+2026-01-29,S02,rug,14,true,7
+2026-01-29,S02,mug,25,true,7
+2026-01-29,S02,sofa,47,false,0
+2026-01-29,S02,mirror,31,true,14
+2026-01-29,S02,desk lamp,12,true,3
+2026-01-29,S02,returns,8,true,2
+2026-01-29,S02,curtains,23,false,0
+2026-01-29,S02,candle,47,true,30
+2026-01-29,S05,oak table,46,true,32
+2026-01-29,S05,desk lamp,40,true,17
+2026-01-29,S05,lamp,49,true,30
+2026-01-29,S05,mug,48,true,27
+2026-01-29,S05,rug,21,true,7
+2026-01-29,S05,gift card,17,true,8
+2026-01-29,S05,curtains,14,false,0
+2026-01-29,S05,mirror,34,true,15
+2026-01-30,S02,oak table,34,true,23
+2026-01-30,S02,linen,49,true,25
+2026-01-30,S02,desk lamp,15,true,5
+2026-01-30,S02,mug,57,true,13
+2026-01-30,S02,candle,55,true,31
+2026-01-30,S02,lamp,56,true,27
+2026-01-30,S02,sofa,55,false,0
+2026-01-30,S02,delivery,57,true,18
+2026-01-30,S05,kettle,35,true,15
+2026-01-30,S05,mug,8,true,4
+2026-01-30,S05,delivery,11,true,7
+2026-01-30,S05,vase,7,true,4
+2026-01-30,S05,candle,22,true,4
+2026-01-30,S05,sofa,28,false,0
+2026-01-30,S05,curtains,34,false,0
+2026-01-30,S05,rug,10,true,2
+2026-01-31,S02,delivery,44,true,12
+2026-01-31,S02,mug,25,true,12
+2026-01-31,S02,linen,33,true,11
+2026-01-31,S02,curtains,12,false,0
+2026-01-31,S02,oak table,41,true,19
+2026-01-31,S02,candle,39,true,23
+2026-01-31,S02,vase,7,true,2
+2026-01-31,S02,kettle,60,true,18
+2026-01-31,S05,gift card,15,true,5
+2026-01-31,S05,linen,58,true,27
+2026-01-31,S05,delivery,37,true,25
+2026-01-31,S05,mirror,57,true,15
+2026-01-31,S05,lamp,20,true,6
+2026-01-31,S05,candle,21,true,7
+2026-01-31,S05,oak table,21,true,4
+2026-01-31,S05,sofa,18,false,0
+2026-02-01,S02,lamp,15,true,9
+2026-02-01,S02,curtains,41,false,0
+2026-02-01,S02,kettle,9,true,2
+2026-02-01,S02,mirror,6,true,1
+2026-02-01,S02,mug,30,true,17
+2026-02-01,S02,rug,55,true,15
+2026-02-01,S02,returns,49,true,29
+2026-02-01,S02,sofa,8,false,0
+2026-02-01,S05,gift card,15,true,9
+2026-02-01,S05,linen,46,true,14
+2026-02-01,S05,returns,19,true,11
+2026-02-01,S05,rug,36,true,24
+2026-02-01,S05,delivery,43,true,8
+2026-02-01,S05,mug,14,true,6
+2026-02-01,S05,curtains,29,false,0
+2026-02-01,S05,sofa,36,false,0
+2026-02-02,S02,linen,45,true,25
+2026-02-02,S02,mug,47,true,32
+2026-02-02,S02,mirror,19,true,3
+2026-02-02,S02,kettle,33,true,21
+2026-02-02,S02,gift card,8,true,2
+2026-02-02,S02,oak table,7,true,3
+2026-02-02,S02,sofa,9,false,0
+2026-02-02,S02,delivery,24,true,14
+2026-02-02,S05,vase,8,true,3
+2026-02-02,S05,rug,11,true,6
+2026-02-02,S05,sofa,36,false,0
+2026-02-02,S05,delivery,47,true,15
+2026-02-02,S05,kettle,58,true,21
+2026-02-02,S05,lamp,11,true,3
+2026-02-02,S05,desk lamp,27,true,13
+2026-02-02,S05,mug,48,true,15
+2026-02-03,S02,candle,57,true,33
+2026-02-03,S02,curtains,55,false,0
+2026-02-03,S02,mug,50,true,30
+2026-02-03,S02,vase,14,true,3
+2026-02-03,S02,mirror,11,true,5
+2026-02-03,S02,returns,37,true,15
+2026-02-03,S02,bookshelf,44,true,10
+2026-02-03,S02,oak table,19,true,10
+2026-02-03,S05,returns,57,true,33
+2026-02-03,S05,mug,26,true,16
+2026-02-03,S05,curtains,17,false,0
+2026-02-03,S05,lamp,42,true,25
+2026-02-03,S05,linen,43,true,12
+2026-02-03,S05,desk lamp,56,true,25
+2026-02-03,S05,oak table,33,true,20
+2026-02-03,S05,gift card,7,true,3
+2026-02-04,S02,rug,59,true,28
+2026-02-04,S02,oak table,31,true,21
+2026-02-04,S02,candle,18,true,8
+2026-02-04,S02,linen,11,true,6
+2026-02-04,S02,mirror,50,true,32
+2026-02-04,S02,curtains,60,false,0
+2026-02-04,S02,gift card,57,true,29
+2026-02-04,S02,bookshelf,59,true,27
+2026-02-04,S05,sofa,46,false,0
+2026-02-04,S05,oak table,8,true,2
+2026-02-04,S05,bookshelf,17,true,4
+2026-02-04,S05,delivery,58,true,30
+2026-02-04,S05,desk lamp,47,true,18
+2026-02-04,S05,lamp,4,true,1
+2026-02-04,S05,returns,4,true,2
+2026-02-04,S05,mirror,9,true,3
+2026-02-05,S02,sofa,50,false,0
+2026-02-05,S02,curtains,50,false,0
+2026-02-05,S02,linen,27,true,6
+2026-02-05,S02,vase,38,true,25
+2026-02-05,S02,rug,21,true,8
+2026-02-05,S02,mirror,59,true,35
+2026-02-05,S02,lamp,26,true,9
+2026-02-05,S02,oak table,52,true,24
+2026-02-05,S05,kettle,43,true,19
+2026-02-05,S05,bookshelf,13,true,7
+2026-02-05,S05,lamp,21,true,5
+2026-02-05,S05,mug,8,true,4
+2026-02-05,S05,desk lamp,10,true,6
+2026-02-05,S05,gift card,37,true,7
+2026-02-05,S05,returns,59,true,39
+2026-02-05,S05,rug,25,true,5
+2026-02-06,S02,mirror,59,true,17
+2026-02-06,S02,vase,22,true,9
+2026-02-06,S02,linen,55,true,12
+2026-02-06,S02,rug,34,true,9
+2026-02-06,S02,sofa,17,false,0
+2026-02-06,S02,lamp,17,true,4
+2026-02-06,S02,returns,36,true,23
+2026-02-06,S02,candle,17,true,5
+2026-02-06,S05,candle,51,true,27
+2026-02-06,S05,rug,44,true,29
+2026-02-06,S05,desk lamp,26,true,10
+2026-02-06,S05,kettle,22,true,5
+2026-02-06,S05,mirror,52,true,17
+2026-02-06,S05,curtains,28,false,0
+2026-02-06,S05,returns,37,true,25
+2026-02-06,S05,mug,31,true,13
+2026-02-07,S02,sofa,43,false,0
+2026-02-07,S02,rug,12,true,4
+2026-02-07,S02,vase,21,true,12
+2026-02-07,S02,mug,60,true,16
+2026-02-07,S02,mirror,8,true,3
+2026-02-07,S02,desk lamp,22,true,4
+2026-02-07,S02,delivery,4,true,1
+2026-02-07,S02,kettle,12,true,6
+2026-02-07,S05,vase,37,true,11
+2026-02-07,S05,curtains,13,false,0
+2026-02-07,S05,rug,12,true,5
+2026-02-07,S05,bookshelf,17,true,9
+2026-02-07,S05,sofa,8,false,0
+2026-02-07,S05,desk lamp,34,true,7
+2026-02-07,S05,kettle,59,true,28
+2026-02-07,S05,mug,10,true,6
+2026-02-08,S02,sofa,50,false,0
+2026-02-08,S02,vase,41,true,12
+2026-02-08,S02,bookshelf,7,true,3
+2026-02-08,S02,mug,31,true,17
+2026-02-08,S02,returns,10,true,4
+2026-02-08,S02,mirror,13,true,5
+2026-02-08,S02,oak table,42,true,21
+2026-02-08,S02,curtains,10,false,0
+2026-02-08,S05,curtains,9,false,0
+2026-02-08,S05,returns,44,true,15
+2026-02-08,S05,desk lamp,13,true,2
+2026-02-08,S05,mirror,37,true,15
+2026-02-08,S05,delivery,52,true,27
+2026-02-08,S05,gift card,57,true,25
+2026-02-08,S05,linen,43,true,11
+2026-02-08,S05,lamp,5,true,2
+2026-02-09,S02,lamp,45,true,18
+2026-02-09,S02,bookshelf,10,true,5
+2026-02-09,S02,linen,17,true,6
+2026-02-09,S02,mirror,60,true,24
+2026-02-09,S02,gift card,3,true,1
+2026-02-09,S02,vase,43,true,28
+2026-02-09,S02,kettle,16,true,8
+2026-02-09,S02,oak table,58,true,23
+2026-02-09,S05,linen,48,true,32
+2026-02-09,S05,gift card,19,true,10
+2026-02-09,S05,sofa,35,false,0
+2026-02-09,S05,curtains,47,false,0
+2026-02-09,S05,bookshelf,35,true,17
+2026-02-09,S05,kettle,4,true,1
+2026-02-09,S05,desk lamp,58,true,15
+2026-02-09,S05,rug,40,true,10
+2026-02-10,S02,oak table,16,true,10
+2026-02-10,S02,rug,58,true,39
+2026-02-10,S02,returns,30,true,16
+2026-02-10,S02,curtains,6,false,0
+2026-02-10,S02,gift card,46,true,10
+2026-02-10,S02,desk lamp,17,true,4
+2026-02-10,S02,vase,25,true,9
+2026-02-10,S02,delivery,53,true,11
+2026-02-10,S05,linen,60,true,33
+2026-02-10,S05,lamp,33,true,13
+2026-02-10,S05,sofa,6,false,0
+2026-02-10,S05,rug,28,true,7
+2026-02-10,S05,gift card,38,true,9
+2026-02-10,S05,mirror,55,true,24
+2026-02-10,S05,oak table,17,true,9
+2026-02-10,S05,vase,28,true,18
+2026-02-11,S02,kettle,36,true,8
+2026-02-11,S02,linen,10,true,4
+2026-02-11,S02,bookshelf,17,true,9
+2026-02-11,S02,desk lamp,4,true,1
+2026-02-11,S02,oak table,35,true,21
+2026-02-11,S02,curtains,37,false,0
+2026-02-11,S02,lamp,6,true,1
+2026-02-11,S02,mirror,46,true,26
+2026-02-11,S05,vase,46,true,15
+2026-02-11,S05,delivery,36,true,9
+2026-02-11,S05,rug,59,true,15
+2026-02-11,S05,kettle,6,true,2
+2026-02-11,S05,gift card,16,true,10
+2026-02-11,S05,linen,49,true,33
+2026-02-11,S05,candle,48,true,26
+2026-02-11,S05,bookshelf,19,true,11
+2026-02-12,S02,lamp,58,true,19
+2026-02-12,S02,delivery,37,true,11
+2026-02-12,S02,oak table,60,true,29
+2026-02-12,S02,desk lamp,11,true,7
+2026-02-12,S02,candle,53,true,30
+2026-02-12,S02,sofa,59,false,0
+2026-02-12,S02,linen,4,true,1
+2026-02-12,S02,kettle,47,true,29
+2026-02-12,S05,bookshelf,12,true,3
+2026-02-12,S05,lamp,4,true,1
+2026-02-12,S05,sofa,30,false,0
+2026-02-12,S05,delivery,19,true,9
+2026-02-12,S05,oak table,40,true,15
+2026-02-12,S05,returns,12,true,4
+2026-02-12,S05,mirror,32,true,13
+2026-02-12,S05,curtains,24,false,0
+2026-02-13,S02,vase,36,true,13
+2026-02-13,S02,bookshelf,10,true,5
+2026-02-13,S02,curtains,48,false,0
+2026-02-13,S02,oak table,11,true,5
+2026-02-13,S02,linen,4,true,2
+2026-02-13,S02,desk lamp,50,true,27
+2026-02-13,S02,lamp,29,true,12
+2026-02-13,S02,delivery,51,true,12
+2026-02-13,S05,kettle,43,true,25
+2026-02-13,S05,linen,55,true,15
+2026-02-13,S05,sofa,44,false,0
+2026-02-13,S05,lamp,29,true,19
+2026-02-13,S05,returns,46,true,27
+2026-02-13,S05,gift card,33,true,15
+2026-02-13,S05,oak table,44,true,11
+2026-02-13,S05,mug,59,true,22
+2026-02-14,S02,oak table,21,true,6
+2026-02-14,S02,bookshelf,52,true,24
+2026-02-14,S02,candle,29,true,16
+2026-02-14,S02,desk lamp,34,true,20
+2026-02-14,S02,curtains,8,false,0
+2026-02-14,S02,returns,18,true,11
+2026-02-14,S02,gift card,43,true,22
+2026-02-14,S02,mug,8,true,4
+2026-02-14,S05,rug,49,true,14
+2026-02-14,S05,bookshelf,3,true,2
+2026-02-14,S05,vase,35,true,10
+2026-02-14,S05,lamp,51,true,24
+2026-02-14,S05,gift card,5,true,1
+2026-02-14,S05,mug,23,true,9
+2026-02-14,S05,desk lamp,13,true,4
+2026-02-14,S05,kettle,19,true,5
+2026-02-15,S02,kettle,21,true,10
+2026-02-15,S02,mug,57,true,15
+2026-02-15,S02,candle,56,true,14
+2026-02-15,S02,mirror,43,true,24
+2026-02-15,S02,curtains,56,false,0
+2026-02-15,S02,rug,48,true,32
+2026-02-15,S02,returns,9,true,4
+2026-02-15,S02,linen,36,true,21
+2026-02-15,S05,gift card,25,true,5
+2026-02-15,S05,curtains,7,false,0
+2026-02-15,S05,bookshelf,57,true,27
+2026-02-15,S05,linen,29,true,8
+2026-02-15,S05,candle,20,true,8
+2026-02-15,S05,oak table,13,true,4
+2026-02-15,S05,mirror,47,true,25
+2026-02-15,S05,mug,51,true,18
+2026-02-16,S02,lamp,17,true,7
+2026-02-16,S02,gift card,51,true,30
+2026-02-16,S02,rug,35,true,12
+2026-02-16,S02,mug,44,true,9
+2026-02-16,S02,desk lamp,60,true,29
+2026-02-16,S02,delivery,43,true,26
+2026-02-16,S02,sofa,8,false,0
+2026-02-16,S02,linen,60,true,33
+2026-02-16,S05,desk lamp,51,true,18
+2026-02-16,S05,vase,59,true,20
+2026-02-16,S05,returns,49,true,17
+2026-02-16,S05,gift card,10,true,3
+2026-02-16,S05,oak table,13,true,4
+2026-02-16,S05,lamp,22,true,13
+2026-02-16,S05,linen,31,true,8
+2026-02-16,S05,rug,41,true,14
+2026-02-17,S02,candle,48,true,17
+2026-02-17,S02,kettle,11,true,3
+2026-02-17,S02,delivery,10,true,2
+2026-02-17,S02,mug,15,true,6
+2026-02-17,S02,returns,20,true,12
+2026-02-17,S02,rug,33,true,17
+2026-02-17,S02,gift card,38,true,12
+2026-02-17,S02,lamp,49,true,27
+2026-02-17,S05,vase,46,true,30
+2026-02-17,S05,sofa,53,false,0
+2026-02-17,S05,delivery,15,true,6
+2026-02-17,S05,mug,19,true,4
+2026-02-17,S05,lamp,13,true,7
+2026-02-17,S05,mirror,34,true,8
+2026-02-17,S05,linen,56,true,30
+2026-02-17,S05,kettle,11,true,2
+2026-02-18,S02,curtains,6,false,0
+2026-02-18,S02,mug,14,true,3
+2026-02-18,S02,bookshelf,48,true,22
+2026-02-18,S02,desk lamp,20,true,11
+2026-02-18,S02,returns,36,true,21
+2026-02-18,S02,rug,46,true,30
+2026-02-18,S02,kettle,51,true,30
+2026-02-18,S02,delivery,44,true,15
+2026-02-18,S05,mirror,5,true,3
+2026-02-18,S05,kettle,21,true,10
+2026-02-18,S05,delivery,39,true,10
+2026-02-18,S05,candle,57,true,23
+2026-02-18,S05,mug,42,true,25
+2026-02-18,S05,oak table,8,true,2
+2026-02-18,S05,sofa,41,false,0
+2026-02-18,S05,desk lamp,12,true,4
+2026-02-19,S02,vase,38,true,8
+2026-02-19,S02,gift card,31,true,14
+2026-02-19,S02,lamp,55,true,16
+2026-02-19,S02,sofa,40,false,0
+2026-02-19,S02,candle,42,true,20
+2026-02-19,S02,linen,34,true,6
+2026-02-19,S02,returns,38,true,22
+2026-02-19,S02,mirror,46,true,12
+2026-02-19,S05,curtains,53,false,0
+2026-02-19,S05,bookshelf,46,true,23
+2026-02-19,S05,gift card,15,true,7
+2026-02-19,S05,mug,26,true,16
+2026-02-19,S05,oak table,12,true,8
+2026-02-19,S05,desk lamp,6,true,2
+2026-02-19,S05,sofa,28,false,0
+2026-02-19,S05,returns,26,true,5
+2026-02-20,S02,curtains,7,false,0
+2026-02-20,S02,bookshelf,6,true,2
+2026-02-20,S02,sofa,45,false,0
+2026-02-20,S02,oak table,3,true,1
+2026-02-20,S02,mug,34,true,10
+2026-02-20,S02,vase,22,true,13
+2026-02-20,S02,mirror,35,true,24
+2026-02-20,S02,lamp,29,true,16
+2026-02-20,S05,oak table,23,true,8
+2026-02-20,S05,linen,33,true,13
+2026-02-20,S05,gift card,5,true,3
+2026-02-20,S05,returns,20,true,9
+2026-02-20,S05,mirror,33,true,19
+2026-02-20,S05,desk lamp,55,true,29
+2026-02-20,S05,candle,49,true,31
+2026-02-20,S05,lamp,9,true,2
+2026-02-21,S02,linen,53,true,23
+2026-02-21,S02,lamp,17,true,10
+2026-02-21,S02,desk lamp,36,true,14
+2026-02-21,S02,kettle,46,true,23
+2026-02-21,S02,sofa,49,false,0
+2026-02-21,S02,oak table,58,true,14
+2026-02-21,S02,rug,41,true,11
+2026-02-21,S02,mirror,18,true,12
+2026-02-21,S05,delivery,28,true,17
+2026-02-21,S05,mirror,23,true,14
+2026-02-21,S05,desk lamp,53,true,15
+2026-02-21,S05,bookshelf,59,true,23
+2026-02-21,S05,rug,23,true,11
+2026-02-21,S05,curtains,53,false,0
+2026-02-21,S05,oak table,41,true,25
+2026-02-21,S05,sofa,40,false,0
+2026-02-22,S02,mirror,36,true,12
+2026-02-22,S02,candle,45,true,15
+2026-02-22,S02,sofa,14,false,0
+2026-02-22,S02,linen,46,true,23
+2026-02-22,S02,vase,36,true,20
+2026-02-22,S02,oak table,52,true,12
+2026-02-22,S02,gift card,52,true,19
+2026-02-22,S02,bookshelf,13,true,2
+2026-02-22,S05,mirror,57,true,27
+2026-02-22,S05,rug,24,true,8
+2026-02-22,S05,kettle,47,true,16
+2026-02-22,S05,desk lamp,21,true,9
+2026-02-22,S05,lamp,49,true,24
+2026-02-22,S05,curtains,38,false,0
+2026-02-22,S05,oak table,54,true,14
+2026-02-22,S05,vase,19,true,8
+2026-02-23,S02,lamp,55,true,31
+2026-02-23,S02,rug,52,true,34
+2026-02-23,S02,kettle,41,true,17
+2026-02-23,S02,oak table,11,true,7
+2026-02-23,S02,curtains,4,false,0
+2026-02-23,S02,linen,50,true,11
+2026-02-23,S02,mug,59,true,18
+2026-02-23,S02,mirror,5,true,3
+2026-02-23,S05,gift card,55,true,27
+2026-02-23,S05,delivery,17,true,7
+2026-02-23,S05,candle,21,true,7
+2026-02-23,S05,desk lamp,3,true,1
+2026-02-23,S05,mirror,20,true,10
+2026-02-23,S05,sofa,51,false,0
+2026-02-23,S05,rug,60,true,27
+2026-02-23,S05,oak table,58,true,18
+2026-02-24,S02,mirror,7,true,1
+2026-02-24,S02,candle,19,true,5
+2026-02-24,S02,delivery,28,true,12
+2026-02-24,S02,gift card,41,true,28
+2026-02-24,S02,vase,39,true,18
+2026-02-24,S02,oak table,32,true,17
+2026-02-24,S02,sofa,55,false,0
+2026-02-24,S02,kettle,24,true,12
+2026-02-24,S05,lamp,27,true,7
+2026-02-24,S05,bookshelf,50,true,32
+2026-02-24,S05,delivery,18,true,8
+2026-02-24,S05,oak table,54,true,12
+2026-02-24,S05,curtains,31,false,0
+2026-02-24,S05,rug,53,true,20
+2026-02-24,S05,candle,11,true,2
+2026-02-24,S05,returns,12,true,7
+2026-02-25,S02,delivery,57,true,31
+2026-02-25,S02,mug,13,true,5
+2026-02-25,S02,linen,38,true,24
+2026-02-25,S02,returns,53,true,20
+2026-02-25,S02,sofa,45,false,0
+2026-02-25,S02,bookshelf,30,true,14
+2026-02-25,S02,curtains,36,false,0
+2026-02-25,S02,oak table,54,true,18
+2026-02-25,S05,mirror,22,true,12
+2026-02-25,S05,linen,30,true,8
+2026-02-25,S05,vase,45,true,17
+2026-02-25,S05,mug,8,true,2
+2026-02-25,S05,curtains,25,false,0
+2026-02-25,S05,kettle,22,true,6
+2026-02-25,S05,gift card,48,true,32
+2026-02-25,S05,sofa,31,false,0
+2026-02-26,S02,bookshelf,10,true,6
+2026-02-26,S02,linen,7,true,1
+2026-02-26,S02,rug,32,true,11
+2026-02-26,S02,delivery,9,true,5
+2026-02-26,S02,returns,21,true,10
+2026-02-26,S02,candle,53,true,30
+2026-02-26,S02,vase,54,true,20
+2026-02-26,S02,gift card,33,true,22
+2026-02-26,S05,vase,23,true,6
+2026-02-26,S05,lamp,23,true,12
+2026-02-26,S05,curtains,38,false,0
+2026-02-26,S05,bookshelf,23,true,10
+2026-02-26,S05,candle,30,true,12
+2026-02-26,S05,gift card,18,true,8
+2026-02-26,S05,kettle,52,true,22
+2026-02-26,S05,rug,16,true,4
+2026-02-27,S02,mirror,54,true,17
+2026-02-27,S02,gift card,3,true,1
+2026-02-27,S02,linen,29,true,13
+2026-02-27,S02,vase,50,true,21
+2026-02-27,S02,kettle,7,true,1
+2026-02-27,S02,mug,16,true,10
+2026-02-27,S02,rug,38,true,16
+2026-02-27,S02,curtains,15,false,0
+2026-02-27,S05,returns,37,true,14
+2026-02-27,S05,oak table,4,true,2
+2026-02-27,S05,desk lamp,17,true,8
+2026-02-27,S05,candle,9,true,3
+2026-02-27,S05,rug,3,true,1
+2026-02-27,S05,curtains,11,false,0
+2026-02-27,S05,mirror,39,true,23
+2026-02-27,S05,linen,50,true,19
+2026-02-28,S02,lamp,46,true,11
+2026-02-28,S02,returns,30,true,18
+2026-02-28,S02,gift card,59,true,40
+2026-02-28,S02,kettle,36,true,15
+2026-02-28,S02,oak table,10,true,2
+2026-02-28,S02,linen,38,true,8
+2026-02-28,S02,mirror,8,true,3
+2026-02-28,S02,candle,41,true,24
+2026-02-28,S05,candle,36,true,8
+2026-02-28,S05,vase,13,true,2
+2026-02-28,S05,bookshelf,39,true,8
+2026-02-28,S05,sofa,57,false,0
+2026-02-28,S05,linen,60,true,28
+2026-02-28,S05,mirror,49,true,15
+2026-02-28,S05,rug,48,true,22
+2026-02-28,S05,mug,56,true,37
+2026-03-01,S02,returns,32,true,12
+2026-03-01,S02,desk lamp,11,true,5
+2026-03-01,S02,kettle,21,true,6
+2026-03-01,S02,delivery,55,true,13
+2026-03-01,S02,mirror,59,true,12
+2026-03-01,S02,gift card,13,true,5
+2026-03-01,S02,linen,37,true,13
+2026-03-01,S02,oak table,7,true,3
+2026-03-01,S05,mug,16,true,7
+2026-03-01,S05,gift card,25,true,14
+2026-03-01,S05,lamp,40,true,24
+2026-03-01,S05,bookshelf,11,true,5
+2026-03-01,S05,candle,47,true,29
+2026-03-01,S05,kettle,55,true,36
+2026-03-01,S05,returns,47,true,21
+2026-03-01,S05,delivery,44,true,16
+2026-03-02,S02,candle,25,true,13
+2026-03-02,S02,rug,59,true,24
+2026-03-02,S02,vase,53,true,15
+2026-03-02,S02,linen,21,true,7
+2026-03-02,S02,lamp,58,true,23
+2026-03-02,S02,returns,57,true,33
+2026-03-02,S02,sofa,29,false,0
+2026-03-02,S02,mug,58,true,23
+2026-03-02,S05,vase,14,true,5
+2026-03-02,S05,mirror,44,true,20
+2026-03-02,S05,candle,20,true,8
+2026-03-02,S05,rug,22,true,13
+2026-03-02,S05,sofa,17,false,0
+2026-03-02,S05,kettle,6,true,1
+2026-03-02,S05,curtains,44,false,0
+2026-03-02,S05,lamp,28,true,11
+2026-03-02,S08,candle,55,true,30
+2026-03-02,S08,delivery,53,true,32
+2026-03-02,S08,bookshelf,18,true,4
+2026-03-02,S08,gift card,31,true,12
+2026-03-02,S08,sofa,46,false,0
+2026-03-02,S08,rug,6,true,1
+2026-03-02,S08,oak table,19,true,10
+2026-03-02,S08,linen,53,true,15
+2026-03-03,S02,candle,28,true,6
+2026-03-03,S02,kettle,59,true,24
+2026-03-03,S02,rug,57,true,14
+2026-03-03,S02,oak table,11,true,4
+2026-03-03,S02,bookshelf,55,true,16
+2026-03-03,S02,linen,54,true,26
+2026-03-03,S02,curtains,51,false,0
+2026-03-03,S02,gift card,23,true,7
+2026-03-03,S05,sofa,48,false,0
+2026-03-03,S05,delivery,20,true,9
+2026-03-03,S05,linen,30,true,15
+2026-03-03,S05,mirror,12,true,3
+2026-03-03,S05,rug,12,true,6
+2026-03-03,S05,lamp,57,true,15
+2026-03-03,S05,kettle,5,true,1
+2026-03-03,S05,returns,13,true,7
+2026-03-03,S08,candle,55,true,17
+2026-03-03,S08,rug,59,true,23
+2026-03-03,S08,mirror,9,true,4
+2026-03-03,S08,bookshelf,56,true,30
+2026-03-03,S08,returns,12,true,7
+2026-03-03,S08,mug,37,true,20
+2026-03-03,S08,sofa,31,false,0
+2026-03-03,S08,curtains,34,false,0
+2026-03-04,S02,vase,42,true,26
+2026-03-04,S02,lamp,4,true,2
+2026-03-04,S02,sofa,57,false,0
+2026-03-04,S02,mug,10,true,3
+2026-03-04,S02,gift card,58,true,34
+2026-03-04,S02,oak table,9,true,4
+2026-03-04,S02,delivery,43,true,25
+2026-03-04,S02,desk lamp,58,true,16
+2026-03-04,S05,mug,34,true,17
+2026-03-04,S05,gift card,43,true,29
+2026-03-04,S05,rug,45,true,29
+2026-03-04,S05,bookshelf,20,true,8
+2026-03-04,S05,sofa,31,false,0
+2026-03-04,S05,curtains,5,false,0
+2026-03-04,S05,vase,16,true,4
+2026-03-04,S05,candle,48,true,31
+2026-03-04,S08,delivery,48,true,16
+2026-03-04,S08,kettle,45,true,13
+2026-03-04,S08,mug,20,true,6
+2026-03-04,S08,linen,46,true,18
+2026-03-04,S08,desk lamp,5,true,1
+2026-03-04,S08,rug,29,true,13
+2026-03-04,S08,returns,25,true,11
+2026-03-04,S08,bookshelf,51,true,34
+2026-03-05,S02,sofa,53,false,0
+2026-03-05,S02,vase,46,true,10
+2026-03-05,S02,lamp,45,true,14
+2026-03-05,S02,delivery,25,true,5
+2026-03-05,S02,kettle,16,true,7
+2026-03-05,S02,mug,33,true,22
+2026-03-05,S02,mirror,12,true,6
+2026-03-05,S02,candle,47,true,18
+2026-03-05,S05,curtains,3,false,0
+2026-03-05,S05,returns,41,true,13
+2026-03-05,S05,rug,45,true,30
+2026-03-05,S05,delivery,42,true,23
+2026-03-05,S05,lamp,40,true,9
+2026-03-05,S05,oak table,47,true,31
+2026-03-05,S05,linen,54,true,25
+2026-03-05,S05,bookshelf,56,true,29
+2026-03-05,S08,vase,52,true,24
+2026-03-05,S08,returns,28,true,14
+2026-03-05,S08,kettle,16,true,9
+2026-03-05,S08,candle,25,true,10
+2026-03-05,S08,bookshelf,12,true,3
+2026-03-05,S08,sofa,48,false,0
+2026-03-05,S08,desk lamp,48,true,30
+2026-03-05,S08,oak table,10,true,2
+2026-03-06,S02,sofa,24,false,0
+2026-03-06,S02,mug,39,true,23
+2026-03-06,S02,desk lamp,31,true,16
+2026-03-06,S02,curtains,41,false,0
+2026-03-06,S02,mirror,47,true,12
+2026-03-06,S02,linen,31,true,16
+2026-03-06,S02,lamp,24,true,13
+2026-03-06,S02,returns,17,true,3
+2026-03-06,S05,lamp,50,true,17
+2026-03-06,S05,candle,43,true,10
+2026-03-06,S05,curtains,40,false,0
+2026-03-06,S05,mug,58,true,34
+2026-03-06,S05,returns,49,true,33
+2026-03-06,S05,desk lamp,43,true,13
+2026-03-06,S05,bookshelf,22,true,6
+2026-03-06,S05,delivery,40,true,16
+2026-03-06,S08,kettle,53,true,23
+2026-03-06,S08,gift card,4,true,1
+2026-03-06,S08,linen,55,true,26
+2026-03-06,S08,delivery,40,true,13
+2026-03-06,S08,rug,3,true,1
+2026-03-06,S08,desk lamp,38,true,15
+2026-03-06,S08,vase,28,true,8
+2026-03-06,S08,candle,46,true,13
+2026-03-07,S02,sofa,58,false,0
+2026-03-07,S02,rug,12,true,2
+2026-03-07,S02,kettle,14,true,7
+2026-03-07,S02,desk lamp,19,true,9
+2026-03-07,S02,mirror,60,true,19
+2026-03-07,S02,oak table,8,true,4
+2026-03-07,S02,curtains,9,false,0
+2026-03-07,S02,returns,47,true,19
+2026-03-07,S05,linen,53,true,13
+2026-03-07,S05,sofa,58,false,0
+2026-03-07,S05,lamp,54,true,28
+2026-03-07,S05,delivery,6,true,3
+2026-03-07,S05,rug,31,true,14
+2026-03-07,S05,oak table,17,true,3
+2026-03-07,S05,returns,52,true,25
+2026-03-07,S05,candle,18,true,5
+2026-03-07,S08,sofa,19,false,0
+2026-03-07,S08,bookshelf,31,true,18
+2026-03-07,S08,kettle,27,true,8
+2026-03-07,S08,lamp,55,true,37
+2026-03-07,S08,candle,60,true,27
+2026-03-07,S08,returns,21,true,12
+2026-03-07,S08,rug,56,true,28
+2026-03-07,S08,desk lamp,32,true,19
+2026-03-08,S02,kettle,54,true,16
+2026-03-08,S02,candle,20,true,9
+2026-03-08,S02,mug,19,true,10
+2026-03-08,S02,returns,19,true,8
+2026-03-08,S02,mirror,44,true,14
+2026-03-08,S02,desk lamp,41,true,8
+2026-03-08,S02,curtains,26,false,0
+2026-03-08,S02,linen,16,true,7
+2026-03-08,S05,candle,50,true,26
+2026-03-08,S05,mug,3,true,1
+2026-03-08,S05,bookshelf,44,true,20
+2026-03-08,S05,rug,44,true,18
+2026-03-08,S05,returns,24,true,15
+2026-03-08,S05,delivery,7,true,1
+2026-03-08,S05,mirror,48,true,16
+2026-03-08,S05,kettle,6,true,3
+2026-03-08,S08,vase,50,true,25
+2026-03-08,S08,desk lamp,31,true,12
+2026-03-08,S08,mirror,12,true,6
+2026-03-08,S08,lamp,30,true,20
+2026-03-08,S08,sofa,57,false,0
+2026-03-08,S08,rug,13,true,7
+2026-03-08,S08,linen,49,true,25
+2026-03-08,S08,gift card,22,true,11
+2026-03-09,S02,mirror,12,true,7
+2026-03-09,S02,desk lamp,56,true,14
+2026-03-09,S02,linen,13,true,7
+2026-03-09,S02,delivery,27,true,6
+2026-03-09,S02,returns,59,true,21
+2026-03-09,S02,mug,54,true,28
+2026-03-09,S02,gift card,58,true,39
+2026-03-09,S02,curtains,14,false,0
+2026-03-09,S05,delivery,21,true,6
+2026-03-09,S05,bookshelf,7,true,3
+2026-03-09,S05,mirror,11,true,6
+2026-03-09,S05,curtains,47,false,0
+2026-03-09,S05,rug,33,true,18
+2026-03-09,S05,oak table,37,true,18
+2026-03-09,S05,vase,40,true,19
+2026-03-09,S05,kettle,34,true,22
+2026-03-09,S08,mug,13,true,5
+2026-03-09,S08,gift card,35,true,9
+2026-03-09,S08,vase,52,true,10
+2026-03-09,S08,mirror,37,true,18
+2026-03-09,S08,kettle,29,true,14
+2026-03-09,S08,desk lamp,41,true,25
+2026-03-09,S08,oak table,30,true,13
+2026-03-09,S08,delivery,27,true,11
+2026-03-10,S02,gift card,15,true,6
+2026-03-10,S02,vase,52,true,21
+2026-03-10,S02,linen,44,true,9
+2026-03-10,S02,oak table,59,true,36
+2026-03-10,S02,curtains,40,false,0
+2026-03-10,S02,mug,36,true,22
+2026-03-10,S02,delivery,41,true,11
+2026-03-10,S02,bookshelf,31,true,19
+2026-03-10,S05,sofa,43,false,0
+2026-03-10,S05,returns,48,true,25
+2026-03-10,S05,mug,55,true,29
+2026-03-10,S05,oak table,59,true,28
+2026-03-10,S05,lamp,48,true,27
+2026-03-10,S05,bookshelf,16,true,8
+2026-03-10,S05,curtains,19,false,0
+2026-03-10,S05,mirror,12,true,5
+2026-03-10,S08,delivery,59,true,38
+2026-03-10,S08,lamp,60,true,37
+2026-03-10,S08,mug,43,true,14
+2026-03-10,S08,gift card,25,true,8
+2026-03-10,S08,mirror,10,true,3
+2026-03-10,S08,kettle,15,true,9
+2026-03-10,S08,bookshelf,58,true,17
+2026-03-10,S08,candle,49,true,11
+2026-03-11,S02,kettle,40,true,13
+2026-03-11,S02,curtains,16,false,0
+2026-03-11,S02,candle,28,true,18
+2026-03-11,S02,returns,14,true,9
+2026-03-11,S02,rug,49,true,16
+2026-03-11,S02,sofa,12,false,0
+2026-03-11,S02,delivery,37,true,14
+2026-03-11,S02,lamp,51,true,16
+2026-03-11,S05,bookshelf,23,true,13
+2026-03-11,S05,desk lamp,15,true,6
+2026-03-11,S05,linen,31,true,12
+2026-03-11,S05,sofa,54,false,0
+2026-03-11,S05,mirror,41,true,8
+2026-03-11,S05,vase,39,true,17
+2026-03-11,S05,kettle,46,true,26
+2026-03-11,S05,oak table,23,true,8
+2026-03-11,S08,vase,48,true,33
+2026-03-11,S08,mug,23,true,12
+2026-03-11,S08,delivery,18,true,7
+2026-03-11,S08,mirror,59,true,31
+2026-03-11,S08,lamp,32,true,11
+2026-03-11,S08,candle,46,true,31
+2026-03-11,S08,gift card,24,true,7
+2026-03-11,S08,kettle,39,true,15
+2026-03-12,S02,mug,28,true,18
+2026-03-12,S02,gift card,51,true,22
+2026-03-12,S02,delivery,20,true,6
+2026-03-12,S02,desk lamp,59,true,15
+2026-03-12,S02,mirror,20,true,10
+2026-03-12,S02,sofa,14,false,0
+2026-03-12,S02,lamp,36,true,10
+2026-03-12,S02,returns,58,true,29
+2026-03-12,S05,gift card,49,true,17
+2026-03-12,S05,kettle,57,true,16
+2026-03-12,S05,sofa,42,false,0
+2026-03-12,S05,mirror,22,true,12
+2026-03-12,S05,candle,33,true,13
+2026-03-12,S05,delivery,39,true,9
+2026-03-12,S05,rug,13,true,6
+2026-03-12,S05,mug,32,true,13
+2026-03-12,S08,rug,21,true,11
+2026-03-12,S08,linen,28,true,12
+2026-03-12,S08,sofa,37,false,0
+2026-03-12,S08,mirror,58,true,28
+2026-03-12,S08,bookshelf,16,true,5
+2026-03-12,S08,mug,38,true,15
+2026-03-12,S08,vase,44,true,11
+2026-03-12,S08,oak table,34,true,22
+2026-03-13,S02,mirror,42,true,28
+2026-03-13,S02,candle,29,true,14
+2026-03-13,S02,returns,60,true,16
+2026-03-13,S02,gift card,31,true,14
+2026-03-13,S02,rug,49,true,11
+2026-03-13,S02,mug,10,true,5
+2026-03-13,S02,kettle,20,true,13
+2026-03-13,S02,bookshelf,51,true,26
+2026-03-13,S05,linen,36,true,17
+2026-03-13,S05,sofa,55,false,0
+2026-03-13,S05,desk lamp,32,true,14
+2026-03-13,S05,rug,19,true,10
+2026-03-13,S05,bookshelf,20,true,6
+2026-03-13,S05,returns,56,true,34
+2026-03-13,S05,mug,10,true,6
+2026-03-13,S05,kettle,27,true,10
+2026-03-13,S08,mug,18,true,12
+2026-03-13,S08,vase,41,true,19
+2026-03-13,S08,lamp,36,true,18
+2026-03-13,S08,candle,44,true,15
+2026-03-13,S08,desk lamp,10,true,6
+2026-03-13,S08,rug,49,true,15
+2026-03-13,S08,returns,36,true,14
+2026-03-13,S08,delivery,26,true,10
+2026-03-14,S02,gift card,15,true,4
+2026-03-14,S02,vase,16,true,6
+2026-03-14,S02,linen,36,true,15
+2026-03-14,S02,delivery,49,true,32
+2026-03-14,S02,desk lamp,12,true,6
+2026-03-14,S02,lamp,55,true,13
+2026-03-14,S02,kettle,43,true,30
+2026-03-14,S02,candle,36,true,16
+2026-03-14,S05,rug,45,true,9
+2026-03-14,S05,lamp,25,true,10
+2026-03-14,S05,oak table,52,true,28
+2026-03-14,S05,returns,42,true,16
+2026-03-14,S05,vase,41,true,16
+2026-03-14,S05,candle,40,true,12
+2026-03-14,S05,linen,32,true,15
+2026-03-14,S05,gift card,7,true,4
+2026-03-14,S08,delivery,56,true,14
+2026-03-14,S08,gift card,51,true,30
+2026-03-14,S08,mug,27,true,15
+2026-03-14,S08,candle,19,true,9
+2026-03-14,S08,lamp,21,true,8
+2026-03-14,S08,sofa,8,false,0
+2026-03-14,S08,linen,32,true,22
+2026-03-14,S08,kettle,7,true,2
+2026-03-15,S02,mug,19,true,9
+2026-03-15,S02,kettle,45,true,28
+2026-03-15,S02,delivery,5,true,2
+2026-03-15,S02,gift card,25,true,16
+2026-03-15,S02,linen,18,true,9
+2026-03-15,S02,desk lamp,30,true,7
+2026-03-15,S02,mirror,7,true,1
+2026-03-15,S02,candle,8,true,2
+2026-03-15,S05,candle,39,true,17
+2026-03-15,S05,kettle,41,true,8
+2026-03-15,S05,desk lamp,27,true,14
+2026-03-15,S05,lamp,3,true,1
+2026-03-15,S05,mirror,16,true,7
+2026-03-15,S05,bookshelf,29,true,8
+2026-03-15,S05,rug,59,true,13
+2026-03-15,S05,sofa,58,false,0
+2026-03-15,S08,sofa,48,false,0
+2026-03-15,S08,desk lamp,8,true,5
+2026-03-15,S08,mirror,54,true,11
+2026-03-15,S08,linen,13,true,3
+2026-03-15,S08,delivery,12,true,5
+2026-03-15,S08,lamp,60,true,12
+2026-03-15,S08,rug,31,true,13
+2026-03-15,S08,kettle,3,true,0
+2026-03-16,S02,gift card,13,true,5
+2026-03-16,S02,linen,34,true,15
+2026-03-16,S02,oak table,33,true,12
+2026-03-16,S02,returns,26,true,8
+2026-03-16,S02,rug,5,true,3
+2026-03-16,S02,mirror,23,true,15
+2026-03-16,S02,vase,32,true,13
+2026-03-16,S02,mug,52,true,14
+2026-03-16,S05,vase,31,true,15
+2026-03-16,S05,desk lamp,16,true,10
+2026-03-16,S05,returns,45,true,14
+2026-03-16,S05,bookshelf,18,true,6
+2026-03-16,S05,candle,10,true,5
+2026-03-16,S05,sofa,43,false,0
+2026-03-16,S05,gift card,26,true,8
+2026-03-16,S05,curtains,20,false,0
+2026-03-16,S08,kettle,6,true,2
+2026-03-16,S08,gift card,6,true,2
+2026-03-16,S08,sofa,34,false,0
+2026-03-16,S08,mirror,56,true,20
+2026-03-16,S08,bookshelf,28,true,7
+2026-03-16,S08,rug,26,true,14
+2026-03-16,S08,curtains,22,false,0
+2026-03-16,S08,vase,45,true,13
+2026-03-17,S02,sofa,25,false,0
+2026-03-17,S02,lamp,28,true,6
+2026-03-17,S02,returns,4,true,1
+2026-03-17,S02,mug,11,true,6
+2026-03-17,S02,mirror,40,true,8
+2026-03-17,S02,linen,44,true,18
+2026-03-17,S02,desk lamp,48,true,22
+2026-03-17,S02,kettle,56,true,26
+2026-03-17,S05,desk lamp,37,true,19
+2026-03-17,S05,delivery,31,true,12
+2026-03-17,S05,vase,5,true,1
+2026-03-17,S05,returns,47,true,20
+2026-03-17,S05,mug,48,true,30
+2026-03-17,S05,candle,40,true,16
+2026-03-17,S05,curtains,33,false,0
+2026-03-17,S05,rug,18,true,4
+2026-03-17,S08,bookshelf,5,true,3
+2026-03-17,S08,rug,35,true,8
+2026-03-17,S08,sofa,6,false,0
+2026-03-17,S08,desk lamp,23,true,13
+2026-03-17,S08,candle,7,true,4
+2026-03-17,S08,linen,51,true,11
+2026-03-17,S08,oak table,36,true,8
+2026-03-17,S08,mug,47,true,23
+2026-03-18,S02,returns,49,true,10
+2026-03-18,S02,mug,46,true,10
+2026-03-18,S02,curtains,58,false,0
+2026-03-18,S02,candle,28,true,6
+2026-03-18,S02,rug,8,true,4
+2026-03-18,S02,linen,14,true,4
+2026-03-18,S02,sofa,48,false,0
+2026-03-18,S02,kettle,31,true,20
+2026-03-18,S05,sofa,21,false,0
+2026-03-18,S05,desk lamp,19,true,11
+2026-03-18,S05,gift card,17,true,11
+2026-03-18,S05,bookshelf,57,true,31
+2026-03-18,S05,linen,39,true,11
+2026-03-18,S05,kettle,11,true,5
+2026-03-18,S05,vase,23,true,13
+2026-03-18,S05,oak table,21,true,9
+2026-03-18,S08,sofa,8,false,0
+2026-03-18,S08,linen,22,true,9
+2026-03-18,S08,mug,15,true,9
+2026-03-18,S08,oak table,35,true,13
+2026-03-18,S08,bookshelf,42,true,12
+2026-03-18,S08,vase,19,true,10
+2026-03-18,S08,returns,49,true,30
+2026-03-18,S08,curtains,49,false,0
+2026-03-19,S02,mirror,53,true,33
+2026-03-19,S02,gift card,12,true,7
+2026-03-19,S02,rug,15,true,4
+2026-03-19,S02,lamp,58,true,11
+2026-03-19,S02,bookshelf,51,true,14
+2026-03-19,S02,desk lamp,40,true,22
+2026-03-19,S02,curtains,12,false,0
+2026-03-19,S02,candle,12,true,7
+2026-03-19,S05,bookshelf,34,true,17
+2026-03-19,S05,oak table,20,true,5
+2026-03-19,S05,gift card,56,true,16
+2026-03-19,S05,lamp,43,true,12
+2026-03-19,S05,rug,18,true,6
+2026-03-19,S05,mug,7,true,4
+2026-03-19,S05,desk lamp,51,true,27
+2026-03-19,S05,candle,35,true,15
+2026-03-19,S08,desk lamp,14,true,4
+2026-03-19,S08,oak table,18,true,9
+2026-03-19,S08,vase,12,true,5
+2026-03-19,S08,mirror,12,true,2
+2026-03-19,S08,candle,12,true,6
+2026-03-19,S08,lamp,58,true,37
+2026-03-19,S08,bookshelf,48,true,30
+2026-03-19,S08,rug,40,true,18
+2026-03-20,S02,returns,58,true,34
+2026-03-20,S02,vase,44,true,9
+2026-03-20,S02,sofa,16,false,0
+2026-03-20,S02,delivery,8,true,4
+2026-03-20,S02,kettle,26,true,14
+2026-03-20,S02,bookshelf,14,true,4
+2026-03-20,S02,oak table,22,true,10
+2026-03-20,S02,mirror,60,true,40
+2026-03-20,S05,curtains,51,false,0
+2026-03-20,S05,sofa,24,false,0
+2026-03-20,S05,mirror,19,true,11
+2026-03-20,S05,vase,16,true,9
+2026-03-20,S05,oak table,6,true,1
+2026-03-20,S05,delivery,29,true,19
+2026-03-20,S05,bookshelf,53,true,33
+2026-03-20,S05,gift card,8,true,2
+2026-03-20,S08,candle,22,true,8
+2026-03-20,S08,oak table,53,true,13
+2026-03-20,S08,curtains,36,false,0
+2026-03-20,S08,returns,27,true,14
+2026-03-20,S08,bookshelf,31,true,14
+2026-03-20,S08,desk lamp,23,true,12
+2026-03-20,S08,lamp,53,true,26
+2026-03-20,S08,mug,7,true,2
+2026-03-21,S02,lamp,42,true,11
+2026-03-21,S02,gift card,49,true,31
+2026-03-21,S02,rug,42,true,19
+2026-03-21,S02,delivery,3,true,0
+2026-03-21,S02,vase,55,true,29
+2026-03-21,S02,sofa,47,false,0
+2026-03-21,S02,linen,35,true,17
+2026-03-21,S02,desk lamp,32,true,9
+2026-03-21,S05,oak table,13,true,7
+2026-03-21,S05,rug,10,true,3
+2026-03-21,S05,sofa,30,false,0
+2026-03-21,S05,candle,57,true,20
+2026-03-21,S05,mug,46,true,30
+2026-03-21,S05,delivery,55,true,17
+2026-03-21,S05,bookshelf,11,true,7
+2026-03-21,S05,linen,38,true,16
+2026-03-21,S08,delivery,11,true,4
+2026-03-21,S08,kettle,52,true,11
+2026-03-21,S08,bookshelf,20,true,6
+2026-03-21,S08,lamp,44,true,23
+2026-03-21,S08,gift card,58,true,39
+2026-03-21,S08,returns,20,true,11
+2026-03-21,S08,mirror,23,true,11
+2026-03-21,S08,linen,34,true,21
+2026-03-22,S02,kettle,18,true,10
+2026-03-22,S02,gift card,51,true,20
+2026-03-22,S02,delivery,41,true,19
+2026-03-22,S02,sofa,44,false,0
+2026-03-22,S02,lamp,49,true,21
+2026-03-22,S02,curtains,31,false,0
+2026-03-22,S02,mug,28,true,10
+2026-03-22,S02,vase,4,true,1
+2026-03-22,S05,mirror,51,true,31
+2026-03-22,S05,bookshelf,47,true,29
+2026-03-22,S05,lamp,24,true,7
+2026-03-22,S05,desk lamp,34,true,23
+2026-03-22,S05,vase,27,true,13
+2026-03-22,S05,curtains,51,false,0
+2026-03-22,S05,oak table,54,true,22
+2026-03-22,S05,rug,58,true,34
+2026-03-22,S08,candle,45,true,18
+2026-03-22,S08,lamp,33,true,7
+2026-03-22,S08,delivery,17,true,4
+2026-03-22,S08,returns,49,true,19
+2026-03-22,S08,rug,59,true,15
+2026-03-22,S08,vase,42,true,20
+2026-03-22,S08,gift card,32,true,11
+2026-03-22,S08,mug,13,true,2
+2026-03-23,S02,desk lamp,37,true,19
+2026-03-23,S02,candle,37,true,18
+2026-03-23,S02,curtains,37,false,0
+2026-03-23,S02,lamp,32,true,15
+2026-03-23,S02,kettle,24,true,13
+2026-03-23,S02,oak table,50,true,15
+2026-03-23,S02,gift card,26,true,6
+2026-03-23,S02,rug,26,true,9
+2026-03-23,S05,sofa,6,false,0
+2026-03-23,S05,delivery,10,true,2
+2026-03-23,S05,oak table,21,true,12
+2026-03-23,S05,mug,35,true,14
+2026-03-23,S05,curtains,40,false,0
+2026-03-23,S05,desk lamp,28,true,9
+2026-03-23,S05,rug,41,true,15
+2026-03-23,S05,bookshelf,3,true,0
+2026-03-23,S08,candle,38,true,11
+2026-03-23,S08,mug,37,true,7
+2026-03-23,S08,delivery,9,true,4
+2026-03-23,S08,sofa,51,false,0
+2026-03-23,S08,kettle,27,true,17
+2026-03-23,S08,desk lamp,56,true,21
+2026-03-23,S08,returns,59,true,32
+2026-03-23,S08,linen,43,true,28
+2026-03-24,S02,vase,56,true,17
+2026-03-24,S02,linen,15,true,7
+2026-03-24,S02,mug,54,true,28
+2026-03-24,S02,rug,39,true,16
+2026-03-24,S02,oak table,22,true,13
+2026-03-24,S02,sofa,36,false,0
+2026-03-24,S02,candle,43,true,12
+2026-03-24,S02,lamp,19,true,5
+2026-03-24,S05,desk lamp,46,true,10
+2026-03-24,S05,curtains,14,false,0
+2026-03-24,S05,vase,50,true,28
+2026-03-24,S05,candle,7,true,4
+2026-03-24,S05,gift card,16,true,6
+2026-03-24,S05,kettle,45,true,10
+2026-03-24,S05,linen,25,true,14
+2026-03-24,S05,rug,23,true,13
+2026-03-24,S08,oak table,46,true,26
+2026-03-24,S08,returns,14,true,4
+2026-03-24,S08,sofa,11,false,0
+2026-03-24,S08,candle,54,true,14
+2026-03-24,S08,mug,46,true,13
+2026-03-24,S08,kettle,9,true,5
+2026-03-24,S08,rug,59,true,41
+2026-03-24,S08,vase,29,true,19
+2026-03-25,S02,mug,27,true,5
+2026-03-25,S02,linen,59,true,26
+2026-03-25,S02,bookshelf,26,true,18
+2026-03-25,S02,returns,56,true,19
+2026-03-25,S02,sofa,27,false,0
+2026-03-25,S02,gift card,24,true,16
+2026-03-25,S02,oak table,18,true,8
+2026-03-25,S02,lamp,44,true,27
+2026-03-25,S05,curtains,53,false,0
+2026-03-25,S05,returns,58,true,30
+2026-03-25,S05,kettle,58,true,29
+2026-03-25,S05,delivery,55,true,35
+2026-03-25,S05,mirror,18,true,4
+2026-03-25,S05,rug,29,true,16
+2026-03-25,S05,sofa,42,false,0
+2026-03-25,S05,mug,13,true,2
+2026-03-25,S08,lamp,19,true,4
+2026-03-25,S08,mug,34,true,9
+2026-03-25,S08,sofa,58,false,0
+2026-03-25,S08,desk lamp,58,true,12
+2026-03-25,S08,oak table,24,true,9
+2026-03-25,S08,kettle,4,true,1
+2026-03-25,S08,returns,41,true,11
+2026-03-25,S08,vase,8,true,4
+2026-03-26,S02,candle,36,true,19
+2026-03-26,S02,sofa,49,false,0
+2026-03-26,S02,linen,57,true,11
+2026-03-26,S02,gift card,40,true,22
+2026-03-26,S02,mirror,29,true,16
+2026-03-26,S02,curtains,51,false,0
+2026-03-26,S02,kettle,28,true,13
+2026-03-26,S02,vase,59,true,32
+2026-03-26,S05,oak table,60,true,23
+2026-03-26,S05,gift card,31,true,14
+2026-03-26,S05,delivery,50,true,23
+2026-03-26,S05,kettle,27,true,17
+2026-03-26,S05,sofa,48,false,0
+2026-03-26,S05,linen,15,true,5
+2026-03-26,S05,vase,12,true,2
+2026-03-26,S05,mirror,8,true,4
+2026-03-26,S08,returns,14,true,8
+2026-03-26,S08,mug,50,true,17
+2026-03-26,S08,bookshelf,45,true,15
+2026-03-26,S08,gift card,29,true,11
+2026-03-26,S08,desk lamp,15,true,10
+2026-03-26,S08,candle,44,true,9
+2026-03-26,S08,linen,48,true,26
+2026-03-26,S08,mirror,23,true,6
+2026-03-27,S02,lamp,48,true,28
+2026-03-27,S02,mirror,19,true,6
+2026-03-27,S02,delivery,55,true,16
+2026-03-27,S02,rug,58,true,19
+2026-03-27,S02,returns,43,true,27
+2026-03-27,S02,gift card,6,true,3
+2026-03-27,S02,linen,50,true,11
+2026-03-27,S02,oak table,31,true,9
+2026-03-27,S05,linen,39,true,18
+2026-03-27,S05,candle,50,true,22
+2026-03-27,S05,curtains,31,false,0
+2026-03-27,S05,returns,57,true,21
+2026-03-27,S05,sofa,55,false,0
+2026-03-27,S05,gift card,12,true,3
+2026-03-27,S05,lamp,57,true,31
+2026-03-27,S05,mirror,60,true,30
+2026-03-27,S08,linen,26,true,6
+2026-03-27,S08,mug,36,true,18
+2026-03-27,S08,candle,30,true,8
+2026-03-27,S08,returns,22,true,11
+2026-03-27,S08,delivery,25,true,8
+2026-03-27,S08,bookshelf,13,true,6
+2026-03-27,S08,desk lamp,17,true,10
+2026-03-27,S08,kettle,7,true,2
+2026-03-28,S02,delivery,47,true,25
+2026-03-28,S02,oak table,47,true,10
+2026-03-28,S02,sofa,36,false,0
+2026-03-28,S02,desk lamp,49,true,16
+2026-03-28,S02,curtains,6,false,0
+2026-03-28,S02,kettle,59,true,38
+2026-03-28,S02,gift card,35,true,8
+2026-03-28,S02,returns,37,true,21
+2026-03-28,S05,returns,49,true,22
+2026-03-28,S05,oak table,44,true,12
+2026-03-28,S05,linen,31,true,14
+2026-03-28,S05,lamp,7,true,2
+2026-03-28,S05,rug,16,true,3
+2026-03-28,S05,sofa,46,false,0
+2026-03-28,S05,vase,49,true,31
+2026-03-28,S05,gift card,6,true,3
+2026-03-28,S08,linen,11,true,3
+2026-03-28,S08,mirror,27,true,6
+2026-03-28,S08,candle,28,true,6
+2026-03-28,S08,returns,53,true,12
+2026-03-28,S08,sofa,39,false,0
+2026-03-28,S08,curtains,43,false,0
+2026-03-28,S08,kettle,15,true,6
+2026-03-28,S08,delivery,12,true,6
+2026-03-29,S02,candle,28,true,16
+2026-03-29,S02,returns,24,true,15
+2026-03-29,S02,mug,55,true,36
+2026-03-29,S02,lamp,45,true,18
+2026-03-29,S02,kettle,26,true,6
+2026-03-29,S02,oak table,5,true,2
+2026-03-29,S02,curtains,51,false,0
+2026-03-29,S02,sofa,13,false,0
+2026-03-29,S05,returns,6,true,1
+2026-03-29,S05,candle,22,true,14
+2026-03-29,S05,vase,19,true,3
+2026-03-29,S05,mug,51,true,26
+2026-03-29,S05,rug,49,true,14
+2026-03-29,S05,oak table,4,true,0
+2026-03-29,S05,delivery,11,true,6
+2026-03-29,S05,sofa,8,false,0
+2026-03-29,S08,desk lamp,60,true,28
+2026-03-29,S08,candle,40,true,12
+2026-03-29,S08,vase,44,true,30
+2026-03-29,S08,bookshelf,11,true,6
+2026-03-29,S08,curtains,4,false,0
+2026-03-29,S08,returns,44,true,29
+2026-03-29,S08,lamp,47,true,20
+2026-03-29,S08,linen,34,true,17
+2026-03-30,S02,sofa,43,false,0
+2026-03-30,S02,candle,39,true,15
+2026-03-30,S02,curtains,55,false,0
+2026-03-30,S02,mirror,25,true,11
+2026-03-30,S02,mug,8,true,5
+2026-03-30,S02,gift card,7,true,1
+2026-03-30,S02,lamp,6,true,1
+2026-03-30,S02,rug,33,true,8
+2026-03-30,S05,vase,35,true,15
+2026-03-30,S05,delivery,19,true,12
+2026-03-30,S05,sofa,10,false,0
+2026-03-30,S05,returns,25,true,11
+2026-03-30,S05,mug,23,true,5
+2026-03-30,S05,candle,41,true,9
+2026-03-30,S05,kettle,10,true,6
+2026-03-30,S05,desk lamp,57,true,12
+2026-03-30,S08,lamp,15,true,7
+2026-03-30,S08,gift card,46,true,16
+2026-03-30,S08,delivery,15,true,3
+2026-03-30,S08,sofa,43,false,0
+2026-03-30,S08,bookshelf,37,true,10
+2026-03-30,S08,oak table,6,true,2
+2026-03-30,S08,curtains,57,false,0
+2026-03-30,S08,kettle,59,true,29
+2026-03-31,S02,gift card,59,true,25
+2026-03-31,S02,oak table,47,true,12
+2026-03-31,S02,returns,24,true,4
+2026-03-31,S02,mirror,7,true,4
+2026-03-31,S02,mug,3,true,0
+2026-03-31,S02,kettle,28,true,15
+2026-03-31,S02,bookshelf,44,true,22
+2026-03-31,S02,curtains,7,false,0
+2026-03-31,S05,oak table,16,true,9
+2026-03-31,S05,curtains,43,false,0
+2026-03-31,S05,sofa,7,false,0
+2026-03-31,S05,mirror,9,true,5
+2026-03-31,S05,mug,32,true,14
+2026-03-31,S05,lamp,15,true,3
+2026-03-31,S05,returns,20,true,8
+2026-03-31,S05,bookshelf,48,true,13
+2026-03-31,S08,returns,9,true,2
+2026-03-31,S08,mirror,29,true,9
+2026-03-31,S08,kettle,47,true,10
+2026-03-31,S08,linen,6,true,1
+2026-03-31,S08,bookshelf,4,true,2
+2026-03-31,S08,oak table,23,true,11
+2026-03-31,S08,curtains,40,false,0
+2026-03-31,S08,candle,27,true,13
+2026-04-01,S02,lamp,42,true,12
+2026-04-01,S02,candle,50,true,19
+2026-04-01,S02,rug,46,true,19
+2026-04-01,S02,mirror,52,true,18
+2026-04-01,S02,bookshelf,43,true,10
+2026-04-01,S02,desk lamp,5,true,2
+2026-04-01,S02,kettle,49,true,21
+2026-04-01,S02,delivery,50,true,23
+2026-04-01,S05,linen,8,true,2
+2026-04-01,S05,lamp,40,true,22
+2026-04-01,S05,sofa,9,false,0
+2026-04-01,S05,delivery,32,true,12
+2026-04-01,S05,kettle,44,true,15
+2026-04-01,S05,returns,43,true,28
+2026-04-01,S05,oak table,57,true,22
+2026-04-01,S05,rug,37,true,20
+2026-04-01,S08,candle,9,true,2
+2026-04-01,S08,mug,47,true,17
+2026-04-01,S08,kettle,9,true,2
+2026-04-01,S08,delivery,9,true,6
+2026-04-01,S08,bookshelf,22,true,6
+2026-04-01,S08,curtains,60,false,0
+2026-04-01,S08,returns,30,true,10
+2026-04-01,S08,gift card,23,true,9
+2026-04-02,S02,kettle,39,true,26
+2026-04-02,S02,delivery,57,true,34
+2026-04-02,S02,gift card,60,true,36
+2026-04-02,S02,vase,25,true,17
+2026-04-02,S02,candle,53,true,21
+2026-04-02,S02,rug,22,true,14
+2026-04-02,S02,oak table,35,true,21
+2026-04-02,S02,mug,59,true,17
+2026-04-02,S05,desk lamp,24,true,8
+2026-04-02,S05,linen,10,true,6
+2026-04-02,S05,sofa,51,false,0
+2026-04-02,S05,kettle,16,true,6
+2026-04-02,S05,mirror,47,true,29
+2026-04-02,S05,lamp,6,true,4
+2026-04-02,S05,mug,57,true,39
+2026-04-02,S05,delivery,40,true,22
+2026-04-02,S08,mug,27,true,12
+2026-04-02,S08,vase,19,true,4
+2026-04-02,S08,lamp,13,true,7
+2026-04-02,S08,linen,13,true,8
+2026-04-02,S08,kettle,60,true,21
+2026-04-02,S08,candle,13,true,5
+2026-04-02,S08,returns,23,true,14
+2026-04-02,S08,mirror,47,true,15
+2026-04-03,S02,linen,31,true,18
+2026-04-03,S02,gift card,3,true,1
+2026-04-03,S02,kettle,58,true,39
+2026-04-03,S02,returns,24,true,6
+2026-04-03,S02,mirror,20,true,13
+2026-04-03,S02,vase,41,true,28
+2026-04-03,S02,mug,41,true,14
+2026-04-03,S02,bookshelf,47,true,15
+2026-04-03,S05,mirror,26,true,14
+2026-04-03,S05,linen,5,true,1
+2026-04-03,S05,oak table,4,true,1
+2026-04-03,S05,gift card,22,true,14
+2026-04-03,S05,curtains,25,false,0
+2026-04-03,S05,rug,24,true,15
+2026-04-03,S05,lamp,59,true,13
+2026-04-03,S05,returns,59,true,30
+2026-04-03,S08,desk lamp,14,true,3
+2026-04-03,S08,lamp,28,true,12
+2026-04-03,S08,curtains,60,false,0
+2026-04-03,S08,returns,53,true,15
+2026-04-03,S08,mug,51,true,27
+2026-04-03,S08,gift card,46,true,14
+2026-04-03,S08,sofa,49,false,0
+2026-04-03,S08,vase,45,true,17
+2026-04-04,S02,linen,58,true,35
+2026-04-04,S02,rug,36,true,12
+2026-04-04,S02,mug,36,true,9
+2026-04-04,S02,desk lamp,48,true,19
+2026-04-04,S02,kettle,35,true,14
+2026-04-04,S02,sofa,53,false,0
+2026-04-04,S02,curtains,19,false,0
+2026-04-04,S02,gift card,56,true,38
+2026-04-04,S05,gift card,20,true,5
+2026-04-04,S05,curtains,4,false,0
+2026-04-04,S05,vase,23,true,13
+2026-04-04,S05,delivery,56,true,21
+2026-04-04,S05,mug,42,true,28
+2026-04-04,S05,rug,7,true,3
+2026-04-04,S05,mirror,39,true,20
+2026-04-04,S05,linen,41,true,27
+2026-04-04,S08,returns,17,true,5
+2026-04-04,S08,gift card,50,true,15
+2026-04-04,S08,oak table,29,true,10
+2026-04-04,S08,delivery,55,true,36
+2026-04-04,S08,curtains,22,false,0
+2026-04-04,S08,sofa,25,false,0
+2026-04-04,S08,mug,8,true,1
+2026-04-04,S08,kettle,41,true,27
+2026-04-05,S02,mirror,28,true,5
+2026-04-05,S02,oak table,47,true,12
+2026-04-05,S02,sofa,38,false,0
+2026-04-05,S02,vase,56,true,26
+2026-04-05,S02,linen,21,true,11
+2026-04-05,S02,kettle,25,true,15
+2026-04-05,S02,bookshelf,26,true,9
+2026-04-05,S02,delivery,17,true,5
+2026-04-05,S05,candle,31,true,17
+2026-04-05,S05,curtains,44,false,0
+2026-04-05,S05,bookshelf,60,true,31
+2026-04-05,S05,returns,33,true,19
+2026-04-05,S05,sofa,6,false,0
+2026-04-05,S05,linen,59,true,34
+2026-04-05,S05,kettle,41,true,16
+2026-04-05,S05,mirror,20,true,7
+2026-04-05,S08,lamp,46,true,22
+2026-04-05,S08,oak table,51,true,15
+2026-04-05,S08,rug,37,true,22
+2026-04-05,S08,delivery,7,true,1
+2026-04-05,S08,kettle,9,true,2
+2026-04-05,S08,sofa,56,false,0
+2026-04-05,S08,candle,12,true,5
+2026-04-05,S08,mug,46,true,22
+2026-04-06,S02,vase,55,true,35
+2026-04-06,S02,returns,14,true,6
+2026-04-06,S02,desk lamp,56,true,22
+2026-04-06,S02,bookshelf,32,true,14
+2026-04-06,S02,candle,41,true,22
+2026-04-06,S02,kettle,57,true,21
+2026-04-06,S02,linen,39,true,10
+2026-04-06,S02,delivery,19,true,4
+2026-04-06,S05,lamp,29,true,10
+2026-04-06,S05,desk lamp,56,true,36
+2026-04-06,S05,oak table,3,true,1
+2026-04-06,S05,returns,12,true,6
+2026-04-06,S05,bookshelf,30,true,10
+2026-04-06,S05,rug,17,true,4
+2026-04-06,S05,linen,32,true,10
+2026-04-06,S05,curtains,39,false,0
+2026-04-06,S08,bookshelf,21,true,14
+2026-04-06,S08,candle,21,true,5
+2026-04-06,S08,gift card,31,true,17
+2026-04-06,S08,vase,40,true,24
+2026-04-06,S08,rug,20,true,7
+2026-04-06,S08,lamp,16,true,3
+2026-04-06,S08,kettle,26,true,17
+2026-04-06,S08,sofa,49,false,0
+2026-04-07,S02,oak table,60,true,13
+2026-04-07,S02,mug,36,true,16
+2026-04-07,S02,desk lamp,28,true,14
+2026-04-07,S02,gift card,39,true,18
+2026-04-07,S02,linen,59,true,40
+2026-04-07,S02,returns,38,true,14
+2026-04-07,S02,mirror,10,true,5
+2026-04-07,S02,rug,55,true,22
+2026-04-07,S05,gift card,60,true,30
+2026-04-07,S05,kettle,38,true,19
+2026-04-07,S05,candle,7,true,2
+2026-04-07,S05,sofa,36,false,0
+2026-04-07,S05,vase,43,true,25
+2026-04-07,S05,linen,47,true,22
+2026-04-07,S05,oak table,22,true,12
+2026-04-07,S05,delivery,26,true,10
+2026-04-07,S08,mug,47,true,31
+2026-04-07,S08,kettle,3,true,1
+2026-04-07,S08,curtains,27,false,0
+2026-04-07,S08,lamp,13,true,4
+2026-04-07,S08,vase,49,true,13
+2026-04-07,S08,sofa,29,false,0
+2026-04-07,S08,linen,19,true,10
+2026-04-07,S08,desk lamp,41,true,23
+2026-04-08,S02,returns,58,true,17
+2026-04-08,S02,gift card,18,true,9
+2026-04-08,S02,mug,47,true,22
+2026-04-08,S02,oak table,48,true,10
+2026-04-08,S02,sofa,38,false,0
+2026-04-08,S02,mirror,17,true,10
+2026-04-08,S02,kettle,7,true,3
+2026-04-08,S02,lamp,13,true,4
+2026-04-08,S05,bookshelf,9,true,2
+2026-04-08,S05,kettle,12,true,4
+2026-04-08,S05,mug,35,true,13
+2026-04-08,S05,rug,14,true,3
+2026-04-08,S05,lamp,52,true,34
+2026-04-08,S05,mirror,49,true,12
+2026-04-08,S05,sofa,53,false,0
+2026-04-08,S05,gift card,19,true,8
+2026-04-08,S08,mirror,39,true,13
+2026-04-08,S08,returns,31,true,12
+2026-04-08,S08,sofa,30,false,0
+2026-04-08,S08,curtains,48,false,0
+2026-04-08,S08,lamp,33,true,8
+2026-04-08,S08,candle,30,true,17
+2026-04-08,S08,kettle,60,true,18
+2026-04-08,S08,vase,19,true,7
+2026-04-09,S02,candle,27,true,5
+2026-04-09,S02,linen,27,true,7
+2026-04-09,S02,mug,57,true,34
+2026-04-09,S02,lamp,48,true,31
+2026-04-09,S02,bookshelf,29,true,8
+2026-04-09,S02,sofa,37,false,0
+2026-04-09,S02,kettle,60,true,28
+2026-04-09,S02,returns,48,true,18
+2026-04-09,S05,gift card,57,true,24
+2026-04-09,S05,linen,36,true,24
+2026-04-09,S05,bookshelf,23,true,11
+2026-04-09,S05,mug,28,true,14
+2026-04-09,S05,returns,18,true,8
+2026-04-09,S05,sofa,25,false,0
+2026-04-09,S05,lamp,47,true,19
+2026-04-09,S05,kettle,38,true,13
+2026-04-09,S08,desk lamp,33,true,11
+2026-04-09,S08,mug,43,true,25
+2026-04-09,S08,vase,3,true,1
+2026-04-09,S08,sofa,45,false,0
+2026-04-09,S08,delivery,34,true,6
+2026-04-09,S08,kettle,53,true,18
+2026-04-09,S08,lamp,34,true,17
+2026-04-09,S08,rug,11,true,4
+2026-04-10,S02,mirror,6,true,1
+2026-04-10,S02,lamp,29,true,19
+2026-04-10,S02,mug,7,true,3
+2026-04-10,S02,oak table,14,true,3
+2026-04-10,S02,curtains,19,false,0
+2026-04-10,S02,candle,37,true,12
+2026-04-10,S02,gift card,23,true,8
+2026-04-10,S02,rug,9,true,3
+2026-04-10,S05,vase,31,true,18
+2026-04-10,S05,bookshelf,26,true,8
+2026-04-10,S05,mug,15,true,5
+2026-04-10,S05,curtains,44,false,0
+2026-04-10,S05,returns,32,true,7
+2026-04-10,S05,rug,50,true,16
+2026-04-10,S05,gift card,60,true,24
+2026-04-10,S05,oak table,32,true,10
+2026-04-10,S08,mirror,7,true,4
+2026-04-10,S08,rug,4,true,1
+2026-04-10,S08,kettle,60,true,18
+2026-04-10,S08,curtains,41,false,0
+2026-04-10,S08,returns,20,true,4
+2026-04-10,S08,candle,46,true,10
+2026-04-10,S08,vase,4,true,0
+2026-04-10,S08,bookshelf,12,true,4
+2026-04-11,S02,rug,60,true,32
+2026-04-11,S02,oak table,20,true,10
+2026-04-11,S02,candle,46,true,23
+2026-04-11,S02,desk lamp,55,true,11
+2026-04-11,S02,mug,57,true,25
+2026-04-11,S02,sofa,43,false,0
+2026-04-11,S02,delivery,29,true,12
+2026-04-11,S02,curtains,34,false,0
+2026-04-11,S05,curtains,55,false,0
+2026-04-11,S05,kettle,51,true,13
+2026-04-11,S05,vase,51,true,15
+2026-04-11,S05,rug,4,true,1
+2026-04-11,S05,bookshelf,45,true,15
+2026-04-11,S05,mug,24,true,12
+2026-04-11,S05,linen,55,true,36
+2026-04-11,S05,mirror,6,true,1
+2026-04-11,S08,rug,30,true,6
+2026-04-11,S08,lamp,57,true,17
+2026-04-11,S08,gift card,9,true,6
+2026-04-11,S08,kettle,53,true,11
+2026-04-11,S08,mug,37,true,10
+2026-04-11,S08,desk lamp,32,true,6
+2026-04-11,S08,sofa,18,false,0
+2026-04-11,S08,candle,45,true,24
+2026-04-12,S02,rug,8,true,2
+2026-04-12,S02,curtains,10,false,0
+2026-04-12,S02,kettle,12,true,7
+2026-04-12,S02,linen,15,true,4
+2026-04-12,S02,delivery,27,true,10
+2026-04-12,S02,gift card,41,true,24
+2026-04-12,S02,bookshelf,42,true,13
+2026-04-12,S02,returns,39,true,27
+2026-04-12,S05,vase,40,true,27
+2026-04-12,S05,bookshelf,29,true,19
+2026-04-12,S05,desk lamp,40,true,8
+2026-04-12,S05,rug,44,true,22
+2026-04-12,S05,mirror,9,true,4
+2026-04-12,S05,kettle,38,true,26
+2026-04-12,S05,gift card,47,true,23
+2026-04-12,S05,returns,31,true,8
+2026-04-12,S08,linen,30,true,17
+2026-04-12,S08,rug,59,true,25
+2026-04-12,S08,returns,35,true,12
+2026-04-12,S08,kettle,54,true,22
+2026-04-12,S08,gift card,26,true,6
+2026-04-12,S08,oak table,31,true,20
+2026-04-12,S08,curtains,44,false,0
+2026-04-12,S08,vase,32,true,16
+2026-04-13,S02,linen,6,true,1
+2026-04-13,S02,oak table,29,true,10
+2026-04-13,S02,delivery,58,true,26
+2026-04-13,S02,lamp,33,true,19
+2026-04-13,S02,bookshelf,53,true,24
+2026-04-13,S02,sofa,43,false,0
+2026-04-13,S02,gift card,55,true,15
+2026-04-13,S02,kettle,27,true,18
+2026-04-13,S05,desk lamp,48,true,15
+2026-04-13,S05,candle,35,true,23
+2026-04-13,S05,gift card,41,true,17
+2026-04-13,S05,bookshelf,59,true,32
+2026-04-13,S05,curtains,41,false,0
+2026-04-13,S05,oak table,57,true,13
+2026-04-13,S05,mirror,27,true,18
+2026-04-13,S05,lamp,12,true,7
+2026-04-13,S08,candle,44,true,12
+2026-04-13,S08,linen,55,true,26
+2026-04-13,S08,returns,42,true,13
+2026-04-13,S08,bookshelf,34,true,20
+2026-04-13,S08,kettle,18,true,7
+2026-04-13,S08,lamp,25,true,5
+2026-04-13,S08,sofa,21,false,0
+2026-04-13,S08,rug,42,true,26
+2026-04-14,S02,gift card,22,true,9
+2026-04-14,S02,kettle,4,true,2
+2026-04-14,S02,linen,37,true,17
+2026-04-14,S02,candle,10,true,6
+2026-04-14,S02,desk lamp,17,true,8
+2026-04-14,S02,sofa,18,false,0
+2026-04-14,S02,delivery,15,true,8
+2026-04-14,S02,lamp,5,true,2
+2026-04-14,S05,mirror,18,true,8
+2026-04-14,S05,linen,7,true,4
+2026-04-14,S05,rug,16,true,4
+2026-04-14,S05,vase,42,true,11
+2026-04-14,S05,curtains,35,false,0
+2026-04-14,S05,mug,31,true,16
+2026-04-14,S05,desk lamp,48,true,11
+2026-04-14,S05,sofa,4,false,0
+2026-04-14,S08,gift card,5,true,1
+2026-04-14,S08,lamp,21,true,5
+2026-04-14,S08,candle,48,true,32
+2026-04-14,S08,oak table,3,true,2
+2026-04-14,S08,kettle,35,true,14
+2026-04-14,S08,mirror,54,true,37
+2026-04-14,S08,sofa,40,false,0
+2026-04-14,S08,vase,13,true,6
+2026-04-15,S02,rug,39,true,20
+2026-04-15,S02,candle,18,true,10
+2026-04-15,S02,linen,51,true,16
+2026-04-15,S02,curtains,60,false,0
+2026-04-15,S02,mirror,14,true,4
+2026-04-15,S02,vase,48,true,21
+2026-04-15,S02,mug,38,true,19
+2026-04-15,S02,desk lamp,56,true,33
+2026-04-15,S05,returns,6,true,1
+2026-04-15,S05,linen,3,true,1
+2026-04-15,S05,candle,20,true,10
+2026-04-15,S05,lamp,33,true,6
+2026-04-15,S05,vase,23,true,5
+2026-04-15,S05,curtains,27,false,0
+2026-04-15,S05,rug,16,true,10
+2026-04-15,S05,kettle,6,true,3
+2026-04-15,S08,candle,57,true,35
+2026-04-15,S08,rug,16,true,4
+2026-04-15,S08,gift card,54,true,12
+2026-04-15,S08,lamp,15,true,7
+2026-04-15,S08,vase,6,true,2
+2026-04-15,S08,mirror,60,true,41
+2026-04-15,S08,delivery,47,true,26
+2026-04-15,S08,sofa,55,false,0
+2026-04-16,S02,mirror,46,true,9
+2026-04-16,S02,sofa,26,false,0
+2026-04-16,S02,rug,60,true,33
+2026-04-16,S02,lamp,33,true,12
+2026-04-16,S02,mug,3,true,0
+2026-04-16,S02,linen,51,true,21
+2026-04-16,S02,kettle,47,true,10
+2026-04-16,S02,curtains,55,false,0
+2026-04-16,S05,returns,28,true,17
+2026-04-16,S05,desk lamp,7,true,4
+2026-04-16,S05,candle,5,true,2
+2026-04-16,S05,oak table,13,true,4
+2026-04-16,S05,linen,9,true,4
+2026-04-16,S05,kettle,48,true,15
+2026-04-16,S05,mug,55,true,37
+2026-04-16,S05,rug,17,true,8
+2026-04-16,S08,kettle,31,true,17
+2026-04-16,S08,linen,47,true,15
+2026-04-16,S08,candle,14,true,3
+2026-04-16,S08,gift card,7,true,4
+2026-04-16,S08,mug,38,true,14
+2026-04-16,S08,rug,37,true,11
+2026-04-16,S08,mirror,60,true,26
+2026-04-16,S08,lamp,56,true,14
+2026-04-17,S02,kettle,19,true,5
+2026-04-17,S02,lamp,13,true,7
+2026-04-17,S02,curtains,47,false,0
+2026-04-17,S02,rug,26,true,11
+2026-04-17,S02,mirror,42,true,19
+2026-04-17,S02,linen,58,true,19
+2026-04-17,S02,mug,39,true,23
+2026-04-17,S02,returns,38,true,12
+2026-04-17,S05,linen,36,true,12
+2026-04-17,S05,mug,19,true,8
+2026-04-17,S05,kettle,27,true,16
+2026-04-17,S05,lamp,17,true,8
+2026-04-17,S05,vase,53,true,12
+2026-04-17,S05,oak table,23,true,12
+2026-04-17,S05,gift card,46,true,26
+2026-04-17,S05,sofa,29,false,0
+2026-04-17,S08,kettle,23,true,7
+2026-04-17,S08,lamp,58,true,30
+2026-04-17,S08,oak table,39,true,18
+2026-04-17,S08,gift card,13,true,6
+2026-04-17,S08,curtains,27,false,0
+2026-04-17,S08,candle,28,true,17
+2026-04-17,S08,mug,39,true,11
+2026-04-17,S08,vase,54,true,11
+2026-04-18,S02,mug,55,true,21
+2026-04-18,S02,linen,23,true,13
+2026-04-18,S02,mirror,55,true,21
+2026-04-18,S02,rug,44,true,14
+2026-04-18,S02,vase,47,true,9
+2026-04-18,S02,curtains,44,false,0
+2026-04-18,S02,lamp,41,true,21
+2026-04-18,S02,candle,50,true,11
+2026-04-18,S05,sofa,3,false,0
+2026-04-18,S05,gift card,13,true,5
+2026-04-18,S05,delivery,44,true,10
+2026-04-18,S05,mug,45,true,9
+2026-04-18,S05,curtains,24,false,0
+2026-04-18,S05,bookshelf,13,true,2
+2026-04-18,S05,desk lamp,19,true,6
+2026-04-18,S05,candle,32,true,16
+2026-04-18,S08,vase,49,true,28
+2026-04-18,S08,gift card,55,true,12
+2026-04-18,S08,curtains,27,false,0
+2026-04-18,S08,candle,17,true,8
+2026-04-18,S08,sofa,37,false,0
+2026-04-18,S08,oak table,5,true,2
+2026-04-18,S08,desk lamp,33,true,9
+2026-04-18,S08,bookshelf,41,true,20
+2026-04-19,S02,candle,57,true,12
+2026-04-19,S02,returns,54,true,35
+2026-04-19,S02,linen,46,true,28
+2026-04-19,S02,curtains,37,false,0
+2026-04-19,S02,delivery,4,true,1
+2026-04-19,S02,lamp,9,true,3
+2026-04-19,S02,gift card,36,true,17
+2026-04-19,S02,bookshelf,35,true,15
+2026-04-19,S05,rug,46,true,11
+2026-04-19,S05,mirror,32,true,22
+2026-04-19,S05,candle,59,true,20
+2026-04-19,S05,lamp,43,true,26
+2026-04-19,S05,linen,57,true,30
+2026-04-19,S05,vase,21,true,7
+2026-04-19,S05,sofa,23,false,0
+2026-04-19,S05,curtains,48,false,0
+2026-04-19,S08,mirror,39,true,10
+2026-04-19,S08,curtains,22,false,0
+2026-04-19,S08,lamp,22,true,10
+2026-04-19,S08,desk lamp,33,true,10
+2026-04-19,S08,linen,3,true,0
+2026-04-19,S08,rug,59,true,34
+2026-04-19,S08,gift card,26,true,14
+2026-04-19,S08,delivery,14,true,9
+2026-04-20,S02,linen,35,true,13
+2026-04-20,S02,rug,38,true,12
+2026-04-20,S02,mug,12,true,5
+2026-04-20,S02,candle,17,true,4
+2026-04-20,S02,kettle,46,true,23
+2026-04-20,S02,lamp,56,true,15
+2026-04-20,S02,sofa,16,false,0
+2026-04-20,S02,returns,17,true,11
+2026-04-20,S05,candle,42,true,26
+2026-04-20,S05,mirror,36,true,19
+2026-04-20,S05,gift card,43,true,19
+2026-04-20,S05,returns,5,true,1
+2026-04-20,S05,bookshelf,11,true,4
+2026-04-20,S05,kettle,20,true,8
+2026-04-20,S05,delivery,27,true,15
+2026-04-20,S05,oak table,10,true,3
+2026-04-20,S08,mug,53,true,11
+2026-04-20,S08,rug,40,true,10
+2026-04-20,S08,desk lamp,31,true,7
+2026-04-20,S08,kettle,44,true,30
+2026-04-20,S08,returns,40,true,17
+2026-04-20,S08,curtains,54,false,0
+2026-04-20,S08,lamp,60,true,25
+2026-04-20,S08,bookshelf,55,true,36
+2026-04-21,S02,oak table,59,true,28
+2026-04-21,S02,mirror,11,true,7
+2026-04-21,S02,desk lamp,17,true,9
+2026-04-21,S02,lamp,30,true,19
+2026-04-21,S02,kettle,40,true,23
+2026-04-21,S02,rug,43,true,18
+2026-04-21,S02,sofa,22,false,0
+2026-04-21,S02,gift card,29,true,12
+2026-04-21,S05,curtains,4,false,0
+2026-04-21,S05,vase,39,true,15
+2026-04-21,S05,oak table,36,true,9
+2026-04-21,S05,rug,29,true,16
+2026-04-21,S05,desk lamp,49,true,15
+2026-04-21,S05,candle,52,true,30
+2026-04-21,S05,mirror,25,true,5
+2026-04-21,S05,gift card,53,true,34
+2026-04-21,S08,curtains,52,false,0
+2026-04-21,S08,delivery,19,true,7
+2026-04-21,S08,desk lamp,13,true,7
+2026-04-21,S08,linen,38,true,26
+2026-04-21,S08,lamp,36,true,14
+2026-04-21,S08,mug,43,true,22
+2026-04-21,S08,rug,58,true,19
+2026-04-21,S08,candle,9,true,6
+2026-04-22,S02,returns,53,true,36
+2026-04-22,S02,desk lamp,5,true,2
+2026-04-22,S02,rug,8,true,3
+2026-04-22,S02,linen,31,true,7
+2026-04-22,S02,sofa,8,false,0
+2026-04-22,S02,mug,6,true,1
+2026-04-22,S02,mirror,11,true,3
+2026-04-22,S02,candle,25,true,12
+2026-04-22,S05,vase,18,true,12
+2026-04-22,S05,sofa,41,false,0
+2026-04-22,S05,linen,6,true,1
+2026-04-22,S05,kettle,19,true,4
+2026-04-22,S05,gift card,32,true,19
+2026-04-22,S05,candle,14,true,5
+2026-04-22,S05,bookshelf,60,true,17
+2026-04-22,S05,desk lamp,29,true,17
+2026-04-22,S08,rug,42,true,15
+2026-04-22,S08,gift card,50,true,12
+2026-04-22,S08,mirror,52,true,21
+2026-04-22,S08,bookshelf,51,true,22
+2026-04-22,S08,mug,7,true,2
+2026-04-22,S08,delivery,47,true,12
+2026-04-22,S08,returns,58,true,27
+2026-04-22,S08,kettle,28,true,9
+2026-04-23,S02,returns,8,true,3
+2026-04-23,S02,mirror,20,true,12
+2026-04-23,S02,candle,44,true,21
+2026-04-23,S02,bookshelf,54,true,14
+2026-04-23,S02,delivery,19,true,6
+2026-04-23,S02,desk lamp,14,true,3
+2026-04-23,S02,sofa,37,false,0
+2026-04-23,S02,vase,6,true,2
+2026-04-23,S05,lamp,34,true,20
+2026-04-23,S05,bookshelf,25,true,7
+2026-04-23,S05,gift card,13,true,3
+2026-04-23,S05,mirror,47,true,25
+2026-04-23,S05,mug,36,true,10
+2026-04-23,S05,curtains,39,false,0
+2026-04-23,S05,kettle,21,true,9
+2026-04-23,S05,linen,57,true,39
+2026-04-23,S08,lamp,14,true,4
+2026-04-23,S08,vase,46,true,13
+2026-04-23,S08,returns,8,true,1
+2026-04-23,S08,candle,42,true,27
+2026-04-23,S08,kettle,53,true,20
+2026-04-23,S08,rug,34,true,20
+2026-04-23,S08,bookshelf,11,true,7
+2026-04-23,S08,gift card,40,true,10
+2026-04-24,S02,oak table,47,true,18
+2026-04-24,S02,curtains,15,false,0
+2026-04-24,S02,returns,21,true,10
+2026-04-24,S02,kettle,33,true,18
+2026-04-24,S02,delivery,40,true,25
+2026-04-24,S02,desk lamp,41,true,24
+2026-04-24,S02,mirror,59,true,30
+2026-04-24,S02,rug,37,true,19
+2026-04-24,S05,linen,49,true,10
+2026-04-24,S05,desk lamp,29,true,14
+2026-04-24,S05,bookshelf,40,true,25
+2026-04-24,S05,oak table,35,true,17
+2026-04-24,S05,lamp,7,true,3
+2026-04-24,S05,vase,53,true,14
+2026-04-24,S05,gift card,17,true,7
+2026-04-24,S05,kettle,14,true,3
+2026-04-24,S08,desk lamp,53,true,36
+2026-04-24,S08,linen,50,true,28
+2026-04-24,S08,rug,54,true,20
+2026-04-24,S08,sofa,48,false,0
+2026-04-24,S08,vase,24,true,14
+2026-04-24,S08,candle,43,true,23
+2026-04-24,S08,oak table,35,true,14
+2026-04-24,S08,bookshelf,15,true,8
+2026-04-25,S02,mirror,39,true,13
+2026-04-25,S02,returns,26,true,14
+2026-04-25,S02,oak table,58,true,28
+2026-04-25,S02,curtains,55,false,0
+2026-04-25,S02,vase,59,true,15
+2026-04-25,S02,bookshelf,12,true,4
+2026-04-25,S02,delivery,16,true,4
+2026-04-25,S02,kettle,19,true,10
+2026-04-25,S05,linen,17,true,9
+2026-04-25,S05,desk lamp,18,true,8
+2026-04-25,S05,curtains,25,false,0
+2026-04-25,S05,delivery,47,true,22
+2026-04-25,S05,mirror,6,true,2
+2026-04-25,S05,candle,20,true,9
+2026-04-25,S05,gift card,24,true,16
+2026-04-25,S05,kettle,5,true,3
+2026-04-25,S08,desk lamp,30,true,6
+2026-04-25,S08,candle,34,true,17
+2026-04-25,S08,bookshelf,50,true,13
+2026-04-25,S08,sofa,32,false,0
+2026-04-25,S08,returns,26,true,14
+2026-04-25,S08,oak table,55,true,33
+2026-04-25,S08,mirror,35,true,18
+2026-04-25,S08,mug,58,true,37
+2026-04-26,S02,oak table,59,true,16
+2026-04-26,S02,bookshelf,41,true,18
+2026-04-26,S02,desk lamp,10,true,4
+2026-04-26,S02,rug,3,true,2
+2026-04-26,S02,lamp,34,true,12
+2026-04-26,S02,mug,38,true,12
+2026-04-26,S02,mirror,9,true,1
+2026-04-26,S02,linen,26,true,17
+2026-04-26,S05,vase,15,true,8
+2026-04-26,S05,curtains,27,false,0
+2026-04-26,S05,desk lamp,44,true,23
+2026-04-26,S05,delivery,33,true,18
+2026-04-26,S05,oak table,16,true,8
+2026-04-26,S05,candle,51,true,30
+2026-04-26,S05,kettle,4,true,2
+2026-04-26,S05,sofa,25,false,0
+2026-04-26,S08,candle,57,true,13
+2026-04-26,S08,mug,32,true,20
+2026-04-26,S08,mirror,56,true,22
+2026-04-26,S08,rug,23,true,15
+2026-04-26,S08,curtains,58,false,0
+2026-04-26,S08,oak table,44,true,28
+2026-04-26,S08,delivery,50,true,20
+2026-04-26,S08,returns,39,true,13
+2026-04-27,S02,candle,59,true,24
+2026-04-27,S02,linen,15,true,7
+2026-04-27,S02,kettle,25,true,16
+2026-04-27,S02,lamp,23,true,11
+2026-04-27,S02,mug,53,true,24
+2026-04-27,S02,oak table,14,true,3
+2026-04-27,S02,desk lamp,11,true,3
+2026-04-27,S02,gift card,59,true,13
+2026-04-27,S05,kettle,48,true,30
+2026-04-27,S05,curtains,30,false,0
+2026-04-27,S05,oak table,42,true,20
+2026-04-27,S05,bookshelf,16,true,4
+2026-04-27,S05,rug,54,true,16
+2026-04-27,S05,delivery,26,true,9
+2026-04-27,S05,candle,7,true,4
+2026-04-27,S05,lamp,8,true,3
+2026-04-27,S08,sofa,17,false,0
+2026-04-27,S08,bookshelf,39,true,20
+2026-04-27,S08,oak table,26,true,18
+2026-04-27,S08,linen,47,true,17
+2026-04-27,S08,candle,29,true,7
+2026-04-27,S08,mug,39,true,12
+2026-04-27,S08,vase,49,true,19
+2026-04-27,S08,curtains,42,false,0
+2026-04-28,S02,desk lamp,18,true,8
+2026-04-28,S02,mirror,36,true,9
+2026-04-28,S02,delivery,50,true,24
+2026-04-28,S02,returns,47,true,19
+2026-04-28,S02,mug,40,true,26
+2026-04-28,S02,gift card,16,true,4
+2026-04-28,S02,candle,47,true,9
+2026-04-28,S02,sofa,29,false,0
+2026-04-28,S05,mug,24,true,16
+2026-04-28,S05,kettle,8,true,4
+2026-04-28,S05,oak table,24,true,12
+2026-04-28,S05,mirror,11,true,6
+2026-04-28,S05,vase,27,true,14
+2026-04-28,S05,gift card,33,true,14
+2026-04-28,S05,linen,41,true,10
+2026-04-28,S05,desk lamp,55,true,17
+2026-04-28,S08,kettle,23,true,5
+2026-04-28,S08,candle,26,true,15
+2026-04-28,S08,linen,28,true,13
+2026-04-28,S08,lamp,56,true,28
+2026-04-28,S08,gift card,25,true,12
+2026-04-28,S08,sofa,43,false,0
+2026-04-28,S08,mug,45,true,21
+2026-04-28,S08,vase,38,true,8
+2026-04-29,S02,rug,47,true,13
+2026-04-29,S02,candle,10,true,6
+2026-04-29,S02,mirror,14,true,9
+2026-04-29,S02,lamp,58,true,11
+2026-04-29,S02,oak table,21,true,4
+2026-04-29,S02,curtains,58,false,0
+2026-04-29,S02,kettle,55,true,29
+2026-04-29,S02,bookshelf,35,true,14
+2026-04-29,S05,desk lamp,46,true,29
+2026-04-29,S05,sofa,36,false,0
+2026-04-29,S05,kettle,36,true,16
+2026-04-29,S05,bookshelf,41,true,16
+2026-04-29,S05,rug,3,true,2
+2026-04-29,S05,mirror,21,true,7
+2026-04-29,S05,vase,28,true,14
+2026-04-29,S05,linen,52,true,27
+2026-04-29,S08,bookshelf,9,true,5
+2026-04-29,S08,candle,60,true,13
+2026-04-29,S08,delivery,59,true,23
+2026-04-29,S08,rug,25,true,15
+2026-04-29,S08,returns,21,true,11
+2026-04-29,S08,mirror,35,true,23
+2026-04-29,S08,vase,24,true,12
+2026-04-29,S08,mug,36,true,19
+2026-04-30,S02,vase,13,true,6
+2026-04-30,S02,candle,48,true,18
+2026-04-30,S02,desk lamp,7,true,3
+2026-04-30,S02,linen,14,true,6
+2026-04-30,S02,mug,33,true,10
+2026-04-30,S02,bookshelf,5,true,2
+2026-04-30,S02,gift card,11,true,6
+2026-04-30,S02,returns,53,true,30
+2026-04-30,S05,desk lamp,10,true,5
+2026-04-30,S05,curtains,18,false,0
+2026-04-30,S05,oak table,36,true,17
+2026-04-30,S05,mug,16,true,3
+2026-04-30,S05,returns,25,true,12
+2026-04-30,S05,lamp,26,true,10
+2026-04-30,S05,delivery,33,true,19
+2026-04-30,S05,gift card,57,true,37
+2026-04-30,S08,mug,57,true,19
+2026-04-30,S08,kettle,16,true,6
+2026-04-30,S08,oak table,41,true,17
+2026-04-30,S08,vase,50,true,28
+2026-04-30,S08,sofa,41,false,0
+2026-04-30,S08,curtains,6,false,0
+2026-04-30,S08,delivery,22,true,8
+2026-04-30,S08,mirror,18,true,6
