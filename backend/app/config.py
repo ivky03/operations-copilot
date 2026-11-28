@@ -6,6 +6,7 @@ malformed value crashes immediately instead of failing later in the middle of a 
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 from urllib.parse import urlparse
 
 from pydantic import SecretStr, model_validator
@@ -75,6 +76,12 @@ class Settings(BaseSettings):
     # version, so the lifetime only bounds how long a model's phrasing is reused.
     answer_cache_enabled: bool = True
     answer_cache_ttl_hours: int = 24
+
+    # Which tables the planner is shown (app/answer/schema_retrieval.py): "full" describes every
+    # readable table; "retrieved" describes the `schema_top_k` most similar plus the tables they
+    # need. "full" stays the default until the M8c experiment measures both with real models.
+    schema_mode: Literal["full", "retrieved"] = "full"
+    schema_top_k: int = 5
 
     # Document embeddings run locally on the CPU (no API, no quota). The model (~64 MB) is
     # downloaded once into the cache directory.

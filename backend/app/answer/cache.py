@@ -7,6 +7,7 @@ data itself, and on the models and prompts. The key is a hash of all of it:
     normalised question
     + every source the asker can read, with its published version
     + planner and writer models, and the prompt versions
+    + how the planner's tables are chosen (full or retrieved, k, embedding model)
 
 What follows from that:
 - Publishing a new version of anything the asker can read gives a new key, so a stale answer
@@ -41,7 +42,7 @@ from app.config import get_settings
 from app.llm.client import LLMClient
 from app.models import AnswerCacheEntry, AnswerRun, SourceVersion, User, VersionStatus
 
-KEY_VERSION = "cache-v1"  # bump to invalidate every entry if the key's recipe changes
+KEY_VERSION = "cache-v2"  # bump to invalidate every entry if the key's recipe changes
 
 
 def normalise(question: str) -> str:
@@ -73,12 +74,15 @@ def _models(llm: LLMClient) -> list[str]:
 def cache_key(
     question: str, readable: list[tuple[str, int]], planner: LLMClient, writer: LLMClient
 ) -> str:
+    settings = get_settings()
     recipe = {
         "v": KEY_VERSION,
         "question": normalise(question),
         "readable": readable,
         "planner": [_models(planner), planner_prompt.PROMPT_VERSION],
         "writer": [_models(writer), writer_prompt.PROMPT_VERSION],
+        # Which tables the planner is shown changes what it can choose, so it's part of the key.
+        "schema": [settings.schema_mode, settings.schema_top_k, settings.embedding_model],
     }
     return hashlib.sha256(json.dumps(recipe, sort_keys=True).encode()).hexdigest()
 
