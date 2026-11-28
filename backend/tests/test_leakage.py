@@ -12,7 +12,8 @@ ways, and every surface they can reach is probed for those words:
                 gone from the database and storage altogether)
 
 Surfaces: source listings and lookups, the steward console (versions, jobs, "used by"), the
-catalog and the schema description the planner reads, document titles, document search,
+catalog and the schema description the planner reads (all of it, or the tables schema
+retrieval chooses), document titles, document search,
 value grounding, everything sent to the language model (plan and answer prompts, including
 conversation history), the answers and saved conversations themselves, cached answers,
 notifications, and error messages, which must not differ between "restricted" and "doesn't
@@ -50,6 +51,7 @@ from app.models import (
 )
 from app.query.catalog import Catalog
 from app.query.grounding import ground
+from app.query.schema_retrieval import select_tables
 from tests.conftest import login
 from tests.test_answer_pipeline import fake
 from tests.test_ingestion_jobs import work
@@ -241,6 +243,9 @@ def probe(db, client, conversation: Conversation | None) -> dict[str, str]:
     catalog = Catalog.for_user(db, olga)
     seen["catalog metrics"] = " ".join(catalog.metric_names())
     seen["schema context"] = build_context(db, catalog).text
+    chosen = select_tables(db, catalog, ["zanzibar gold vendor rebates by tier"], k=5)
+    seen["schema retrieval"] = json.dumps(chosen.as_dict())
+    seen["retrieved schema context"] = build_context(db, catalog, chosen.tables).text
     seen["document titles"] = " ".join(document_titles(db, olga))
     hits = search(db, olga, "zanzibar gold rebate tiers", k=20, include_superseded=True)
     seen["document search"] = json.dumps([h.__dict__ for h in hits], default=str)
@@ -353,6 +358,8 @@ def test_a_source_taken_away_leaks_nowhere(world, client, scenario):
         "steward jobs",
         "catalog metrics",
         "schema context",
+        "schema retrieval",
+        "retrieved schema context",
         "document titles",
         "document search",
         "value grounding",

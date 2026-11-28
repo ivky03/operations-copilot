@@ -4,8 +4,9 @@ Built per user from their catalog, so restricted datasets never appear in a prom
 Contains metrics, groupable columns with a few example values, relationships and the date
 range covered. Never table rows.
 
-This is "full" mode: every readable dataset is described. With many tables (Stage C) a
-retrieval step will choose which datasets to include; the M8 experiment compares the two.
+In "full" mode every readable dataset is described. In "retrieved" mode, schema retrieval
+(app/query/schema_retrieval.py) chooses a few and only those are described; the rest of the
+user's catalog still applies when the plan is checked and compiled.
 """
 
 from dataclasses import dataclass
@@ -54,10 +55,13 @@ def _examples(db: Session, ds: Dataset) -> dict[str, list[str]]:
     return {col: list(values) for col, values in rows}
 
 
-def build_context(db: Session, catalog: Catalog) -> SchemaContext:
+def build_context(db: Session, catalog: Catalog, only: set[str] | None = None) -> SchemaContext:
+    """Describe the catalog's datasets, or just those in `only`. A derived metric is usable if
+    the user can read what its formula uses, whether or not those tables are described."""
     lines: list[str] = []
     starts, ends = [], []
-    for ds in sorted(catalog.datasets.values(), key=lambda d: d.slug):
+    shown = [ds for ds in catalog.datasets.values() if only is None or ds.slug in only]
+    for ds in sorted(shown, key=lambda d: d.slug):
         m = ds.manifest
         start, end = _coverage(ds)
         if start:

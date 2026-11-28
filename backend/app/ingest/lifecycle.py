@@ -43,6 +43,7 @@ from app.models import (
     DocumentContent,
     Job,
     JobStatus,
+    SchemaEntry,
     Source,
     SourceGrant,
     SourceKind,
@@ -142,6 +143,9 @@ def _erase_version(db: Session, version: SourceVersion) -> bool:
     if table:
         db.execute(text(f"DROP TABLE IF EXISTS {DATASET_SCHEMA}.{_quote(table)}"))
     db.query(ValueIndexEntry).filter(ValueIndexEntry.source_version_id == version.id).delete()
+    # The version row stays as a tombstone, so nothing that hangs off it cascades: each index
+    # built from its content has to be removed here.
+    db.query(SchemaEntry).filter(SchemaEntry.source_version_id == version.id).delete()
     db.query(DocChunk).filter(DocChunk.source_version_id == version.id).delete()
     db.query(DocumentContent).filter(DocumentContent.source_version_id == version.id).delete()
     # The details hold the manifest (column descriptions, alias values) or the document's

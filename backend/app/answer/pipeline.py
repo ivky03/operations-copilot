@@ -38,6 +38,7 @@ from app.answer.passages import Passage, document_titles, retrieve_passages
 from app.answer.planner import AnswerPlan, plan_question
 from app.answer.verify import cited_ids, normalise_citations, verify
 from app.answer.writer import template_answer, write_answer
+from app.config import get_settings
 from app.ingest.publish import DATASET_SCHEMA
 from app.llm.client import CallRecord, LLMClient, LLMOutputError, LLMUnavailableError
 from app.models import AnswerRun, Conversation, LlmCall, User
@@ -46,6 +47,7 @@ from app.query.compiler import compile_plan, q
 from app.query.executor import QueryTimeoutError, execute
 from app.query.grounding import ground
 from app.query.plan import QueryPlan
+from app.query.schema_retrieval import select_tables
 
 
 @dataclass
@@ -167,8 +169,9 @@ def _plan_with_retry(
     question: str,
     calls: list[CallRecord],
     history: str = "",
+    only: set[str] | None = None,
 ) -> AnswerPlan:
-    context = build_context(db, catalog)
+    context = build_context(db, catalog, only)
     documents = document_titles(db, user)
     plan = plan_question(llm, question, context, calls, documents, history)
     for query in plan.queries:
@@ -178,6 +181,17 @@ def _plan_with_retry(
             retry_q = f"{question}\n\n(Your previous plan was invalid: {e} Use only listed names.)"
             return plan_question(llm, retry_q, context, calls, documents, history)
     return plan
+
+
+def _choose_schema(
+    db: Session, catalog: Catalog, questions: list[str]
+) -> tuple[set[str] | None, dict]:
+    """Which tables the planner is shown, and a record of the choice for the saved run."""
+    settings = get_settings()
+    if settings.schema_mode == "full":
+        return None, {"mode": "full", "tables": len(catalog.datasets)}
+    chosen = select_tables(db, catalog, questions, settings.schema_top_k)
+    return chosen.tables, {"mode": "retrieved", "k": settings.schema_top_k, **chosen.as_dict()}
 
 
 NOT_IN_DOCUMENTS = "I couldn't find anything about that in the documents you have access to."
@@ -261,8 +275,10 @@ def answer_question(
     status, answer, options = "error", "", []
     standalone = question
     key: str | None = None
+    schema: dict = {}
     try:
-        history = render(prior_turns(db, user, conversation.id)) if conversation else ""
+        turns = prior_turns(db, user, conversation.id) if conversation else []
+        history = render(turns)
         if use_cache and not history:  # follow-ups depend on the conversation: never cached
             readable = cache.readable_versions(db, user)
             key = cache.cache_key(question, readable, planner, writer)
@@ -270,7 +286,10 @@ def answer_question(
                 return _replay(db, user, question, hit, conversation, emit, start)
         emit("step", step="planning")
         catalog = Catalog.for_user(db, user)
-        plan = _plan_with_retry(planner, db, user, catalog, question, calls, history)
+        # A follow-up ("and April?") names no tables: retrieve for the previous turn too.
+        retrieve_for = [question] + ([turns[-1].standalone] if turns else [])
+        shown, schema = _choose_schema(db, catalog, retrieve_for)
+        plan = _plan_with_retry(planner, db, user, catalog, question, calls, history, shown)
         if history and plan.standalone_question:
             standalone = plan.standalone_question  # "And April?" → "Net sales by country, April"
         emit(
@@ -362,7 +381,7 @@ def answer_question(
             question=question,
             status=status,
             answer=answer,
-            plan=plan.model_dump(mode="json") if plan else {},
+            plan={**plan.model_dump(mode="json"), "schema": schema} if plan else {},
             evidence=[e.as_dict() for e in evidence],
             passages=[p.as_dict() for p in passages],
             source_versions=[{"source": s, "version": v} for s, v in sources],

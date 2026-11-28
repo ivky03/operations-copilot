@@ -1,0 +1,50 @@
+# Held-out schema-retrieval questions: Stage C. Synthetic.
+#
+# Written on 2026-11-27, BEFORE the schema retrieval step was built or measured on them. The
+# retrieval design was chosen using stage_c.yaml (47 questions), so recall on that set is
+# optimistic: these questions check it on wording it was never tuned on. They use everyday
+# words rather than table or metric titles ("takings", "footfall", "folks who left").
+#
+# Each case names only the tables a correct plan must use. There are no expected numbers:
+# this set scores table selection only, which needs no model and no answer key. Don't tune
+# retrieval on it. If it is ever used for tuning, write a new held-out set and say so.
+version: 1
+dataset: stage_c
+
+cases:
+  - {id: h-01, persona: operations, tables: [transactions, returns], question: "What were our takings last month after refunds?"}
+  - {id: h-02, persona: operations, tables: [transactions, returns, stores], question: "Which shop brought in the most money in April?"}
+  - {id: h-03, persona: operations, tables: [transactions, products], question: "Which product sold the most units in Q1?"}
+  - {id: h-04, persona: finance, tables: [transactions], question: "What share of orders got cancelled in February?"}
+  - {id: h-05, persona: operations, tables: [returns, products], question: "Which categories have the most items sent back?"}
+  - {id: h-06, persona: operations, tables: [shipments], question: "How long do parcels take to reach customers on average?"}
+  - {id: h-07, persona: operations, tables: [inventory_snapshots, stores], question: "How many days were shops out of stock in March?"}
+  - {id: h-08, persona: finance, tables: [purchase_orders, suppliers], question: "Which vendors deliver late most often?"}
+  - {id: h-09, persona: operations, tables: [shifts, stores], question: "What is the sickness absence rate at each branch?"}
+  - {id: h-10, persona: finance, tables: [sales_targets], question: "What was the sales goal for April?"}
+  - {id: h-11, persona: operations, tables: [support_tickets], question: "How quickly do we reply to customer complaints?"}
+  - {id: h-12, persona: operations, tables: [promotions], question: "How big is the average discount in our promotions?"}
+  - {id: h-13, persona: operations, tables: [campaign_spend_daily, marketing_campaigns], question: "Which ad campaign got the most clicks?"}
+  - {id: h-14, persona: operations, tables: [store_footfall_daily, stores], question: "What was footfall at each shop in February?"}
+  - {id: h-15, persona: operations, tables: [web_sessions_daily], question: "What share of website visitors leave after one page?"}
+  - {id: h-16, persona: operations, tables: [nps_responses], question: "How many detractors answered our customer survey?"}
+  - {id: h-17, persona: operations, tables: [email_sends], question: "How many people unsubscribed from our newsletters?"}
+  - {id: h-18, persona: operations, tables: [loyalty_members], question: "How many reward points are still unspent?"}
+  - {id: h-19, persona: finance, tables: [gift_cards], question: "What value of gift vouchers did we sell in March?"}
+  - {id: h-20, persona: operations, tables: [product_reviews, products], question: "Which products have the worst customer ratings?"}
+  - {id: h-21, persona: finance, tables: [product_costs, products], question: "How much does freight add to the cost of each product?"}
+  - {id: h-22, persona: operations, tables: [warehouse_stock, warehouses], question: "How much stock is reserved in each distribution centre?"}
+  - {id: h-23, persona: operations, tables: [stock_transfers, stores], question: "How many units were moved to each store from the DCs?"}
+  - {id: h-24, persona: operations, tables: [store_incidents, stores], question: "How many people were injured at work in each store?"}
+  - {id: h-25, persona: operations, tables: [energy_usage], question: "How much electricity did the stores use in February?"}
+  - {id: h-26, persona: operations, tables: [store_audits, stores], question: "What inspection scores did each store get?"}
+  - {id: h-27, persona: finance, tables: [payroll], question: "What did staff cost us in total in March, including employer contributions?"}
+  - {id: h-28, persona: operations, tables: [vacancies], question: "How many people applied for our open jobs?"}
+  - {id: h-29, persona: operations, tables: [training_records], question: "How many training modules have staff finished?"}
+  - {id: h-30, persona: finance, tables: [supplier_invoices], question: "How many bills from suppliers did we receive in April?"}
+  - {id: h-31, persona: finance, tables: [expenses], question: "How much did employees claim back for travel and meals?"}
+  - {id: h-32, persona: finance, tables: [gl_entries], question: "What were our operating expenses in the accounts for March?"}
+  - {id: h-33, persona: operations, tables: [site_searches], question: "What do people type into the search box on the website most?"}
+  - {id: h-34, persona: operations, tables: [product_page_views, products], question: "Which products are added to basket most often online?"}
+  - {id: h-35, persona: operations, tables: [customers], question: "What is the average lifetime value of a customer?"}
+  - {id: h-36, persona: operations, tables: [staff, stores], question: "How many folks work at each location right now?"}

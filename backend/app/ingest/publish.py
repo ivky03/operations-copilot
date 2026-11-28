@@ -45,6 +45,7 @@ from app.models import (
     ValueIndexEntry,
     VersionStatus,
 )
+from app.query.schema_retrieval import index_schema
 
 DATASET_SCHEMA = "datasets"
 PG_TYPES = {
@@ -345,6 +346,7 @@ def prepare_dataset(
     db.flush()
     _create_and_load(db, table, manifest, checked.rows)
     indexed = _build_value_index(db, version, manifest, checked.rows)
+    index_schema(db, version, manifest)
     version.meta = {
         "manifest": manifest.model_dump(mode="json"),
         "table": table,

@@ -292,6 +292,23 @@ class DocChunk(Base):
     )
 
 
+class SchemaEntry(Base):
+    """The searchable description of one dataset version: its title, description, grain and
+    metrics, embedded. Schema retrieval compares a question with these to choose which tables
+    the planner is shown. Written in the same transaction as the version's table. Deleting a
+    source keeps its version rows as tombstones, so delete removes these explicitly
+    (lifecycle._erase_version); the leakage suite checks none remain."""
+
+    __tablename__ = "schema_entries"
+
+    source_version_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("source_versions.id", ondelete="CASCADE"), primary_key=True
+    )
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIMS), nullable=False)
+    embedding_model: Mapped[str] = mapped_column(String(100), nullable=False)
+
+
 class Conversation(Base):
     """A chat: a titled sequence of questions by one user. Each turn is an AnswerRun, so the
     whole trace of every answer stays with the conversation, and deleting the conversation

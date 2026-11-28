@@ -32,6 +32,7 @@ from app.ingest.manifest import parse_manifest
 from app.ingest.publish import PublishResult, publish_dataset, publish_document
 from app.ingest.validate import validate_csv
 from app.models import Group, Role, Source, SourceGrant, SourceKind, User
+from app.query.schema_retrieval import reindex_schema
 from app.security import hash_password
 
 REFERENCE = Path(__file__).resolve().parents[2] / "data" / "reference"
@@ -198,6 +199,9 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser(
         "index-documents", help="Rebuild search chunks for every stored document version"
     )
+    sub.add_parser(
+        "index-schema", help="Rebuild the schema-retrieval card of every stored dataset version"
+    )
     vd = sub.add_parser("validate-dataset", help="Check a CSV against a manifest (no changes)")
     vd.add_argument("--manifest", type=Path, required=True)
     vd.add_argument("--csv", type=Path, required=True)
@@ -242,6 +246,8 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "index-documents":
             for label, count in reindex_all(db).items():
                 print(f"  {label:<36} {count} chunks")
+        elif args.command == "index-schema":
+            print(f"  {reindex_schema(db)} dataset versions indexed")
     return 0
 
 

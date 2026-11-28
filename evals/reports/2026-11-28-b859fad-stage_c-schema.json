@@ -1,0 +1,277 @@
+{
+  "meta": {
+    "kind": "Schema retrieval evaluation (deterministic, local embeddings, no model)",
+    "date": "2026-11-28",
+    "commit": "b859fad",
+    "uncommitted_changes": false,
+    "embedding_model": "BAAI/bge-small-en-v1.5"
+  },
+  "sets": {
+    "tuning": [
+      {
+        "size": 4,
+        "k": 3,
+        "cases": 8,
+        "complete": 8,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 4,
+        "k": 5,
+        "cases": 8,
+        "complete": 8,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 4,
+        "k": 8,
+        "cases": 8,
+        "complete": 8,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 15,
+        "k": 3,
+        "cases": 16,
+        "complete": 15,
+        "tables_shown": 5.3,
+        "context_tokens": 1415,
+        "full_tokens": 3590,
+        "missed": [
+          "c4-05 (needs transactions)"
+        ]
+      },
+      {
+        "size": 15,
+        "k": 5,
+        "cases": 16,
+        "complete": 16,
+        "tables_shown": 7.4,
+        "context_tokens": 2042,
+        "full_tokens": 3590,
+        "missed": []
+      },
+      {
+        "size": 15,
+        "k": 8,
+        "cases": 16,
+        "complete": 16,
+        "tables_shown": 9.8,
+        "context_tokens": 2682,
+        "full_tokens": 3590,
+        "missed": []
+      },
+      {
+        "size": 30,
+        "k": 3,
+        "cases": 32,
+        "complete": 31,
+        "tables_shown": 5.5,
+        "context_tokens": 1335,
+        "full_tokens": 6258,
+        "missed": [
+          "c4-05 (needs transactions)"
+        ]
+      },
+      {
+        "size": 30,
+        "k": 5,
+        "cases": 32,
+        "complete": 32,
+        "tables_shown": 8.0,
+        "context_tokens": 2009,
+        "full_tokens": 6258,
+        "missed": []
+      },
+      {
+        "size": 30,
+        "k": 8,
+        "cases": 32,
+        "complete": 32,
+        "tables_shown": 11.3,
+        "context_tokens": 2829,
+        "full_tokens": 6258,
+        "missed": []
+      },
+      {
+        "size": 50,
+        "k": 3,
+        "cases": 47,
+        "complete": 45,
+        "tables_shown": 5.6,
+        "context_tokens": 1275,
+        "full_tokens": 9628,
+        "missed": [
+          "c4-05 (needs transactions)",
+          "c15-05 (needs staff)"
+        ]
+      },
+      {
+        "size": 50,
+        "k": 5,
+        "cases": 47,
+        "complete": 47,
+        "tables_shown": 8.1,
+        "context_tokens": 1879,
+        "full_tokens": 9628,
+        "missed": []
+      },
+      {
+        "size": 50,
+        "k": 8,
+        "cases": 47,
+        "complete": 47,
+        "tables_shown": 11.7,
+        "context_tokens": 2724,
+        "full_tokens": 9628,
+        "missed": []
+      }
+    ],
+    "heldout": [
+      {
+        "size": 4,
+        "k": 3,
+        "cases": 5,
+        "complete": 5,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 4,
+        "k": 5,
+        "cases": 5,
+        "complete": 5,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 4,
+        "k": 8,
+        "cases": 5,
+        "complete": 5,
+        "tables_shown": 4,
+        "context_tokens": 1020,
+        "full_tokens": 1020,
+        "missed": []
+      },
+      {
+        "size": 15,
+        "k": 3,
+        "cases": 13,
+        "complete": 12,
+        "tables_shown": 5.2,
+        "context_tokens": 1371,
+        "full_tokens": 3594,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      },
+      {
+        "size": 15,
+        "k": 5,
+        "cases": 13,
+        "complete": 13,
+        "tables_shown": 7.2,
+        "context_tokens": 1983,
+        "full_tokens": 3594,
+        "missed": []
+      },
+      {
+        "size": 15,
+        "k": 8,
+        "cases": 13,
+        "complete": 13,
+        "tables_shown": 9.5,
+        "context_tokens": 2650,
+        "full_tokens": 3594,
+        "missed": []
+      },
+      {
+        "size": 30,
+        "k": 3,
+        "cases": 24,
+        "complete": 23,
+        "tables_shown": 5.4,
+        "context_tokens": 1271,
+        "full_tokens": 6272,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      },
+      {
+        "size": 30,
+        "k": 5,
+        "cases": 24,
+        "complete": 23,
+        "tables_shown": 7.8,
+        "context_tokens": 1909,
+        "full_tokens": 6272,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      },
+      {
+        "size": 30,
+        "k": 8,
+        "cases": 24,
+        "complete": 23,
+        "tables_shown": 11.2,
+        "context_tokens": 2796,
+        "full_tokens": 6272,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      },
+      {
+        "size": 50,
+        "k": 3,
+        "cases": 36,
+        "complete": 34,
+        "tables_shown": 5.4,
+        "context_tokens": 1201,
+        "full_tokens": 9631,
+        "missed": [
+          "h-02 (needs returns, transactions)",
+          "h-08 (needs purchase_orders)"
+        ]
+      },
+      {
+        "size": 50,
+        "k": 5,
+        "cases": 36,
+        "complete": 35,
+        "tables_shown": 8.1,
+        "context_tokens": 1858,
+        "full_tokens": 9631,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      },
+      {
+        "size": 50,
+        "k": 8,
+        "cases": 36,
+        "complete": 35,
+        "tables_shown": 11.9,
+        "context_tokens": 2720,
+        "full_tokens": 9631,
+        "missed": [
+          "h-02 (needs returns, transactions)"
+        ]
+      }
+    ]
+  }
+}

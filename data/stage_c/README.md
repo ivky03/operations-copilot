@@ -88,6 +88,11 @@ is grouped by the smallest step of the scale experiment that can answer it: 8 ne
 tables in `SIZE_30` in `datagen/stage_c.py`), and 16 need all 50. Expected answers come from
 the independent pandas oracle (`uv run python -m evals.build_expected stage_c`).
 
+`evals/golden/stage_c.schema_heldout.yaml` has 36 more questions in everyday words ("takings",
+"footfall", "folks"), with tables but no expected numbers. They score schema retrieval only
+(`uv run python -m evals.run_schema_eval`). They were written before retrieval was measured on
+them, and must not be used to tune it.
+
 ## Scale, honestly
 
 Volumes follow the reference company's small sales history (about 430 order lines over four
