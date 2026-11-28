@@ -26,7 +26,8 @@ KS = (3, 5, 8)
 def render_markdown(report: dict) -> str:
     meta = report["meta"]
     out = [
-        f"# Schema retrieval: Stage C ({meta['date']}, commit {meta['commit']})",
+        f"# Schema retrieval: Stage C ({meta['date']}, commit {meta['commit']}"
+        + (", with uncommitted changes)" if meta["uncommitted_changes"] else ")"),
         "",
         f"{meta['kind']}. Embedding model `{meta['embedding_model']}`. A case is *complete* when",
         "every table it needs is among the tables described to the planner. Tokens are",
@@ -70,7 +71,8 @@ def main() -> None:
         "meta": {
             "kind": "Schema retrieval evaluation (deterministic, local embeddings, no model)",
             "date": datetime.now(UTC).date().isoformat(),
-            "commit": commit + ("-dirty" if _git("status", "--porcelain") else ""),
+            "commit": commit,
+            "uncommitted_changes": bool(_git("status", "--porcelain", "--", "app", "evals")),
             "embedding_model": get_settings().embedding_model,
         },
         "sets": sets,
