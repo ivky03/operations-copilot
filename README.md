@@ -40,7 +40,8 @@ The language model **interprets** the question and **phrases** the answer. Code 
 ```mermaid
 flowchart LR
     Q[Question] --> A[Authorize<br/>user's readable<br/>source versions]
-    A --> P[Plan<br/><i>LLM → typed query plan</i>]
+    A --> T[Choose tables<br/>to describe<br/><i>all, or retrieved</i>]
+    T --> P[Plan<br/><i>LLM → typed query plan</i>]
     P --> V[Validate plan<br/>against catalog<br/>+ permissions]
     V --> S[Compile to SQL<br/>& execute]
     V --> D[Permission-filtered<br/>document search]
@@ -100,17 +101,19 @@ Each capability is evaluated separately, and results are published in `evals/rep
 | Calculations | Plan correctness; numeric answers vs an independent pandas oracle |
 | Value grounding | Correct resolution of names and aliases, or a correct clarifying question |
 | Table choice (Stage B) | Look-alike tables reach the right one: net sales vs dashboard revenue, customer vs purchase orders, actuals vs targets |
+| Schema retrieval (Stage C) | Whether every table a question needs is among those shown to the model, at 4, 15, 30 and 50 tables, and how much smaller the description gets |
 | Document retrieval | Recall@k, MRR, citation support |
 | Combined answers & follow-ups | Both parts correct; context carried across turns |
 | Ambiguous / unanswerable | Clarifies or abstains instead of fabricating |
 | Permission boundaries | Zero restricted content in answers, search, caches, notifications or model prompts (hard gate) |
 | Failure recovery | Worker crashes, duplicate messages, restarts, backup restore |
 
-Deterministic tests (unit, integration, and mocked-model workflow tests) run in CI on every pull request; this includes the retrieval evaluation, which uses local embeddings and fails the build if search quality regresses. Model-quality evaluations of answers run separately against real models:
+Deterministic tests (unit, integration, and mocked-model workflow tests) run in CI on every pull request; this includes the document and schema retrieval evaluations, which use local embeddings and fail the build if retrieval quality regresses. Model-quality evaluations of answers run separately against real models:
 
 ```bash
 cd backend
 uv run python -m evals.run_retrieval_eval   # seconds; deterministic
+DATABASE_URL=<a Stage C database> uv run python -m evals.run_schema_eval   # seconds; deterministic
 uv run python -m evals.run_answer_eval      # ~25 min on free tiers; results vary between runs
 uv run python -m evals.run_answer_eval --golden stage_a.heldout   # questions never used for tuning
 DATABASE_URL=<a Stage B database> uv run python -m evals.run_answer_eval --golden stage_b
