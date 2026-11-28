@@ -1,0 +1,515 @@
+# Golden evaluation set: Stage C (50 tables, 114 documents). Synthetic.
+#
+# Same format as stage_a.yaml, plus `tables` on every case: the datasets a correct plan must use.
+# It's what the schema-retrieval evaluation checks ("did retrieval find these tables?") and
+# what the scale experiment groups by: a case is asked at every experiment size that
+# contains all of its tables (4, 15, 30 or 50; see datagen/stage_c.py SIZE_30).
+#
+# Almost every question has a look-alike that answers a different question:
+#   revenue      net sales vs web analytics, campaign-attributed and ledger revenue
+#   orders       customer orders vs web-tracked orders, attributed orders, purchase orders
+#   stock        stores (daily) vs distribution centres (weekly)
+#   satisfaction support CSAT vs customer NPS vs staff engagement vs product ratings
+#   spend/cost   media spend vs expense claims vs ledger; landed cost vs purchase price
+#   people       headcount vs vacancies vs payroll
+#
+# Numbers come from the independent pandas oracle (uv run python -m evals.build_expected stage_c).
+version: 1
+dataset: stage_c
+reference_date: "2026-04-30"
+
+cases:
+  # ------------------------------------------------- answerable from the 4 Stage A tables
+  - id: c4-01
+    category: table_choice
+    persona: operations
+    tables: [transactions, returns]
+    question: What was our revenue in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: net_sales, filters: {month: ["2026-03"]}}
+      notes: Revenue is net sales, not web analytics, campaign-attributed or ledger revenue.
+
+  - id: c4-02
+    category: table_choice
+    persona: operations
+    tables: [transactions, returns, stores]
+    question: How much revenue did UK Online make in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: net_sales, filters: {month: ["2026-04"], store_name: [UK Online]}}
+      notes: Online revenue in web analytics includes VAT and ignores cancellations.
+
+  - id: c4-03
+    category: table_choice
+    persona: operations
+    tables: [transactions]
+    question: How many orders did customers place in February 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: order_count, filters: {month: ["2026-02"]}}
+      notes: Customer orders; not web-tracked, campaign-attributed or purchase orders.
+
+  - id: c4-04
+    category: table_choice
+    persona: finance
+    tables: [returns]
+    question: What was the total value of refunds paid in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: refund_value, filters: {month: ["2026-04"]}}
+      notes: Refunds paid, not the stock value written off after inspection.
+
+  - id: c4-05
+    category: calculation
+    persona: operations
+    tables: [transactions, products]
+    question: How many Linen Throws did we sell in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: units_sold, filters: {month: ["2026-03"], product_name: [Linen Throw]}}
+
+  - id: c4-06
+    category: calculation
+    persona: operations
+    tables: [transactions, stores]
+    question: What is the average order value in each country?
+    expected:
+      answer: answer
+      data:
+        - {metric: average_order_value, group_by: [country]}
+
+  - id: c4-07
+    category: calculation
+    persona: finance
+    tables: [transactions]
+    question: What was the cancellation rate in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: cancellation_rate, filters: {month: ["2026-03"]}}
+
+  - id: c4-08
+    category: calculation
+    persona: operations
+    tables: [transactions, returns, products]
+    question: Show net sales by product category for April 2026.
+    expected:
+      answer: answer
+      data:
+        - {metric: net_sales, group_by: [category], filters: {month: ["2026-04"]}}
+
+  # ------------------------------------------------- needs Stage B (15 tables)
+  - id: c15-01
+    category: table_choice
+    persona: operations
+    tables: [shipments]
+    question: What was the on-time delivery rate for each carrier?
+    expected:
+      answer: answer
+      data:
+        - {metric: on_time_delivery_rate, group_by: [carrier]}
+      notes: Actual deliveries, not the contractual delivery days in the carriers table.
+
+  - id: c15-02
+    category: table_choice
+    persona: operations
+    tables: [inventory_snapshots]
+    question: How many units did our stores have in stock at the end of 31 March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: units_on_hand, filters: {day: ["2026-03-31"]}}
+      notes: Store stock (daily), not distribution-centre stock (weekly).
+
+  - id: c15-03
+    category: table_choice
+    persona: finance
+    tables: [purchase_orders]
+    question: How many purchase orders did we place with suppliers in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: purchase_order_count, filters: {month: ["2026-03"]}}
+
+  - id: c15-04
+    category: table_choice
+    persona: operations
+    tables: [support_tickets]
+    question: What is the average customer satisfaction rating on support tickets?
+    expected:
+      answer: answer
+      data:
+        - {metric: average_csat}
+      notes: CSAT (1-5 after a ticket); not NPS, product ratings or the staff survey.
+
+  - id: c15-05
+    category: table_choice
+    persona: operations
+    tables: [staff, stores]
+    question: How many people currently work at the Berlin Store?
+    expected:
+      answer: answer
+      data:
+        - {metric: headcount, filters: {store_name: [Berlin Store]}}
+      notes: People employed; not vacancies.
+
+  - id: c15-06
+    category: table_choice
+    persona: operations
+    tables: [shifts, stores]
+    question: How many hours did staff work at each store in February 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: hours_worked, group_by: [store_name], filters: {month: ["2026-02"]}}
+      notes: Hours worked on shifts; not overtime hours or training hours.
+
+  - id: c15-07
+    category: table_choice
+    persona: finance
+    tables: [budgets]
+    question: What was the budgeted cost for March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: budgeted_cost, filters: {month: ["2026-03"]}}
+      notes: The budget, not ledger operating expenses.
+
+  - id: c15-08
+    category: table_choice
+    persona: operations
+    tables: [support_tickets]
+    question: How many customer support tickets were opened in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: ticket_count, filters: {month: ["2026-04"]}}
+
+  # ------------------------------------------------- needs the 30-table step
+  - id: c30-01
+    category: table_choice
+    persona: operations
+    tables: [campaign_spend_daily]
+    question: How much did we spend on advertising in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: media_spend, filters: {month: ["2026-03"]}}
+      notes: Media spend actually spent; not campaign budgets or expense claims.
+
+  - id: c30-02
+    category: table_choice
+    persona: operations
+    tables: [web_sessions_daily]
+    question: How many visits did the web shops get from mobile devices in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: sessions, filters: {month: ["2026-04"], device: [mobile]}}
+
+  - id: c30-03
+    category: table_choice
+    persona: operations
+    tables: [store_footfall_daily, stores]
+    question: How many people came into the London Flagship store in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: visitors, filters: {month: ["2026-03"], store_name: [London Flagship]}}
+      notes: Footfall; not orders.
+
+  - id: c30-04
+    category: table_choice
+    persona: finance
+    tables: [product_costs, products]
+    question: What is the average landed cost per unit of each product?
+    expected:
+      answer: answer
+      data:
+        - {metric: average_landed_cost, group_by: [product_name]}
+      notes: Landed cost from product costs; purchase orders exclude freight.
+
+  - id: c30-05
+    category: table_choice
+    persona: operations
+    tables: [warehouse_stock, warehouses]
+    question: How many units were available in the Rhine DC on 30 March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: warehouse_units_available, filters: {day: ["2026-03-30"], warehouse_name: [Rhine DC]}}
+      notes: Distribution-centre stock, not store stock.
+
+  - id: c30-06
+    category: calculation
+    persona: operations
+    tables: [loyalty_points]
+    question: How many loyalty points were redeemed in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: points_redeemed, filters: {month: ["2026-04"]}}
+      notes: Redemptions are stored as negative numbers; reporting the size is fine.
+
+  - id: c30-07
+    category: table_choice
+    persona: operations
+    tables: [product_reviews, products]
+    question: What is the average star rating of our products in each category?
+    expected:
+      answer: answer
+      data:
+        - {metric: average_rating, group_by: [category]}
+
+  - id: c30-08
+    category: table_choice
+    persona: finance
+    tables: [gl_entries]
+    question: What sales revenue did the general ledger record for March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: accounting_revenue, filters: {month: ["2026-03"]}}
+      notes: Asked for the ledger explicitly, so ledger revenue, not net sales.
+
+  - id: c30-09
+    category: calculation
+    persona: finance
+    tables: [payroll]
+    question: How much overtime did we pay in February 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: overtime_pay, filters: {month: ["2026-02"]}}
+
+  - id: c30-10
+    category: calculation
+    persona: operations
+    tables: [stock_transfers]
+    question: How many stock transfers from the distribution centres were requested in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: transfer_count, filters: {month: ["2026-03"]}}
+
+  - id: c30-11
+    category: calculation
+    persona: operations
+    tables: [customers]
+    question: How many customers have agreed to receive marketing emails?
+    expected:
+      answer: answer
+      data:
+        - {metric: opted_in_customer_count}
+
+  - id: c30-12
+    category: table_choice
+    persona: operations
+    tables: [campaign_spend_daily, marketing_campaigns]
+    question: How much revenue did the ad platforms attribute to each campaign?
+    expected:
+      answer: answer
+      data:
+        - {metric: attributed_revenue, group_by: [campaign_name]}
+
+  - id: c30-13
+    category: table_choice
+    persona: operations
+    tables: [web_sessions_daily, stores]
+    question: What online revenue did web analytics track for DE Online in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: online_revenue, filters: {month: ["2026-03"], store_name: [DE Online]}}
+
+  - id: c30-14
+    category: calculation
+    persona: operations
+    tables: [price_changes]
+    question: How many price changes were made in each month?
+    expected:
+      answer: answer
+      data:
+        - {metric: price_change_count, group_by: [month]}
+
+  - id: c30-15
+    category: calculation
+    persona: operations
+    tables: [web_sessions_daily]
+    question: What is the web shop conversion rate by device?
+    expected:
+      answer: answer
+      data:
+        - {metric: conversion_rate, group_by: [device]}
+
+  # ------------------------------------------------- needs all 50 tables
+  - id: c50-01
+    category: table_choice
+    persona: operations
+    tables: [nps_responses]
+    question: What is our Net Promoter Score?
+    expected:
+      answer: answer
+      data:
+        - {metric: net_promoter_score}
+      notes: NPS, not CSAT or an average score.
+
+  - id: c50-02
+    category: calculation
+    persona: operations
+    tables: [email_sends, marketing_campaigns]
+    question: What was the email open rate for each campaign?
+    expected:
+      answer: answer
+      data:
+        - {metric: email_open_rate, group_by: [campaign_name]}
+
+  - id: c50-03
+    category: calculation
+    persona: operations
+    tables: [site_searches]
+    question: How many searches on the web shops found nothing in April 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: zero_result_searches, filters: {month: ["2026-04"]}}
+
+  - id: c50-04
+    category: table_choice
+    persona: finance
+    tables: [gift_cards]
+    question: How much do we still owe customers on unused gift cards?
+    expected:
+      answer: answer
+      data:
+        - {metric: gift_card_liability}
+
+  - id: c50-05
+    category: calculation
+    persona: operations
+    tables: [store_incidents]
+    question: How many store incidents of each type were there?
+    expected:
+      answer: answer
+      data:
+        - {metric: incident_count, group_by: [incident_type]}
+
+  - id: c50-06
+    category: table_choice
+    persona: operations
+    tables: [maintenance_requests]
+    question: What have store repairs cost so far this year?
+    expected:
+      answer: answer
+      data:
+        - {metric: maintenance_cost}
+      notes: Completed repairs; not the ledger's repairs account (Finance only anyway).
+
+  - id: c50-07
+    category: calculation
+    persona: operations
+    tables: [store_audits]
+    question: How many store audits were failed?
+    expected:
+      answer: answer
+      data:
+        - {metric: failed_audit_count}
+
+  - id: c50-08
+    category: calculation
+    persona: operations
+    tables: [training_records]
+    question: How many training courses are overdue?
+    expected:
+      answer: answer
+      data:
+        - {metric: training_overdue}
+
+  - id: c50-09
+    category: table_choice
+    persona: operations
+    tables: [vacancies]
+    question: How many job vacancies are still open?
+    expected:
+      answer: answer
+      data:
+        - {metric: open_vacancy_count}
+      notes: Vacancies, not headcount.
+
+  - id: c50-10
+    category: table_choice
+    persona: finance
+    tables: [supplier_invoices]
+    question: How much do we still owe suppliers on their invoices?
+    expected:
+      answer: answer
+      data:
+        - {metric: unpaid_invoice_amount}
+
+  - id: c50-11
+    category: table_choice
+    persona: finance
+    tables: [expenses]
+    question: What value of employee expense claims was approved in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: expenses_approved, filters: {month: ["2026-03"]}}
+
+  - id: c50-12
+    category: table_choice
+    persona: finance
+    tables: [return_inspections]
+    question: What was the value of returned stock we had to write off?
+    expected:
+      answer: answer
+      data:
+        - {metric: write_off_value}
+      notes: Stock written off after inspection; not refunds paid.
+
+  - id: c50-13
+    category: calculation
+    persona: operations
+    tables: [energy_usage, stores]
+    question: What was each store's energy bill in January 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: energy_cost, group_by: [store_name], filters: {month: ["2026-01"]}}
+
+  - id: c50-14
+    category: table_choice
+    persona: operations
+    tables: [staff_survey]
+    question: What was the average staff engagement score in the April 2026 survey?
+    expected:
+      answer: answer
+      data:
+        - {metric: average_engagement, filters: {month: ["2026-04"]}}
+      notes: Employees, not customers.
+
+  - id: c50-15
+    category: calculation
+    persona: operations
+    tables: [product_page_views, products]
+    question: How many times was the Oak Coffee Table's product page viewed in March 2026?
+    expected:
+      answer: answer
+      data:
+        - {metric: page_views, filters: {month: ["2026-03"], product_name: [Oak Coffee Table]}}
+
+  - id: c50-16
+    category: calculation
+    persona: operations
+    tables: [loyalty_members]
+    question: How many members does the loyalty programme have?
+    expected:
+      answer: answer
+      data:
+        - {metric: member_count}

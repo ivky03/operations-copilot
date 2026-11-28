@@ -21,9 +21,14 @@ from evals.oracle import METRICS, Oracle, Query
 ROOT = Path(__file__).resolve().parents[2]
 REFERENCE = ROOT / "data" / "reference"
 STAGE_B = ROOT / "data" / "stage_b"
+STAGE_C = ROOT / "data" / "stage_c"
 # A golden set's `dataset` names the data stage it is written for. Answerability depends on
 # the data: "how many people work in Berlin?" has no answer in Stage A and is 5 in Stage B.
-STAGE_ROOTS = {"stage_a": [REFERENCE], "stage_b": [REFERENCE, STAGE_B]}
+STAGE_ROOTS = {
+    "stage_a": [REFERENCE],
+    "stage_b": [REFERENCE, STAGE_B],
+    "stage_c": [REFERENCE, STAGE_B, STAGE_C],
+}
 GOLDEN_DIR = ROOT / "evals" / "golden"
 CATEGORIES = {
     "calculation",
@@ -114,6 +119,11 @@ def validate(golden: dict) -> list[str]:
         if case["category"] not in CATEGORIES:
             problems.append(f"{cid}: unknown category {case['category']!r}")
         persona = case["persona"]
+        for table in case.get("tables", []):  # the datasets a correct plan must use
+            if table not in tables:
+                problems.append(f"{cid}: unknown table {table!r}")
+            elif persona not in access.get(table, set()):
+                problems.append(f"{cid}: {persona} can't read table {table!r}")
 
         for step, _question, exp in iter_steps(case):
             if exp["answer"] not in ANSWER_TYPES:

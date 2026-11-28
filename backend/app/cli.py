@@ -6,6 +6,8 @@ Usage (from backend/):
     uv run python -m app.cli publish-reference  # validate, load and publish all reference data
     uv run python -m app.cli seed-reference --stage b      # Stage B: 15 tables, 21 documents
     uv run python -m app.cli publish-reference --stage b
+    uv run python -m app.cli seed-reference --stage c      # Stage C: 50 tables
+    uv run python -m app.cli publish-reference --stage c
     uv run python -m app.cli validate-dataset --manifest m.yaml --csv t.csv   # dry run
 
 Passwords are never accepted as command-line arguments, because those end up in shell
@@ -34,8 +36,9 @@ from app.security import hash_password
 
 REFERENCE = Path(__file__).resolve().parents[2] / "data" / "reference"
 STAGE_B = REFERENCE.parent / "stage_b"
+STAGE_C = REFERENCE.parent / "stage_c"
 # Each stage is Stage A plus additions; Stage A's files never change, so its answers stay valid.
-STAGES = {"a": [REFERENCE], "b": [REFERENCE, STAGE_B]}
+STAGES = {"a": [REFERENCE], "b": [REFERENCE, STAGE_B], "c": [REFERENCE, STAGE_B, STAGE_C]}
 
 DEMO_USERS = [
     ("ops.employee@brindlewood.example", "Olivia Ops", Role.EMPLOYEE, ["operations"]),

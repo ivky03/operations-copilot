@@ -32,3 +32,7 @@ frontend/dist/
 .vscode/
 .idea/
 .DS_Store
+
+# macOS iCloud Drive makes "name 2.ext" copies when a synced file is rewritten quickly
+# (this folder is on the iCloud-synced Desktop). They are never real project files.
+* [0-9].*

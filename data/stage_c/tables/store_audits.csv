@@ -1,0 +1,30 @@
+audit_id,store_id,audit_date,audit_type,score_pct,passed,auditor
+AU-001,S01,2026-01-18,cash handling,90.50,true,External auditor
+AU-002,S03,2026-01-15,health and safety,97.30,true,External auditor
+AU-003,S03,2026-01-05,visual merchandising,98.40,true,Area manager
+AU-004,S03,2026-01-12,cash handling,92.80,true,Area manager
+AU-005,S04,2026-01-19,health and safety,71.50,false,External auditor
+AU-006,S04,2026-01-15,cash handling,81.30,true,Area manager
+AU-007,S06,2026-01-05,visual merchandising,70.20,false,Area manager
+AU-008,S06,2026-01-26,cash handling,81.40,true,Area manager
+AU-009,S07,2026-01-07,health and safety,76.50,false,External auditor
+AU-010,S07,2026-01-11,visual merchandising,75.30,false,Area manager
+AU-011,S07,2026-01-15,cash handling,62.60,false,Area manager
+AU-012,S04,2026-02-24,health and safety,98.10,true,Area manager
+AU-013,S04,2026-02-18,visual merchandising,76.80,false,External auditor
+AU-014,S04,2026-02-15,cash handling,65.50,false,External auditor
+AU-015,S06,2026-02-16,health and safety,98.40,true,Area manager
+AU-016,S07,2026-02-17,visual merchandising,62.10,false,Area manager
+AU-017,S03,2026-03-24,cash handling,93.10,true,Area manager
+AU-018,S04,2026-03-12,visual merchandising,88.50,true,External auditor
+AU-019,S04,2026-03-12,cash handling,66.30,false,Area manager
+AU-020,S06,2026-03-13,health and safety,81.70,true,Area manager
+AU-021,S06,2026-03-11,cash handling,92.00,true,External auditor
+AU-022,S07,2026-03-06,health and safety,84.40,true,Area manager
+AU-023,S07,2026-03-15,visual merchandising,70.30,false,External auditor
+AU-024,S01,2026-04-15,health and safety,88.20,true,Area manager
+AU-025,S01,2026-04-05,cash handling,75.60,false,External auditor
+AU-026,S04,2026-04-14,visual merchandising,69.10,false,External auditor
+AU-027,S04,2026-04-10,cash handling,71.50,false,Area manager
+AU-028,S06,2026-04-25,health and safety,83.80,true,External auditor
+AU-029,S06,2026-04-22,cash handling,71.10,false,Area manager

@@ -1,0 +1,9 @@
+campaign_id,campaign_name,channel,start_date,end_date,budget,objective,category,promo_code
+CMP-01,New year refresh,email,2026-01-02,2026-01-31,400.00,Retention,,
+CMP-02,Winter lighting,social,2026-01-10,2026-02-15,650.00,Awareness,Lighting,
+CMP-03,Brand search,search,2026-01-01,2026-04-30,1200.00,Acquisition,,
+CMP-04,Kitchen essentials,display,2026-02-01,2026-02-28,350.00,Acquisition,Kitchen,
+CMP-05,Spring textiles,email,2026-04-01,2026-04-30,300.00,Promotion,Textiles,SPRING10
+CMP-06,Spring textiles social,social,2026-04-01,2026-04-30,550.00,Promotion,Textiles,SPRING10
+CMP-07,France launch,search,2026-03-02,2026-04-30,900.00,Acquisition,,
+CMP-08,Furniture showcase,display,2026-03-01,2026-03-31,450.00,Awareness,Furniture,

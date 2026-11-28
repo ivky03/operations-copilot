@@ -43,6 +43,9 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "f
 "datagen/**" = ["S311"]
 # CSV fixtures must stay one row per line to remain readable as tables.
 "tests/test_oracle.py" = ["E501"]
+# Stage C table and document definitions: one row or sentence per line reads as data.
+"datagen/stage_c.py" = ["S311", "E501"]
+"datagen/stage_c_docs.py" = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

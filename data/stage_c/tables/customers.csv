@@ -1,0 +1,230 @@
+customer_id,country,signup_date,signup_channel,marketing_opt_in,segment_code,home_store_id,lifetime_value
+C1001,Germany,2021-11-20,online,true,REG,S05,1028.07
+C1002,Germany,2021-07-12,store,false,NEW,S04,782.95
+C1005,Netherlands,2021-11-29,store,true,REG,S06,928.95
+C1008,Germany,2020-08-25,store,true,NEW,S04,627.41
+C1012,Germany,2024-05-25,online,true,NEW,S05,776.47
+C1014,United Kingdom,2022-05-28,store,true,REG,S01,564.80
+C1015,United Kingdom,2022-09-27,online,false,NEW,S02,900.04
+C1017,Germany,2020-03-12,store,true,NEW,S04,704.00
+C1019,United Kingdom,2021-12-11,store,false,NEW,S01,531.74
+C1022,Germany,2023-07-28,online,true,NEW,S05,666.43
+C1024,France,2024-10-04,online,false,REG,S08,598.33
+C1025,United Kingdom,2022-01-13,store,true,B2B,S01,580.18
+C1027,Germany,2023-10-03,store,false,REG,S04,302.49
+C1028,United Kingdom,2024-01-24,online,true,REG,S02,673.92
+C1030,Germany,2025-04-06,store,true,REG,S04,892.17
+C1031,Germany,2024-02-25,online,false,NEW,S05,577.77
+C1034,United Kingdom,2025-04-10,store,true,NEW,S01,285.68
+C1036,United Kingdom,2024-08-08,store,true,REG,S01,877.98
+C1037,Ireland,2021-07-07,store,true,NEW,S03,175.38
+C1038,Germany,2024-12-24,online,true,REG,S05,429.00
+C1043,Germany,2020-01-30,store,false,REG,S04,360.56
+C1044,Germany,2020-05-09,online,true,NEW,S05,239.87
+C1048,United Kingdom,2022-01-05,store,true,NEW,S01,174.73
+C1049,Germany,2024-05-23,online,true,NEW,S05,320.81
+C1050,Netherlands,2021-06-05,store,true,REG,S06,769.66
+C1052,Netherlands,2021-05-05,store,true,REG,S06,811.34
+C1055,Germany,2021-11-13,online,true,NEW,S05,185.40
+C1057,United Kingdom,2023-07-10,online,true,REG,S02,624.50
+C1060,Ireland,2021-06-22,store,true,REG,S03,790.54
+C1067,Germany,2024-12-29,online,false,NEW,S05,252.20
+C1069,France,2020-11-12,online,false,B2B,S08,378.61
+C1070,United Kingdom,2022-10-24,online,true,NEW,S02,795.10
+C1072,United Kingdom,2020-11-17,store,false,NEW,S01,614.31
+C1073,Germany,2020-06-02,online,false,REG,S05,644.71
+C1074,France,2023-09-22,online,true,NEW,S08,895.27
+C1076,Germany,2022-06-07,online,false,NEW,S05,127.21
+C1077,France,2022-12-25,online,false,NEW,S08,232.03
+C1078,Germany,2023-11-24,store,false,REG,S04,429.99
+C1079,United Kingdom,2021-04-04,online,true,NEW,S02,919.24
+C1080,Germany,2022-05-25,store,true,NEW,S04,224.34
+C1082,United Kingdom,2022-10-05,online,false,REG,S02,1091.36
+C1084,France,2020-11-23,online,true,NEW,S08,362.53
+C1085,Spain,2024-10-22,store,true,REG,S07,498.68
+C1087,France,2025-03-15,online,true,REG,S08,811.71
+C1088,United Kingdom,2020-02-15,store,true,NEW,S01,521.29
+C1089,France,2025-12-22,online,false,NEW,S08,253.79
+C1090,France,2022-07-08,online,true,NEW,S08,470.45
+C1097,United Kingdom,2022-06-06,online,true,NEW,S02,552.83
+C1098,United Kingdom,2021-07-07,online,false,REG,S02,1005.01
+C1099,Germany,2024-07-16,online,false,B2B,S05,718.07
+C1100,Germany,2020-11-11,online,false,REG,S05,963.16
+C1101,Germany,2023-11-22,store,true,REG,S04,218.43
+C1104,Netherlands,2025-02-04,store,false,REG,S06,727.52
+C1106,United Kingdom,2023-03-22,online,true,NEW,S02,727.44
+C1108,Spain,2023-01-27,store,false,NEW,S07,289.57
+C1109,United Kingdom,2022-12-05,online,false,NEW,S02,768.43
+C1110,Germany,2020-12-10,online,true,NEW,S05,456.03
+C1111,Germany,2022-01-12,online,false,NEW,S05,1029.20
+C1112,Germany,2025-09-09,online,false,REG,S05,312.45
+C1113,United Kingdom,2024-11-08,online,true,NEW,S02,427.00
+C1115,United Kingdom,2024-07-31,online,true,NEW,S02,967.76
+C1118,Germany,2021-12-26,online,false,NEW,S05,694.58
+C1119,Germany,2023-02-14,online,true,REG,S05,559.77
+C1120,Spain,2025-06-12,store,true,REG,S07,830.65
+C1122,United Kingdom,2024-06-24,store,true,NEW,S01,562.73
+C1123,United Kingdom,2021-01-24,store,false,NEW,S01,542.45
+C1124,France,2021-08-13,online,true,NEW,S08,388.79
+C1126,Germany,2020-02-16,online,true,NEW,S05,624.85
+C1130,Germany,2022-12-28,online,false,NEW,S05,858.16
+C1134,Germany,2020-09-20,online,false,REG,S05,1012.43
+C1136,Germany,2021-04-25,online,false,NEW,S05,593.44
+C1141,Germany,2023-10-14,online,true,REG,S05,690.48
+C1142,Germany,2022-09-19,online,false,REG,S05,1386.12
+C1145,Germany,2022-10-11,online,true,NEW,S05,258.61
+C1147,Ireland,2020-03-26,store,true,REG,S03,937.92
+C1148,Germany,2021-04-20,online,true,NEW,S05,930.58
+C1150,United Kingdom,2025-09-28,online,true,REG,S02,443.24
+C1153,United Kingdom,2022-11-14,online,true,REG,S02,958.19
+C1154,United Kingdom,2020-03-17,online,true,NEW,S02,172.52
+C1155,Ireland,2022-07-10,store,true,NEW,S03,499.76
+C1156,United Kingdom,2023-04-10,online,false,NEW,S02,1033.35
+C1157,Germany,2024-09-23,store,false,NEW,S04,854.74
+C1160,France,2020-06-03,online,true,NEW,S08,922.29
+C1161,Germany,2022-03-07,online,true,NEW,S05,650.99
+C1169,United Kingdom,2021-02-27,online,true,NEW,S02,988.62
+C1170,Germany,2020-12-11,online,true,REG,S05,215.58
+C1171,United Kingdom,2023-04-23,online,true,B2B,S02,610.70
+C1174,Germany,2022-06-10,store,true,NEW,S04,382.36
+C1175,Germany,2024-12-31,online,false,NEW,S05,471.52
+C2000,Ireland,2022-01-25,store,true,LAP,S03,343.63
+C2001,Spain,2026-01-31,store,true,LAP,S07,135.56
+C2002,United Kingdom,2021-01-23,online,true,LAP,S02,446.90
+C2003,United Kingdom,2024-03-25,store,false,LAP,S01,517.72
+C2004,United Kingdom,2024-05-07,online,true,LAP,S02,895.23
+C2005,Netherlands,2026-03-17,store,false,LAP,S06,725.66
+C2006,Germany,2021-02-07,store,false,LAP,S04,342.41
+C2007,France,2022-12-06,online,true,LAP,S08,367.71
+C2008,Germany,2024-12-13,store,true,LAP,S04,131.59
+C2009,France,2026-01-15,online,true,LAP,S08,148.68
+C2010,France,2024-06-25,online,false,LAP,S08,273.39
+C2011,Germany,2026-02-01,store,true,LAP,S04,71.40
+C2012,Ireland,2024-04-17,store,false,LAP,S03,821.67
+C2013,Germany,2026-04-19,store,true,LAP,S04,297.55
+C2014,United Kingdom,2022-10-10,online,true,LAP,S02,370.52
+C2015,Germany,2026-03-14,online,false,LAP,S05,680.43
+C2016,Germany,2023-06-14,store,false,LAP,S04,307.22
+C2017,France,2025-05-28,online,true,LAP,S08,54.06
+C2018,Germany,2026-02-16,store,true,LAP,S04,814.76
+C2019,Spain,2026-01-21,store,false,LAP,S07,69.90
+C2020,United Kingdom,2020-12-11,store,false,LAP,S01,803.26
+C2021,United Kingdom,2026-01-16,online,true,LAP,S02,115.66
+C2022,United Kingdom,2026-03-19,online,true,LAP,S02,387.12
+C2023,France,2022-06-19,online,true,LAP,S08,798.32
+C2024,Ireland,2026-04-18,store,true,LAP,S03,432.05
+C2025,Germany,2026-03-17,store,true,LAP,S04,222.63
+C2026,Germany,2021-10-13,store,false,B2B,S04,849.20
+C2027,United Kingdom,2024-07-17,online,false,LAP,S02,570.23
+C2028,Spain,2026-01-04,store,true,LAP,S07,201.06
+C2029,Ireland,2020-10-24,store,false,LAP,S03,493.96
+C2030,United Kingdom,2022-02-18,store,false,LAP,S01,312.56
+C2031,Germany,2026-04-04,store,true,LAP,S04,477.19
+C2032,France,2026-03-04,online,true,LAP,S08,297.81
+C2033,Ireland,2025-03-11,store,false,LAP,S03,502.92
+C2034,United Kingdom,2026-03-03,online,true,LAP,S02,710.30
+C2035,United Kingdom,2025-02-17,store,false,LAP,S01,102.79
+C2036,United Kingdom,2022-08-17,store,false,LAP,S01,270.09
+C2037,Germany,2021-05-30,store,false,LAP,S04,883.35
+C2038,United Kingdom,2022-02-11,store,false,LAP,S01,739.62
+C2039,Netherlands,2021-10-07,store,false,LAP,S06,678.54
+C2040,Netherlands,2024-05-30,store,false,LAP,S06,124.31
+C2041,Netherlands,2026-04-23,store,true,B2B,S06,389.08
+C2042,Spain,2026-04-04,store,true,LAP,S07,711.69
+C2043,United Kingdom,2025-01-19,online,false,LAP,S02,425.06
+C2044,United Kingdom,2026-02-08,online,false,LAP,S02,95.42
+C2045,Germany,2026-04-29,store,false,LAP,S04,256.27
+C2046,Ireland,2021-10-27,store,true,B2B,S03,67.13
+C2047,United Kingdom,2020-08-06,store,true,LAP,S01,877.31
+C2048,United Kingdom,2026-02-19,store,true,LAP,S01,91.71
+C2049,Ireland,2025-12-16,store,false,LAP,S03,233.14
+C2050,Germany,2020-09-26,online,true,LAP,S05,458.56
+C2051,Germany,2025-09-29,online,false,LAP,S05,79.96
+C2052,United Kingdom,2024-11-12,online,true,LAP,S02,739.03
+C2053,Germany,2020-08-06,online,false,LAP,S05,132.78
+C2054,France,2022-09-24,online,true,LAP,S08,733.81
+C2055,Spain,2020-02-02,store,true,LAP,S07,48.74
+C2056,Netherlands,2026-03-04,store,true,LAP,S06,617.39
+C2057,Germany,2025-08-17,store,true,LAP,S04,183.43
+C2058,Germany,2021-09-20,store,true,B2B,S04,263.01
+C2059,Spain,2026-03-27,store,true,LAP,S07,558.32
+C2060,United Kingdom,2020-07-16,online,true,LAP,S02,218.98
+C2061,Germany,2026-04-01,online,true,LAP,S05,41.78
+C2062,Germany,2020-04-10,online,true,LAP,S05,874.20
+C2063,Netherlands,2024-05-09,store,false,LAP,S06,656.46
+C2064,United Kingdom,2026-01-05,online,false,LAP,S02,591.14
+C2065,Spain,2025-03-11,store,true,LAP,S07,80.48
+C2066,Netherlands,2026-01-20,store,false,LAP,S06,668.06
+C2067,Netherlands,2020-04-18,store,true,LAP,S06,863.90
+C2068,Germany,2025-07-31,online,true,LAP,S05,662.60
+C2069,France,2020-11-06,online,true,LAP,S08,823.45
+C2070,Germany,2026-03-02,store,true,LAP,S04,479.70
+C2071,Spain,2026-03-09,store,true,LAP,S07,473.76
+C2072,United Kingdom,2021-07-27,store,false,LAP,S01,275.57
+C2073,United Kingdom,2020-09-19,online,true,LAP,S02,483.62
+C2074,Netherlands,2025-02-27,store,true,LAP,S06,724.04
+C2075,Germany,2020-07-02,store,true,B2B,S04,516.98
+C2076,Germany,2021-06-11,store,true,LAP,S04,196.38
+C2077,Ireland,2021-10-05,store,false,LAP,S03,348.72
+C2078,France,2025-03-26,online,true,LAP,S08,642.98
+C2079,Germany,2025-01-11,store,true,LAP,S04,201.57
+C2080,United Kingdom,2020-04-16,store,false,LAP,S01,340.34
+C2081,Ireland,2026-02-21,store,false,LAP,S03,160.75
+C2082,Spain,2020-09-20,store,false,LAP,S07,491.74
+C2083,United Kingdom,2023-12-22,online,false,LAP,S02,438.86
+C2084,Netherlands,2026-02-18,store,true,LAP,S06,158.14
+C2085,France,2024-10-30,online,true,LAP,S08,198.41
+C2086,United Kingdom,2022-04-10,online,true,LAP,S02,253.26
+C2087,Germany,2024-07-23,store,false,LAP,S04,477.39
+C2088,United Kingdom,2024-03-09,store,true,LAP,S01,695.68
+C2089,France,2020-07-06,online,true,LAP,S08,47.25
+C2090,France,2026-01-27,online,true,LAP,S08,485.35
+C2091,United Kingdom,2026-02-10,store,false,LAP,S01,519.88
+C2092,Netherlands,2024-12-29,store,true,LAP,S06,648.83
+C2093,Germany,2026-04-14,store,false,LAP,S04,707.29
+C2094,Germany,2022-06-03,online,true,LAP,S05,145.97
+C2095,France,2022-08-26,online,true,LAP,S08,67.55
+C2096,Spain,2026-03-08,store,true,LAP,S07,118.04
+C2097,Germany,2022-02-04,store,false,LAP,S04,144.30
+C2098,Ireland,2020-01-29,store,true,LAP,S03,339.95
+C2099,Spain,2020-08-22,store,true,LAP,S07,359.77
+C2100,Netherlands,2022-11-01,store,true,B2B,S06,285.24
+C2101,Spain,2026-01-31,store,true,LAP,S07,707.33
+C2102,Germany,2026-03-23,online,true,LAP,S05,422.73
+C2103,Ireland,2023-11-23,store,true,LAP,S03,397.50
+C2104,Spain,2026-03-19,store,true,LAP,S07,75.20
+C2105,Spain,2023-10-14,store,true,LAP,S07,4.44
+C2106,Germany,2026-04-23,online,true,B2B,S05,530.74
+C2107,Spain,2022-08-25,store,true,LAP,S07,7.65
+C2108,Germany,2026-01-25,online,true,LAP,S05,15.65
+C2109,Germany,2024-02-07,online,false,LAP,S05,22.16
+C2110,United Kingdom,2020-07-21,online,false,LAP,S02,51.36
+C2111,Netherlands,2024-01-22,store,false,LAP,S06,563.81
+C2112,United Kingdom,2026-02-21,store,true,LAP,S01,647.72
+C2113,Ireland,2026-02-13,store,true,LAP,S03,102.25
+C2114,Ireland,2024-03-18,store,true,LAP,S03,312.53
+C2115,Germany,2025-01-27,online,false,LAP,S05,564.94
+C2116,Ireland,2026-01-01,store,true,LAP,S03,389.97
+C2117,Netherlands,2025-11-02,store,false,LAP,S06,351.48
+C2118,Germany,2021-11-06,store,false,LAP,S04,95.19
+C2119,United Kingdom,2025-11-06,online,true,LAP,S02,721.18
+C2120,Ireland,2026-04-26,store,true,LAP,S03,775.66
+C2121,Germany,2023-12-07,online,false,LAP,S05,169.65
+C2122,United Kingdom,2026-01-16,online,true,LAP,S02,850.34
+C2123,Spain,2026-03-23,store,true,LAP,S07,572.42
+C2124,Germany,2023-08-20,online,true,LAP,S05,378.36
+C2125,Germany,2026-04-19,online,false,LAP,S05,237.56
+C2126,Germany,2024-07-24,online,false,LAP,S05,811.71
+C2127,Spain,2026-01-13,store,false,LAP,S07,309.85
+C2128,Netherlands,2024-09-28,store,true,LAP,S06,228.70
+C2129,Germany,2025-11-26,online,true,LAP,S05,159.79
+C2130,United Kingdom,2026-03-22,store,false,LAP,S01,242.30
+C2131,United Kingdom,2026-03-22,store,false,LAP,S01,470.62
+C2132,United Kingdom,2020-11-23,store,true,LAP,S01,554.49
+C2133,Germany,2020-05-01,online,true,B2B,S05,543.56
+C2134,France,2025-01-10,online,true,LAP,S08,755.17
+C2135,Spain,2020-07-06,store,false,LAP,S07,428.85
+C2136,Germany,2026-01-22,online,true,LAP,S05,90.88
+C2137,Germany,2026-01-21,store,false,LAP,S04,505.89
+C2138,Netherlands,2021-02-23,store,false,LAP,S06,89.02
+C2139,United Kingdom,2024-12-23,store,true,LAP,S01,821.45

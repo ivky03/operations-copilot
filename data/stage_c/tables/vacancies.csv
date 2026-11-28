@@ -1,0 +1,27 @@
+vacancy_id,store_id,job_role,opened_date,filled_date,applicants,status,salary_band
+VAC-001,S02,Sales Associate,2026-02-04,2026-03-29,27,filled,B1
+VAC-002,S01,Store Manager,2026-01-04,2026-01-28,34,filled,B3
+VAC-003,S07,Sales Associate,2026-03-17,2026-04-30,31,filled,B1
+VAC-004,S08,Stockroom Assistant,2026-03-10,2026-04-22,40,filled,B1
+VAC-005,S07,Stockroom Assistant,2026-03-28,,35,open,B1
+VAC-006,S07,Sales Associate,2026-01-12,2026-01-30,44,filled,B1
+VAC-007,S02,Stockroom Assistant,2026-02-15,2026-03-09,32,filled,B1
+VAC-008,S07,Sales Associate,2026-04-09,2026-04-24,18,filled,B1
+VAC-009,S01,Sales Associate,2026-02-19,2026-04-12,43,filled,B1
+VAC-010,S02,Visual Merchandiser,2026-03-16,2026-04-11,26,filled,B1
+VAC-011,S01,Sales Associate,2026-01-04,2026-02-24,37,filled,B1
+VAC-012,S05,Visual Merchandiser,2026-02-24,2026-03-25,37,filled,B1
+VAC-013,S05,Stockroom Assistant,2026-04-10,,50,open,B1
+VAC-014,S08,Sales Associate,2026-04-20,,37,open,B1
+VAC-015,S02,Sales Associate,2026-03-22,,30,open,B1
+VAC-016,S08,Store Manager,2026-02-21,2026-04-14,55,filled,B3
+VAC-017,S03,Sales Associate,2026-01-13,2026-02-27,26,filled,B1
+VAC-018,S05,Sales Associate,2026-03-29,2026-04-30,36,filled,B1
+VAC-019,S05,Store Manager,2026-04-10,,41,open,B3
+VAC-020,S05,Visual Merchandiser,2026-01-17,,33,withdrawn,B1
+VAC-021,S05,Sales Associate,2026-02-06,2026-03-26,15,filled,B1
+VAC-022,S04,Store Manager,2026-04-08,,43,open,B3
+VAC-023,S01,Visual Merchandiser,2026-04-11,,24,open,B1
+VAC-024,S06,Sales Associate,2026-01-30,2026-03-31,29,filled,B1
+VAC-025,S02,Sales Associate,2026-02-05,2026-03-28,46,filled,B1
+VAC-026,S03,Stockroom Assistant,2026-03-15,2026-04-29,8,filled,B1

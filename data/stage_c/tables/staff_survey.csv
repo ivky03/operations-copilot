@@ -1,0 +1,47 @@
+response_id,survey_month,store_id,engagement_score,would_recommend_employer,main_topic
+SS-001,2026-01-01,S01,3,true,Training
+SS-002,2026-01-01,S01,3,false,Workload
+SS-003,2026-01-01,S01,3,true,Training
+SS-004,2026-01-01,S03,5,true,Training
+SS-005,2026-01-01,S03,5,true,Training
+SS-006,2026-01-01,S03,4,true,Workload
+SS-007,2026-01-01,S03,4,true,Pay
+SS-008,2026-01-01,S04,4,false,Manager support
+SS-009,2026-01-01,S04,4,true,Pay
+SS-010,2026-01-01,S04,3,true,Manager support
+SS-011,2026-01-01,S04,3,false,Pay
+SS-012,2026-01-01,S05,2,false,Pay
+SS-013,2026-01-01,S05,4,true,Pay
+SS-014,2026-01-01,S06,2,false,Training
+SS-015,2026-01-01,S06,3,true,Training
+SS-016,2026-01-01,S06,2,true,Team
+SS-017,2026-01-01,S07,4,false,Training
+SS-018,2026-01-01,S07,5,false,Training
+SS-019,2026-01-01,S07,3,true,Training
+SS-020,2026-01-01,,3,true,Training
+SS-021,2026-01-01,,4,true,Team
+SS-022,2026-04-01,S01,4,false,Manager support
+SS-023,2026-04-01,S01,4,true,Team
+SS-024,2026-04-01,S01,4,true,Training
+SS-025,2026-04-01,S01,3,true,Pay
+SS-026,2026-04-01,S01,4,false,Training
+SS-027,2026-04-01,S02,5,false,Team
+SS-028,2026-04-01,S03,4,true,Pay
+SS-029,2026-04-01,S03,4,true,Manager support
+SS-030,2026-04-01,S03,4,true,Manager support
+SS-031,2026-04-01,S03,4,false,Training
+SS-032,2026-04-01,S03,3,true,Training
+SS-033,2026-04-01,S04,4,true,Training
+SS-034,2026-04-01,S04,3,false,Workload
+SS-035,2026-04-01,S04,3,false,Team
+SS-036,2026-04-01,S06,3,true,Training
+SS-037,2026-04-01,S06,3,true,Workload
+SS-038,2026-04-01,S06,5,true,Training
+SS-039,2026-04-01,S06,5,true,Training
+SS-040,2026-04-01,S07,3,true,Training
+SS-041,2026-04-01,S07,3,true,Workload
+SS-042,2026-04-01,,3,true,Training
+SS-043,2026-04-01,,3,false,Team
+SS-044,2026-04-01,,3,false,Pay
+SS-045,2026-04-01,S04,3,true,Training
+SS-046,2026-04-01,,3,true,Manager support

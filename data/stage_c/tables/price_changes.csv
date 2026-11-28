@@ -1,0 +1,10 @@
+change_id,product_id,effective_date,old_price,new_price,reason,approved_by
+PC-001,P001,2026-02-25,39.00,37.05,competitor price,Karl W.
+PC-002,P005,2026-03-20,54.00,37.80,clearance,Karl W.
+PC-003,P006,2026-02-23,9.50,6.65,clearance,Priya N.
+PC-004,P007,2026-02-08,44.00,47.52,cost increase,Amélie D.
+PC-005,P009,2026-01-26,12.00,12.96,cost increase,Karl W.
+PC-006,P010,2026-03-27,49.00,52.92,cost increase,Amélie D.
+PC-007,P011,2026-02-05,59.00,63.72,cost increase,Amélie D.
+PC-008,P015,2026-02-06,22.00,15.40,clearance,Ingrid S.
+PC-009,P023,2026-01-07,119.00,128.52,cost increase,Ingrid S.

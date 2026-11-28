@@ -1,0 +1,71 @@
+response_id,response_date,store_id,customer_id,score,survey_channel,main_topic
+NPS-0001,2026-01-04,S03,C1155,7,in_store,Product quality
+NPS-0002,2026-01-07,S05,C1055,5,email,Product quality
+NPS-0003,2026-01-09,S01,C1036,7,email,Website
+NPS-0004,2026-01-14,S02,C1079,10,email,Product quality
+NPS-0005,2026-01-16,S04,C1043,9,in_store,Delivery
+NPS-0006,2026-01-17,S03,C1147,10,in_store,Website
+NPS-0007,2026-01-25,S02,C1106,4,email,Product quality
+NPS-0008,2026-01-25,S01,,10,email,Delivery
+NPS-0009,2026-01-24,S05,C1111,6,email,Store layout
+NPS-0010,2026-01-25,S06,C1050,9,email,Website
+NPS-0011,2026-01-31,S05,C1044,6,email,Store layout
+NPS-0012,2026-01-29,S01,C1014,10,in_store,Staff
+NPS-0013,2026-02-06,S02,C1115,8,email,Delivery
+NPS-0014,2026-02-06,S03,C1037,7,in_store,Staff
+NPS-0015,2026-02-05,S07,,10,email,Website
+NPS-0016,2026-02-08,S02,,7,email,Product quality
+NPS-0017,2026-02-05,S05,,8,email,Price
+NPS-0018,2026-02-09,S05,C1110,9,email,Staff
+NPS-0019,2026-02-09,S05,C1161,7,email,Price
+NPS-0020,2026-02-14,S01,C1123,7,in_store,Store layout
+NPS-0021,2026-02-17,S05,C1100,6,email,Product quality
+NPS-0022,2026-02-19,S05,,8,email,Website
+NPS-0023,2026-03-02,S05,C1082,9,email,Website
+NPS-0024,2026-03-06,S05,C1130,10,email,Product quality
+NPS-0025,2026-03-11,S02,C1015,7,email,Staff
+NPS-0026,2026-03-07,S08,C1050,9,email,Staff
+NPS-0027,2026-03-08,S05,C1099,10,email,Staff
+NPS-0028,2026-03-11,S08,C1069,8,email,Product quality
+NPS-0029,2026-03-13,S02,,9,email,Delivery
+NPS-0030,2026-03-14,S01,C1072,6,email,Delivery
+NPS-0031,2026-03-16,S04,C1170,8,in_store,Staff
+NPS-0032,2026-03-16,S08,C1084,7,email,Delivery
+NPS-0033,2026-03-16,S02,C1112,6,email,Delivery
+NPS-0034,2026-03-17,S05,C1049,6,email,Delivery
+NPS-0035,2026-03-18,S05,C1134,5,email,Staff
+NPS-0036,2026-03-19,S01,C1019,5,email,Price
+NPS-0037,2026-03-22,S08,C1147,10,email,Store layout
+NPS-0038,2026-03-27,S05,C1038,2,email,Product quality
+NPS-0039,2026-03-27,S08,C1077,10,email,Store layout
+NPS-0040,2026-03-28,S04,C1027,10,email,Staff
+NPS-0041,2026-03-30,S08,,9,email,Product quality
+NPS-0042,2026-03-28,S05,C1087,10,email,Store layout
+NPS-0043,2026-03-30,S05,C1175,6,email,Store layout
+NPS-0044,2026-04-03,S05,C1100,10,email,Delivery
+NPS-0045,2026-04-02,S02,,8,email,Staff
+NPS-0046,2026-04-05,S02,C1060,6,email,Product quality
+NPS-0047,2026-04-04,S04,C1002,7,email,Website
+NPS-0048,2026-04-01,S02,C1150,9,email,Staff
+NPS-0049,2026-04-05,S06,C1052,8,email,Product quality
+NPS-0050,2026-04-10,S02,C1097,10,email,Price
+NPS-0051,2026-04-12,S02,C1154,7,email,Delivery
+NPS-0052,2026-04-09,S04,C1008,9,email,Website
+NPS-0053,2026-04-15,S08,C1142,7,email,Delivery
+NPS-0054,2026-04-11,S04,C1174,9,email,Staff
+NPS-0055,2026-04-16,S02,C1169,8,email,Price
+NPS-0056,2026-04-18,S01,C1088,5,email,Price
+NPS-0057,2026-04-16,S02,,10,email,Delivery
+NPS-0058,2026-04-19,S08,C1073,10,email,Price
+NPS-0059,2026-04-21,S02,C1109,7,email,Store layout
+NPS-0060,2026-04-19,S04,C1119,6,email,Price
+NPS-0061,2026-04-21,S08,C1052,7,email,Website
+NPS-0062,2026-04-27,S06,C1153,7,in_store,Staff
+NPS-0063,2026-04-25,S02,C1100,9,email,Staff
+NPS-0064,2026-04-23,S07,C1141,9,email,Delivery
+NPS-0065,2026-04-28,S02,C1120,9,email,Website
+NPS-0066,2026-04-26,S05,,7,email,Delivery
+NPS-0067,2026-04-29,S08,C1160,6,email,Staff
+NPS-0068,2026-04-26,S01,C1085,8,in_store,Product quality
+NPS-0069,2026-04-26,S08,C1124,9,email,Staff
+NPS-0072,2026-04-29,S01,C1025,10,in_store,Store layout

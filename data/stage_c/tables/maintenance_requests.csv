@@ -1,0 +1,131 @@
+request_id,store_id,opened_date,closed_date,category,priority,contractor,cost,status
+MR-001,S04,2026-03-30,2026-04-18,lighting,low,Tekhelp,838.62,closed
+MR-002,S07,2026-02-25,2026-03-20,lighting,low,BrightFix,1364.16,closed
+MR-003,S06,2026-02-20,2026-02-24,doors and locks,urgent,BrightFix,957.12,closed
+MR-004,S06,2026-04-24,,IT,normal,PipeRight,,open
+MR-005,S07,2026-01-15,2026-01-26,HVAC,normal,Klimaservice GmbH,1649.56,closed
+MR-006,S03,2026-03-23,2026-04-14,lighting,low,PipeRight,729.53,closed
+MR-007,S01,2026-04-22,,plumbing,normal,BrightFix,,open
+MR-008,S07,2026-02-21,2026-03-03,lighting,normal,Tekhelp,1274.35,closed
+MR-009,S03,2026-02-27,2026-03-07,lighting,normal,ShopFit Europe,1272.55,closed
+MR-010,S03,2026-02-23,2026-02-26,lighting,urgent,PipeRight,605.70,closed
+MR-011,S04,2026-03-23,2026-04-06,doors and locks,normal,PipeRight,2303.40,closed
+MR-012,S06,2026-03-09,2026-03-12,fixtures,urgent,ShopFit Europe,1980.79,closed
+MR-013,S04,2026-04-11,2026-04-25,HVAC,normal,Klimaservice GmbH,333.25,closed
+MR-014,S07,2026-03-27,2026-03-30,IT,urgent,ShopFit Europe,183.03,closed
+MR-015,S01,2026-04-24,,HVAC,normal,PipeRight,,open
+MR-016,S07,2026-01-23,2026-02-02,fixtures,urgent,Klimaservice GmbH,2391.35,closed
+MR-017,S04,2026-01-04,2026-01-21,doors and locks,normal,ShopFit Europe,1780.25,closed
+MR-018,S07,2026-02-06,2026-02-21,fixtures,normal,Klimaservice GmbH,1015.53,closed
+MR-019,S04,2026-04-15,2026-04-26,fixtures,normal,Tekhelp,334.65,closed
+MR-020,S01,2026-01-06,2026-01-21,plumbing,normal,Klimaservice GmbH,345.72,closed
+MR-021,S01,2026-03-15,2026-03-30,HVAC,normal,PipeRight,2086.68,closed
+MR-022,S07,2026-04-08,2026-04-09,IT,urgent,BrightFix,1452.62,closed
+MR-023,S03,2026-02-04,2026-02-16,IT,normal,ShopFit Europe,2109.54,closed
+MR-024,S03,2026-01-23,2026-02-19,doors and locks,low,ShopFit Europe,1477.91,closed
+MR-025,S03,2026-03-08,2026-03-27,fixtures,low,ShopFit Europe,1391.51,closed
+MR-026,S07,2026-01-22,2026-02-03,HVAC,normal,Tekhelp,1810.25,closed
+MR-027,S03,2026-03-04,2026-03-20,lighting,normal,PipeRight,1930.31,closed
+MR-028,S03,2026-03-31,2026-04-13,IT,normal,Tekhelp,228.97,closed
+MR-029,S01,2026-04-14,,HVAC,low,BrightFix,,open
+MR-030,S03,2026-04-28,,doors and locks,urgent,PipeRight,,open
+MR-031,S03,2026-01-12,2026-01-19,fixtures,urgent,Klimaservice GmbH,2198.53,closed
+MR-032,S06,2026-01-22,2026-02-07,lighting,normal,ShopFit Europe,1515.25,closed
+MR-033,S04,2026-03-11,2026-03-26,doors and locks,normal,PipeRight,2366.41,closed
+MR-034,S06,2026-02-28,2026-03-03,plumbing,urgent,Klimaservice GmbH,1450.29,closed
+MR-035,S01,2026-01-27,2026-02-05,HVAC,urgent,BrightFix,498.73,closed
+MR-036,S04,2026-01-07,2026-01-22,lighting,normal,Klimaservice GmbH,2225.53,closed
+MR-037,S07,2026-02-06,2026-03-04,fixtures,low,PipeRight,550.93,closed
+MR-038,S03,2026-04-16,,doors and locks,normal,ShopFit Europe,,open
+MR-039,S06,2026-03-24,2026-04-02,lighting,normal,PipeRight,1029.59,closed
+MR-040,S04,2026-04-24,,doors and locks,low,BrightFix,,open
+MR-041,S06,2026-04-02,2026-04-11,IT,normal,BrightFix,1886.06,closed
+MR-042,S03,2026-01-22,2026-02-04,plumbing,normal,Klimaservice GmbH,775.73,closed
+MR-043,S04,2026-01-13,2026-01-28,doors and locks,normal,PipeRight,1222.15,closed
+MR-044,S03,2026-01-13,2026-01-22,doors and locks,urgent,Tekhelp,1548.17,closed
+MR-045,S03,2026-04-20,2026-04-25,fixtures,urgent,BrightFix,1751.26,closed
+MR-046,S04,2026-04-07,2026-04-16,lighting,normal,ShopFit Europe,440.66,closed
+MR-047,S03,2026-02-26,2026-03-26,fixtures,low,BrightFix,1585.91,closed
+MR-048,S07,2026-03-20,2026-04-05,IT,normal,Tekhelp,1434.03,closed
+MR-049,S07,2026-03-03,2026-03-11,HVAC,normal,Klimaservice GmbH,894.81,closed
+MR-050,S03,2026-02-07,2026-02-20,HVAC,normal,Klimaservice GmbH,2001.65,closed
+MR-051,S01,2026-03-12,2026-03-13,lighting,urgent,Tekhelp,1603.93,closed
+MR-052,S06,2026-02-28,2026-03-22,doors and locks,low,BrightFix,2327.16,closed
+MR-053,S07,2026-03-01,2026-03-10,IT,normal,BrightFix,982.53,closed
+MR-054,S07,2026-01-01,2026-01-25,lighting,low,PipeRight,345.58,closed
+MR-055,S07,2026-02-14,2026-02-21,HVAC,urgent,Tekhelp,428.59,closed
+MR-056,S04,2026-04-19,2026-04-23,lighting,urgent,ShopFit Europe,2095.77,closed
+MR-057,S03,2026-03-03,2026-03-29,lighting,low,BrightFix,252.91,closed
+MR-058,S04,2026-03-27,2026-04-09,lighting,normal,PipeRight,2062.92,closed
+MR-059,S06,2026-02-05,2026-02-21,plumbing,normal,ShopFit Europe,1704.78,closed
+MR-060,S07,2026-04-13,2026-04-29,doors and locks,normal,PipeRight,937.60,closed
+MR-061,S04,2026-02-08,2026-02-12,HVAC,urgent,Klimaservice GmbH,1526.29,closed
+MR-062,S01,2026-03-08,2026-03-20,IT,normal,Tekhelp,543.70,closed
+MR-063,S04,2026-03-09,2026-03-28,HVAC,low,Klimaservice GmbH,1119.74,closed
+MR-064,S04,2026-04-24,,lighting,normal,Tekhelp,,open
+MR-065,S04,2026-04-14,2026-04-30,IT,normal,ShopFit Europe,1633.76,closed
+MR-066,S07,2026-03-26,2026-04-05,doors and locks,urgent,Tekhelp,1385.79,closed
+MR-067,S03,2026-01-02,2026-01-18,fixtures,normal,PipeRight,1550.58,closed
+MR-068,S07,2026-04-21,2026-04-27,IT,urgent,PipeRight,844.09,closed
+MR-069,S01,2026-03-25,2026-04-06,plumbing,normal,Klimaservice GmbH,1750.76,closed
+MR-070,S01,2026-02-17,2026-03-01,fixtures,normal,PipeRight,1684.23,closed
+MR-071,S07,2026-01-18,2026-01-28,doors and locks,normal,ShopFit Europe,81.60,closed
+MR-072,S04,2026-03-04,2026-03-05,plumbing,urgent,PipeRight,1228.98,closed
+MR-073,S03,2026-02-07,2026-02-15,IT,normal,Klimaservice GmbH,1293.24,closed
+MR-074,S01,2026-04-28,,lighting,urgent,PipeRight,,open
+MR-075,S03,2026-03-27,2026-04-05,fixtures,normal,BrightFix,121.59,closed
+MR-076,S06,2026-02-26,2026-03-26,fixtures,low,BrightFix,224.39,closed
+MR-077,S03,2026-03-04,2026-03-13,IT,urgent,ShopFit Europe,758.74,closed
+MR-078,S01,2026-03-07,2026-03-22,IT,normal,ShopFit Europe,2393.27,closed
+MR-079,S04,2026-04-01,2026-04-02,doors and locks,urgent,PipeRight,1950.38,closed
+MR-080,S03,2026-02-11,2026-02-13,IT,urgent,PipeRight,1528.03,closed
+MR-081,S07,2026-02-06,2026-02-19,doors and locks,normal,BrightFix,813.02,closed
+MR-082,S07,2026-04-06,2026-04-08,doors and locks,urgent,Tekhelp,590.08,closed
+MR-083,S04,2026-03-26,2026-04-16,HVAC,low,ShopFit Europe,525.27,closed
+MR-084,S06,2026-01-23,2026-01-29,lighting,urgent,ShopFit Europe,1927.59,closed
+MR-085,S07,2026-04-06,2026-04-17,lighting,normal,PipeRight,602.32,closed
+MR-086,S04,2026-03-24,2026-04-02,plumbing,normal,ShopFit Europe,2241.57,closed
+MR-087,S03,2026-03-14,2026-03-25,fixtures,normal,ShopFit Europe,266.23,closed
+MR-088,S01,2026-03-28,2026-04-07,IT,urgent,Klimaservice GmbH,1269.23,closed
+MR-089,S06,2026-02-05,2026-02-21,HVAC,normal,BrightFix,2113.20,closed
+MR-090,S06,2026-03-21,2026-04-04,plumbing,normal,Tekhelp,1438.80,closed
+MR-091,S04,2026-04-30,,fixtures,low,Tekhelp,,open
+MR-092,S03,2026-02-11,2026-02-17,doors and locks,urgent,Tekhelp,1428.73,closed
+MR-093,S01,2026-03-28,2026-04-14,fixtures,normal,PipeRight,868.78,closed
+MR-094,S03,2026-02-10,2026-03-04,fixtures,low,ShopFit Europe,1986.55,closed
+MR-095,S01,2026-02-20,2026-03-01,fixtures,normal,ShopFit Europe,1157.44,closed
+MR-096,S07,2026-02-05,2026-02-20,fixtures,normal,ShopFit Europe,1274.53,closed
+MR-097,S06,2026-04-08,,IT,low,Klimaservice GmbH,,open
+MR-098,S04,2026-01-30,2026-02-18,doors and locks,low,ShopFit Europe,611.93,closed
+MR-099,S04,2026-01-03,2026-01-18,fixtures,normal,BrightFix,2382.27,closed
+MR-100,S03,2026-01-01,2026-01-26,HVAC,low,Tekhelp,2281.02,closed
+MR-101,S06,2026-02-09,2026-02-21,doors and locks,normal,Klimaservice GmbH,1068.91,closed
+MR-102,S03,2026-03-06,2026-03-23,HVAC,normal,Klimaservice GmbH,2032.15,closed
+MR-103,S01,2026-02-20,2026-03-13,fixtures,low,PipeRight,389.66,closed
+MR-104,S07,2026-03-11,2026-03-27,plumbing,normal,Klimaservice GmbH,1693.53,closed
+MR-105,S07,2026-04-17,2026-04-24,fixtures,urgent,BrightFix,1279.67,closed
+MR-106,S04,2026-04-25,,HVAC,normal,BrightFix,,open
+MR-107,S07,2026-01-17,2026-01-30,fixtures,normal,BrightFix,726.77,closed
+MR-108,S07,2026-04-07,2026-04-17,doors and locks,urgent,Tekhelp,1087.82,closed
+MR-109,S07,2026-02-28,2026-03-13,lighting,normal,BrightFix,429.55,closed
+MR-110,S01,2026-01-23,2026-02-13,HVAC,low,PipeRight,1747.30,closed
+MR-111,S06,2026-01-09,2026-01-19,plumbing,normal,PipeRight,499.09,closed
+MR-112,S04,2026-04-27,,plumbing,normal,ShopFit Europe,,open
+MR-113,S06,2026-03-15,2026-03-24,doors and locks,normal,ShopFit Europe,1425.87,closed
+MR-114,S03,2026-02-03,2026-02-09,HVAC,urgent,BrightFix,1133.93,closed
+MR-115,S01,2026-02-18,2026-03-03,plumbing,normal,ShopFit Europe,251.72,closed
+MR-116,S01,2026-02-03,2026-02-16,fixtures,normal,PipeRight,1804.40,closed
+MR-117,S06,2026-03-21,2026-04-02,fixtures,normal,ShopFit Europe,311.12,closed
+MR-118,S04,2026-03-28,2026-04-13,fixtures,normal,Klimaservice GmbH,2096.63,closed
+MR-119,S04,2026-02-21,2026-03-04,lighting,normal,Tekhelp,1702.88,closed
+MR-120,S01,2026-03-10,2026-03-26,IT,normal,ShopFit Europe,1532.42,closed
+MR-121,S04,2026-02-18,2026-02-27,plumbing,urgent,ShopFit Europe,1247.70,closed
+MR-122,S03,2026-01-05,2026-01-25,doors and locks,low,ShopFit Europe,310.57,closed
+MR-123,S01,2026-02-20,2026-03-15,plumbing,low,ShopFit Europe,236.00,closed
+MR-124,S01,2026-01-08,2026-01-25,doors and locks,normal,Klimaservice GmbH,261.60,closed
+MR-125,S06,2026-03-20,2026-03-21,plumbing,urgent,PipeRight,311.12,closed
+MR-126,S04,2026-04-12,,IT,low,Tekhelp,,open
+MR-127,S04,2026-01-26,2026-02-14,lighting,low,PipeRight,1796.98,closed
+MR-128,S07,2026-04-04,2026-04-23,plumbing,low,BrightFix,2075.40,closed
+MR-129,S03,2026-02-21,2026-03-10,doors and locks,normal,ShopFit Europe,436.94,closed
+MR-130,S04,2026-02-01,2026-02-10,HVAC,urgent,BrightFix,685.49,closed

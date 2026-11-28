@@ -7,6 +7,7 @@ descriptions for Stage B), sharing no code with the application. If both agree, 
 evidence the copilot is correct. A bug would have to be made identically twice to hide.
 
 Stage A: the four sales tables. Stage B: Stage A unchanged plus eleven operational tables.
+Stage C: Stage B plus 35 more; only the metrics its evaluation set asks about are written here.
 
 Dimensions: month (YYYY-MM) and day (YYYY-MM-DD) of the metric's own date column, plus any
 column of the metric's table or of a table it links to (stores, products, suppliers, staff).
@@ -16,6 +17,7 @@ Filters: {"month": ["2026-02", ...], "<dimension>": [values]}.
 """
 
 from dataclasses import dataclass, field
+from decimal import ROUND_HALF_UP, Decimal
 from functools import cached_property
 from pathlib import Path
 
@@ -25,6 +27,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_DATA = ROOT / "reference" / "tables"
 STAGE_B_DATA = ROOT / "stage_b" / "tables"
+STAGE_C_DATA = ROOT / "stage_c" / "tables"
 
 # ---------------------------------------------------------------------------- Stage A
 CURRENCY_METRICS = {
@@ -152,28 +155,151 @@ STAGE_B_DATE = {
     "sales_targets": "target_month",
     "budgets": "budget_month",
 }
+# ---------------------------------------------------------------------------- Stage C
+# Same shape as Stage B, written from each metric's description in datagen/stage_c.py.
+STAGE_C_SPECS = {
+    # Marketing and web
+    "media_spend": ("campaign_spend_daily", _ALL, "spend", "sum"),
+    "attributed_revenue": ("campaign_spend_daily", _ALL, "attributed_revenue", "sum"),
+    "sessions": ("web_sessions_daily", _ALL, "sessions", "sum"),
+    "web_orders": ("web_sessions_daily", _ALL, "orders", "sum"),
+    "online_revenue": ("web_sessions_daily", _ALL, "online_revenue", "sum"),
+    "emails_delivered": ("email_sends", _ALL, "delivered", "sum"),
+    "email_opens": ("email_sends", _ALL, "opens", "sum"),
+    "zero_result_searches": ("site_searches", lambda d: ~d["results_found"], "searches", "sum"),
+    "page_views": ("product_page_views", _ALL, "page_views", "sum"),
+    # Customers and loyalty
+    "customer_count": ("customers", _ALL, "customer_id", "count"),
+    "opted_in_customer_count": (
+        "customers",
+        lambda d: d["marketing_opt_in"],
+        "customer_id",
+        "count",
+    ),
+    "member_count": ("loyalty_members", _ALL, "member_id", "count"),
+    "points_redeemed": ("loyalty_points", lambda d: d["entry_type"] == "redeem", "points", "sum"),
+    "gift_card_liability": ("gift_cards", _ALL, "balance", "sum"),
+    "nps_response_count": ("nps_responses", _ALL, "response_id", "count"),
+    "promoter_count": ("nps_responses", lambda d: d["score"] >= 9, "response_id", "count"),
+    "detractor_count": ("nps_responses", lambda d: d["score"] <= 6, "response_id", "count"),
+    # Catalogue
+    "average_landed_cost": ("product_costs", _ALL, "landed_cost", "mean"),
+    "average_rating": ("product_reviews", _ALL, "rating", "mean"),
+    "price_change_count": ("price_changes", _ALL, "change_id", "count"),
+    # Store operations
+    "visitors": ("store_footfall_daily", _ALL, "visitors", "sum"),
+    "energy_cost": ("energy_usage", _ALL, "energy_cost", "sum"),
+    "incident_count": ("store_incidents", _ALL, "incident_id", "count"),
+    "maintenance_cost": ("maintenance_requests", _ALL, "cost", "sum"),
+    "failed_audit_count": ("store_audits", lambda d: ~d["passed"], "audit_id", "count"),
+    # Warehousing (stock is point in time: filter to one week)
+    "warehouse_units_available": ("warehouse_stock", _ALL, "units_available", "sum"),
+    "transfer_count": ("stock_transfers", _ALL, "transfer_id", "count"),
+    "write_off_value": ("return_inspections", _ALL, "write_off_value", "sum"),
+    # People
+    "training_overdue": (
+        "training_records",
+        lambda d: d["status"] == "overdue",
+        "record_id",
+        "count",
+    ),
+    "open_vacancy_count": ("vacancies", lambda d: d["status"] == "open", "vacancy_id", "count"),
+    "average_engagement": ("staff_survey", _ALL, "engagement_score", "mean"),
+    "overtime_pay": ("payroll", _ALL, "overtime_pay", "sum"),
+    # Finance
+    "accounting_revenue": (
+        "gl_entries",
+        lambda d: d["account_code"].astype(str) == "4000",
+        "amount",
+        "sum",
+    ),
+    "unpaid_invoice_amount": (
+        "supplier_invoices",
+        lambda d: d["status"].isin(["unpaid", "disputed"]),
+        "amount",
+        "sum",
+    ),
+    "expenses_approved": ("expenses", lambda d: d["approved"], "amount", "sum"),
+}
+STAGE_C_DERIVED = {
+    "conversion_rate": ("web_orders", "sessions"),
+    "email_open_rate": ("email_opens", "emails_delivered"),
+}
+# (promoters - detractors) / responses: three parts, so written out on its own.
+NPS = ("promoter_count", "detractor_count", "nps_response_count")
+STAGE_C_DATE = {
+    "campaign_spend_daily": "spend_date",
+    "web_sessions_daily": "session_date",
+    "email_sends": "send_date",
+    "site_searches": "search_date",
+    "product_page_views": "view_date",
+    "customers": "signup_date",
+    "loyalty_members": "joined_date",
+    "loyalty_points": "entry_date",
+    "gift_cards": "issued_date",
+    "nps_responses": "response_date",
+    "product_costs": "cost_month",
+    "product_reviews": "review_date",
+    "price_changes": "effective_date",
+    "store_footfall_daily": "footfall_date",
+    "energy_usage": "usage_month",
+    "store_incidents": "incident_date",
+    "maintenance_requests": "opened_date",
+    "store_audits": "audit_date",
+    "warehouse_stock": "snapshot_week",
+    "stock_transfers": "requested_date",
+    "return_inspections": "inspected_date",
+    "training_records": "due_date",
+    "vacancies": "opened_date",
+    "staff_survey": "survey_month",
+    "payroll": "pay_month",
+    "gl_entries": "posting_date",
+    "supplier_invoices": "invoice_date",
+    "expenses": "expense_date",
+}
+SPECS = STAGE_B_SPECS | STAGE_C_SPECS
+DERIVED = STAGE_B_DERIVED | STAGE_C_DERIVED
+DATE_COLUMN = STAGE_B_DATE | STAGE_C_DATE
+
 # key column -> the table it links to (the declared relationships)
 LINKS = {
     "store_id": "stores",
     "product_id": "products",
     "supplier_id": "suppliers",
     "employee_id": "staff",
+    "campaign_id": "marketing_campaigns",
+    "warehouse_id": "warehouses",
 }
 
-RATIO_METRICS = {"cancellation_rate", *STAGE_B_DERIVED}
+RATIO_METRICS = {"cancellation_rate", *DERIVED, "net_promoter_score"}
 COUNT_METRICS = {
     "units_sold",
     "order_count",
     "cancelled_order_count",
     "units_returned",
-    *(m for m, (_, _, _, how) in STAGE_B_SPECS.items() if how in {"count", "nunique"}),
+    *(m for m, (_, _, _, how) in SPECS.items() if how in {"count", "nunique"}),
     "units_ordered",
     "units_received",
     "units_on_hand",
     "units_on_order",
     "dashboard_orders",
+    "sessions",
+    "web_orders",
+    "emails_delivered",
+    "email_opens",
+    "zero_result_searches",
+    "page_views",
+    "points_redeemed",
+    "visitors",
+    "warehouse_units_available",
 }
-METRICS = STAGE_A_METRICS | set(STAGE_B_SPECS) | set(STAGE_B_DERIVED)
+METRICS = STAGE_A_METRICS | set(SPECS) | set(DERIVED) | {"net_promoter_score"}
+
+
+def _half_up(value, places: str) -> float:
+    """Round half up after removing float noise, so an exact tie (6.765) always rounds the same
+    way however the mean was computed."""
+    return float(Decimal(str(round(float(value), 6))).quantize(Decimal(places), ROUND_HALF_UP))
 
 
 @dataclass
@@ -194,12 +320,20 @@ class Query:
 
 
 class Oracle:
-    def __init__(self, data_dir: Path = DEFAULT_DATA, stage_b_dir: Path | None = None) -> None:
+    def __init__(
+        self,
+        data_dir: Path = DEFAULT_DATA,
+        stage_b_dir: Path | None = None,
+        stage_c_dir: Path | None = None,
+    ) -> None:
         self.data_dir = data_dir
         self.stage_b_dir = stage_b_dir
+        self.stage_c_dir = stage_c_dir
 
     @classmethod
     def for_stage(cls, stage: str) -> "Oracle":
+        if stage == "stage_c":
+            return cls(DEFAULT_DATA, STAGE_B_DATA, STAGE_C_DATA)
         return cls(DEFAULT_DATA, STAGE_B_DATA if stage == "stage_b" else None)
 
     # ------------------------------------------------------------------ Stage A (unchanged)
@@ -249,7 +383,8 @@ class Oracle:
     def _stage_b_tables(self) -> dict[str, pd.DataFrame]:
         if self.stage_b_dir is None:
             raise ValueError("this oracle has no Stage B data (use Oracle.for_stage('stage_b'))")
-        tables = {p.stem: pd.read_csv(p) for p in sorted(self.stage_b_dir.glob("*.csv"))}
+        dirs = [self.stage_b_dir] + ([self.stage_c_dir] if self.stage_c_dir else [])
+        tables = {p.stem: pd.read_csv(p) for d in dirs for p in sorted(d.glob("*.csv"))}
         tables["stores"] = pd.read_csv(self.data_dir / "stores.csv")
         tables["products"] = pd.read_csv(self.data_dir / "products.csv")
         for df in tables.values():
@@ -263,8 +398,10 @@ class Oracle:
     def _stage_b_frame(self, table: str, needed: set[str]) -> pd.DataFrame:
         tables = self._stage_b_tables
         df = tables[table].copy()
-        if table in STAGE_B_DATE:
-            when = pd.to_datetime(df[STAGE_B_DATE[table]])
+        if table not in tables:
+            raise ValueError(f"no data for table {table!r} in this stage")
+        if table in DATE_COLUMN:
+            when = pd.to_datetime(df[DATE_COLUMN[table]])
             df["month"], df["day"] = when.dt.strftime("%Y-%m"), when.dt.strftime("%Y-%m-%d")
         own = set(df.columns)
         linked = {key: LINKS[key] for key in LINKS if key in own and LINKS[key] != table}
@@ -278,7 +415,7 @@ class Oracle:
         return df
 
     def _stage_b_base(self, metric: str, q: Query) -> pd.Series:
-        table, rows, column, how = STAGE_B_SPECS[metric]
+        table, rows, column, how = SPECS[metric]
         frame = self._stage_b_frame(table, set(q.group_by) | set(q.filters))
         if rows is not None:
             frame = frame[rows(frame)]
@@ -307,8 +444,13 @@ class Oracle:
                 value = joined[num].fillna(0) / joined[den]
         elif q.metric in BASE_METRICS:
             value = self._base(q.metric, q)
-        elif q.metric in STAGE_B_DERIVED:
-            num, den = STAGE_B_DERIVED[q.metric]
+        elif q.metric == "net_promoter_score":
+            pro, det, n = NPS
+            joined = pd.concat({m: self._stage_b_base(m, q) for m in NPS}, axis=1)
+            filled = joined[[pro, det]].fillna(0)
+            value = ((filled[pro] - filled[det]) / joined[n]).replace([np.inf, -np.inf], np.nan)
+        elif q.metric in DERIVED:
+            num, den = DERIVED[q.metric]
             joined = pd.concat({m: self._stage_b_base(m, q) for m in (num, den)}, axis=1)
             value = (joined[num].fillna(0) / joined[den]).replace([np.inf, -np.inf], np.nan)
         else:
@@ -330,11 +472,11 @@ class Oracle:
         if value is None or pd.isna(value):
             row[metric] = None
         elif metric in RATIO_METRICS:
-            row[metric] = round(float(value), 4)
+            row[metric] = _half_up(value, "0.0001")
         elif metric in COUNT_METRICS:
             row[metric] = int(value)
         else:  # currency, hours, days, averages
-            row[metric] = round(float(value), 2)
+            row[metric] = _half_up(value, "0.01")
 
         def plain(v):
             if isinstance(v, float) and np.isnan(v):

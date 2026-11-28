@@ -1,0 +1,240 @@
+entry_id,posting_date,account_code,account_name,account_type,department,store_id,amount
+GL-00001,2026-01-31,4000,Sales revenue,Revenue,Commercial,S01,2420.67
+GL-00002,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S01,1022.16
+GL-00003,2026-01-31,6100,Staff costs,Operating expense,Operations,S01,8421.92
+GL-00004,2026-01-31,6200,Rent,Operating expense,Operations,S01,7860.17
+GL-00005,2026-01-31,6300,Energy,Operating expense,Operations,S01,6109.66
+GL-00006,2026-01-31,6400,Marketing,Operating expense,Marketing,S01,827.56
+GL-00007,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S01,645.60
+GL-00008,2026-01-31,6600,Delivery,Operating expense,Operations,S01,155.61
+GL-00009,2026-01-31,4000,Sales revenue,Revenue,Commercial,S02,4030.59
+GL-00010,2026-01-31,4900,Sales returns,Revenue,Commercial,S02,435.00
+GL-00011,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S02,1787.13
+GL-00012,2026-01-31,6100,Staff costs,Operating expense,Operations,S02,15379.80
+GL-00013,2026-01-31,6400,Marketing,Operating expense,Marketing,S02,1854.15
+GL-00014,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S02,634.80
+GL-00015,2026-01-31,6600,Delivery,Operating expense,Operations,S02,243.19
+GL-00016,2026-01-31,4000,Sales revenue,Revenue,Commercial,S03,2555.09
+GL-00017,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S03,1074.17
+GL-00018,2026-01-31,6100,Staff costs,Operating expense,Operations,S03,11680.37
+GL-00019,2026-01-31,6200,Rent,Operating expense,Operations,S03,8389.22
+GL-00020,2026-01-31,6300,Energy,Operating expense,Operations,S03,6381.60
+GL-00021,2026-01-31,6400,Marketing,Operating expense,Marketing,S03,2856.89
+GL-00022,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S03,1431.32
+GL-00023,2026-01-31,6600,Delivery,Operating expense,Operations,S03,137.20
+GL-00024,2026-01-31,4000,Sales revenue,Revenue,Commercial,S04,1380.24
+GL-00025,2026-01-31,4900,Sales returns,Revenue,Commercial,S04,378.00
+GL-00026,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S04,590.31
+GL-00027,2026-01-31,6100,Staff costs,Operating expense,Operations,S04,14703.30
+GL-00028,2026-01-31,6200,Rent,Operating expense,Operations,S04,7954.24
+GL-00029,2026-01-31,6300,Energy,Operating expense,Operations,S04,3716.65
+GL-00030,2026-01-31,6400,Marketing,Operating expense,Marketing,S04,1945.97
+GL-00031,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S04,263.97
+GL-00032,2026-01-31,6600,Delivery,Operating expense,Operations,S04,267.85
+GL-00033,2026-01-31,4000,Sales revenue,Revenue,Commercial,S05,2526.97
+GL-00034,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S05,1071.32
+GL-00035,2026-01-31,6100,Staff costs,Operating expense,Operations,S05,14050.27
+GL-00036,2026-01-31,6400,Marketing,Operating expense,Marketing,S05,2255.89
+GL-00037,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S05,860.59
+GL-00038,2026-01-31,6600,Delivery,Operating expense,Operations,S05,284.44
+GL-00039,2026-01-31,4000,Sales revenue,Revenue,Commercial,S06,1266.57
+GL-00040,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S06,575.98
+GL-00041,2026-01-31,6100,Staff costs,Operating expense,Operations,S06,6533.49
+GL-00042,2026-01-31,6200,Rent,Operating expense,Operations,S06,8113.53
+GL-00043,2026-01-31,6300,Energy,Operating expense,Operations,S06,3077.58
+GL-00044,2026-01-31,6400,Marketing,Operating expense,Marketing,S06,1046.56
+GL-00045,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S06,125.57
+GL-00046,2026-01-31,6600,Delivery,Operating expense,Operations,S06,119.61
+GL-00047,2026-01-31,4000,Sales revenue,Revenue,Commercial,S07,631.29
+GL-00048,2026-01-31,4100,Gift card breakage,Revenue,Commercial,S07,75.86
+GL-00049,2026-01-31,5000,Cost of goods sold,Cost of sales,Commercial,S07,278.84
+GL-00050,2026-01-31,6100,Staff costs,Operating expense,Operations,S07,7870.77
+GL-00051,2026-01-31,6200,Rent,Operating expense,Operations,S07,7146.52
+GL-00052,2026-01-31,6300,Energy,Operating expense,Operations,S07,5464.25
+GL-00053,2026-01-31,6400,Marketing,Operating expense,Marketing,S07,1602.23
+GL-00054,2026-01-31,6500,Repairs and maintenance,Operating expense,Operations,S07,548.09
+GL-00055,2026-01-31,6600,Delivery,Operating expense,Operations,S07,125.84
+GL-00056,2026-02-28,4000,Sales revenue,Revenue,Commercial,S01,1020.25
+GL-00057,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S01,464.90
+GL-00058,2026-02-28,6100,Staff costs,Operating expense,Operations,S01,7309.77
+GL-00059,2026-02-28,6200,Rent,Operating expense,Operations,S01,4735.50
+GL-00060,2026-02-28,6300,Energy,Operating expense,Operations,S01,6288.61
+GL-00061,2026-02-28,6400,Marketing,Operating expense,Marketing,S01,479.02
+GL-00062,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S01,685.70
+GL-00063,2026-02-28,6600,Delivery,Operating expense,Operations,S01,200.01
+GL-00064,2026-02-28,4000,Sales revenue,Revenue,Commercial,S02,1672.01
+GL-00065,2026-02-28,4900,Sales returns,Revenue,Commercial,S02,478.00
+GL-00066,2026-02-28,4100,Gift card breakage,Revenue,Commercial,S02,56.96
+GL-00067,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S02,713.94
+GL-00068,2026-02-28,6100,Staff costs,Operating expense,Operations,S02,11530.96
+GL-00069,2026-02-28,6400,Marketing,Operating expense,Marketing,S02,963.73
+GL-00070,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S02,351.10
+GL-00071,2026-02-28,6600,Delivery,Operating expense,Operations,S02,340.80
+GL-00072,2026-02-28,4000,Sales revenue,Revenue,Commercial,S03,512.36
+GL-00073,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S03,226.69
+GL-00074,2026-02-28,6100,Staff costs,Operating expense,Operations,S03,10785.76
+GL-00075,2026-02-28,6200,Rent,Operating expense,Operations,S03,10168.68
+GL-00076,2026-02-28,6300,Energy,Operating expense,Operations,S03,2190.19
+GL-00077,2026-02-28,6400,Marketing,Operating expense,Marketing,S03,2165.11
+GL-00078,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S03,339.36
+GL-00079,2026-02-28,6600,Delivery,Operating expense,Operations,S03,63.18
+GL-00080,2026-02-28,4000,Sales revenue,Revenue,Commercial,S04,46.72
+GL-00081,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S04,21.27
+GL-00082,2026-02-28,6100,Staff costs,Operating expense,Operations,S04,9342.85
+GL-00083,2026-02-28,6200,Rent,Operating expense,Operations,S04,10808.83
+GL-00084,2026-02-28,6300,Energy,Operating expense,Operations,S04,2824.66
+GL-00085,2026-02-28,6400,Marketing,Operating expense,Marketing,S04,310.55
+GL-00086,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S04,1119.88
+GL-00087,2026-02-28,6600,Delivery,Operating expense,Operations,S04,83.27
+GL-00088,2026-02-28,4000,Sales revenue,Revenue,Commercial,S05,7659.86
+GL-00089,2026-02-28,4900,Sales returns,Revenue,Commercial,S05,625.00
+GL-00090,2026-02-28,4100,Gift card breakage,Revenue,Commercial,S05,42.54
+GL-00091,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S05,3401.44
+GL-00092,2026-02-28,6100,Staff costs,Operating expense,Operations,S05,14826.70
+GL-00093,2026-02-28,6400,Marketing,Operating expense,Marketing,S05,2258.62
+GL-00094,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S05,158.34
+GL-00095,2026-02-28,6600,Delivery,Operating expense,Operations,S05,340.44
+GL-00096,2026-02-28,4000,Sales revenue,Revenue,Commercial,S06,284.99
+GL-00097,2026-02-28,4900,Sales returns,Revenue,Commercial,S06,279.00
+GL-00098,2026-02-28,4100,Gift card breakage,Revenue,Commercial,S06,50.77
+GL-00099,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S06,122.45
+GL-00100,2026-02-28,6100,Staff costs,Operating expense,Operations,S06,9741.48
+GL-00101,2026-02-28,6200,Rent,Operating expense,Operations,S06,8086.40
+GL-00102,2026-02-28,6300,Energy,Operating expense,Operations,S06,2993.83
+GL-00103,2026-02-28,6400,Marketing,Operating expense,Marketing,S06,1597.90
+GL-00104,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S06,375.97
+GL-00105,2026-02-28,6600,Delivery,Operating expense,Operations,S06,178.84
+GL-00106,2026-02-28,4000,Sales revenue,Revenue,Commercial,S07,2804.05
+GL-00107,2026-02-28,4900,Sales returns,Revenue,Commercial,S07,387.00
+GL-00108,2026-02-28,5000,Cost of goods sold,Cost of sales,Commercial,S07,1280.10
+GL-00109,2026-02-28,6100,Staff costs,Operating expense,Operations,S07,14404.60
+GL-00110,2026-02-28,6200,Rent,Operating expense,Operations,S07,4655.06
+GL-00111,2026-02-28,6300,Energy,Operating expense,Operations,S07,2135.58
+GL-00112,2026-02-28,6400,Marketing,Operating expense,Marketing,S07,2287.28
+GL-00113,2026-02-28,6500,Repairs and maintenance,Operating expense,Operations,S07,775.74
+GL-00114,2026-02-28,6600,Delivery,Operating expense,Operations,S07,96.00
+GL-00115,2026-03-31,4000,Sales revenue,Revenue,Commercial,S01,44.37
+GL-00116,2026-03-31,4100,Gift card breakage,Revenue,Commercial,S01,59.82
+GL-00117,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S01,19.93
+GL-00118,2026-03-31,6100,Staff costs,Operating expense,Operations,S01,7911.52
+GL-00119,2026-03-31,6200,Rent,Operating expense,Operations,S01,9160.92
+GL-00120,2026-03-31,6300,Energy,Operating expense,Operations,S01,3953.53
+GL-00121,2026-03-31,6400,Marketing,Operating expense,Marketing,S01,2814.13
+GL-00122,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S01,1263.10
+GL-00123,2026-03-31,6600,Delivery,Operating expense,Operations,S01,221.33
+GL-00124,2026-03-31,4000,Sales revenue,Revenue,Commercial,S02,4825.36
+GL-00125,2026-03-31,4900,Sales returns,Revenue,Commercial,S02,48.00
+GL-00126,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S02,2272.34
+GL-00127,2026-03-31,6100,Staff costs,Operating expense,Operations,S02,8224.79
+GL-00128,2026-03-31,6400,Marketing,Operating expense,Marketing,S02,1107.98
+GL-00129,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S02,675.01
+GL-00130,2026-03-31,6600,Delivery,Operating expense,Operations,S02,922.89
+GL-00131,2026-03-31,6100,Staff costs,Operating expense,Operations,S03,6935.92
+GL-00132,2026-03-31,6200,Rent,Operating expense,Operations,S03,10048.36
+GL-00133,2026-03-31,6300,Energy,Operating expense,Operations,S03,4009.47
+GL-00134,2026-03-31,6400,Marketing,Operating expense,Marketing,S03,1337.57
+GL-00135,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S03,1062.00
+GL-00136,2026-03-31,6600,Delivery,Operating expense,Operations,S03,170.58
+GL-00137,2026-03-31,4000,Sales revenue,Revenue,Commercial,S04,2728.08
+GL-00138,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S04,1271.61
+GL-00139,2026-03-31,6100,Staff costs,Operating expense,Operations,S04,14398.17
+GL-00140,2026-03-31,6200,Rent,Operating expense,Operations,S04,8262.42
+GL-00141,2026-03-31,6300,Energy,Operating expense,Operations,S04,4148.14
+GL-00142,2026-03-31,6400,Marketing,Operating expense,Marketing,S04,2468.84
+GL-00143,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S04,52.79
+GL-00144,2026-03-31,6600,Delivery,Operating expense,Operations,S04,85.30
+GL-00145,2026-03-31,4000,Sales revenue,Revenue,Commercial,S05,5446.67
+GL-00146,2026-03-31,4900,Sales returns,Revenue,Commercial,S05,189.00
+GL-00147,2026-03-31,4100,Gift card breakage,Revenue,Commercial,S05,45.91
+GL-00148,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S05,2500.90
+GL-00149,2026-03-31,6100,Staff costs,Operating expense,Operations,S05,8471.68
+GL-00150,2026-03-31,6400,Marketing,Operating expense,Marketing,S05,1600.74
+GL-00151,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S05,1169.47
+GL-00152,2026-03-31,6600,Delivery,Operating expense,Operations,S05,764.84
+GL-00153,2026-03-31,4000,Sales revenue,Revenue,Commercial,S06,1270.61
+GL-00154,2026-03-31,4100,Gift card breakage,Revenue,Commercial,S06,110.01
+GL-00155,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S06,558.10
+GL-00156,2026-03-31,6100,Staff costs,Operating expense,Operations,S06,9281.09
+GL-00157,2026-03-31,6200,Rent,Operating expense,Operations,S06,7599.03
+GL-00158,2026-03-31,6300,Energy,Operating expense,Operations,S06,4922.42
+GL-00159,2026-03-31,6400,Marketing,Operating expense,Marketing,S06,1262.60
+GL-00160,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S06,62.28
+GL-00161,2026-03-31,6600,Delivery,Operating expense,Operations,S06,197.59
+GL-00162,2026-03-31,4000,Sales revenue,Revenue,Commercial,S07,191.44
+GL-00163,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S07,84.67
+GL-00164,2026-03-31,6100,Staff costs,Operating expense,Operations,S07,13718.60
+GL-00165,2026-03-31,6200,Rent,Operating expense,Operations,S07,7412.43
+GL-00166,2026-03-31,6300,Energy,Operating expense,Operations,S07,5451.68
+GL-00167,2026-03-31,6400,Marketing,Operating expense,Marketing,S07,1950.47
+GL-00168,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S07,657.24
+GL-00169,2026-03-31,6600,Delivery,Operating expense,Operations,S07,151.73
+GL-00170,2026-03-31,4000,Sales revenue,Revenue,Commercial,S08,5417.69
+GL-00171,2026-03-31,5000,Cost of goods sold,Cost of sales,Commercial,S08,2454.31
+GL-00172,2026-03-31,6100,Staff costs,Operating expense,Operations,S08,11473.58
+GL-00173,2026-03-31,6400,Marketing,Operating expense,Marketing,S08,792.62
+GL-00174,2026-03-31,6500,Repairs and maintenance,Operating expense,Operations,S08,1307.13
+GL-00175,2026-03-31,6600,Delivery,Operating expense,Operations,S08,2134.65
+GL-00176,2026-04-30,4000,Sales revenue,Revenue,Commercial,S01,1960.15
+GL-00177,2026-04-30,4100,Gift card breakage,Revenue,Commercial,S01,48.24
+GL-00178,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S01,938.22
+GL-00179,2026-04-30,6100,Staff costs,Operating expense,Operations,S01,15036.97
+GL-00180,2026-04-30,6200,Rent,Operating expense,Operations,S01,8770.78
+GL-00181,2026-04-30,6300,Energy,Operating expense,Operations,S01,6098.34
+GL-00182,2026-04-30,6400,Marketing,Operating expense,Marketing,S01,307.06
+GL-00183,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S01,1066.36
+GL-00184,2026-04-30,6600,Delivery,Operating expense,Operations,S01,279.97
+GL-00185,2026-04-30,4000,Sales revenue,Revenue,Commercial,S02,3885.08
+GL-00186,2026-04-30,4900,Sales returns,Revenue,Commercial,S02,1175.20
+GL-00187,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S02,1826.04
+GL-00188,2026-04-30,6100,Staff costs,Operating expense,Operations,S02,9528.72
+GL-00189,2026-04-30,6400,Marketing,Operating expense,Marketing,S02,1801.22
+GL-00190,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S02,61.51
+GL-00191,2026-04-30,6600,Delivery,Operating expense,Operations,S02,463.04
+GL-00192,2026-04-30,6100,Staff costs,Operating expense,Operations,S03,14547.02
+GL-00193,2026-04-30,6200,Rent,Operating expense,Operations,S03,4610.34
+GL-00194,2026-04-30,6300,Energy,Operating expense,Operations,S03,5954.05
+GL-00195,2026-04-30,6400,Marketing,Operating expense,Marketing,S03,1803.52
+GL-00196,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S03,464.81
+GL-00197,2026-04-30,6600,Delivery,Operating expense,Operations,S03,57.40
+GL-00198,2026-04-30,4000,Sales revenue,Revenue,Commercial,S04,982.08
+GL-00199,2026-04-30,4900,Sales returns,Revenue,Commercial,S04,76.00
+GL-00200,2026-04-30,4100,Gift card breakage,Revenue,Commercial,S04,114.88
+GL-00201,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S04,430.89
+GL-00202,2026-04-30,6100,Staff costs,Operating expense,Operations,S04,13011.12
+GL-00203,2026-04-30,6200,Rent,Operating expense,Operations,S04,4151.92
+GL-00204,2026-04-30,6300,Energy,Operating expense,Operations,S04,4684.96
+GL-00205,2026-04-30,6400,Marketing,Operating expense,Marketing,S04,809.62
+GL-00206,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S04,293.99
+GL-00207,2026-04-30,6600,Delivery,Operating expense,Operations,S04,112.44
+GL-00208,2026-04-30,4000,Sales revenue,Revenue,Commercial,S05,3000.54
+GL-00209,2026-04-30,4900,Sales returns,Revenue,Commercial,S05,842.00
+GL-00210,2026-04-30,4100,Gift card breakage,Revenue,Commercial,S05,70.61
+GL-00211,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S05,1426.76
+GL-00212,2026-04-30,6100,Staff costs,Operating expense,Operations,S05,11113.13
+GL-00213,2026-04-30,6400,Marketing,Operating expense,Marketing,S05,2507.07
+GL-00214,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S05,1486.34
+GL-00215,2026-04-30,6600,Delivery,Operating expense,Operations,S05,634.82
+GL-00216,2026-04-30,4000,Sales revenue,Revenue,Commercial,S06,2034.59
+GL-00217,2026-04-30,4100,Gift card breakage,Revenue,Commercial,S06,12.00
+GL-00218,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S06,960.07
+GL-00219,2026-04-30,6100,Staff costs,Operating expense,Operations,S06,9682.69
+GL-00220,2026-04-30,6200,Rent,Operating expense,Operations,S06,4142.28
+GL-00221,2026-04-30,6300,Energy,Operating expense,Operations,S06,5933.03
+GL-00222,2026-04-30,6400,Marketing,Operating expense,Marketing,S06,1298.16
+GL-00223,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S06,667.63
+GL-00224,2026-04-30,6600,Delivery,Operating expense,Operations,S06,256.32
+GL-00225,2026-04-30,4000,Sales revenue,Revenue,Commercial,S07,250.39
+GL-00226,2026-04-30,4100,Gift card breakage,Revenue,Commercial,S07,27.81
+GL-00227,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S07,111.35
+GL-00228,2026-04-30,6100,Staff costs,Operating expense,Operations,S07,8562.92
+GL-00229,2026-04-30,6200,Rent,Operating expense,Operations,S07,6174.50
+GL-00230,2026-04-30,6300,Energy,Operating expense,Operations,S07,2901.88
+GL-00231,2026-04-30,6400,Marketing,Operating expense,Marketing,S07,2902.66
+GL-00232,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S07,1076.33
+GL-00233,2026-04-30,6600,Delivery,Operating expense,Operations,S07,12.90
+GL-00234,2026-04-30,4000,Sales revenue,Revenue,Commercial,S08,3827.08
+GL-00235,2026-04-30,5000,Cost of goods sold,Cost of sales,Commercial,S08,1701.87
+GL-00236,2026-04-30,6100,Staff costs,Operating expense,Operations,S08,9870.98
+GL-00237,2026-04-30,6400,Marketing,Operating expense,Marketing,S08,1010.24
+GL-00238,2026-04-30,6500,Repairs and maintenance,Operating expense,Operations,S08,1238.92
+GL-00239,2026-04-30,6600,Delivery,Operating expense,Operations,S08,1589.17

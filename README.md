@@ -31,6 +31,8 @@ The repository ships a **synthetic online-retail reference dataset** (transactio
 
 A larger **Stage B** (`data/stage_b/`) adds eleven tables around the same core: inventory, purchasing, suppliers, shipments, support tickets, staff and shifts, plus Finance-only targets and budgets. That makes 15 tables, the largest with 22,500 rows, and 21 documents, including look-alike tables that make choosing the right one harder. Administrators register new sources in the browser, and stewards publish their first versions.
 
+**Stage C** (`data/stage_c/`) grows the same company to 50 tables, 450 columns and 114 documents across seven more domains: customers and loyalty, marketing and web, catalogue, store operations, warehousing, people and finance. Nearly every common question now has a look-alike that answers something else. Revenue can be net sales, browser-tracked online revenue, campaign-attributed revenue or ledger revenue; stock can be in stores or in distribution centres; "satisfaction" can mean four different scores. Tables that record the same events are derived from each other, so they differ only in the ways real systems do. It is the data for the scale experiment: does describing every table to the model still work at 50 tables, or must the right ones be found first?
+
 ## How an answer is produced
 
 The language model **interprets** the question and **phrases** the answer. Code does everything else: it authorizes, computes and verifies.

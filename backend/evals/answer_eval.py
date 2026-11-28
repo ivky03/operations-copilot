@@ -23,6 +23,7 @@ the planner qualified with its table ("stores.store_name") is compared as "store
 
 import re
 from dataclasses import dataclass, field
+from decimal import ROUND_HALF_UP, Decimal
 
 from evals.oracle import RATIO_METRICS
 
@@ -57,9 +58,12 @@ class CaseScore:
 
 
 def _round(metric: str, value):
+    """Half up, after removing float noise: an average of exactly 6.765 is 6.77 whether it
+    arrives as 6.765 (SQL) or 6.76499999 (pandas). Plain round() would split such ties."""
     if value is None:
         return None
-    return round(float(value), 4 if metric in RATIO_METRICS else 2)
+    places = Decimal("0.0001") if metric in RATIO_METRICS else Decimal("0.01")
+    return float(Decimal(str(round(float(value), 6))).quantize(places, ROUND_HALF_UP))
 
 
 def normalise_rows(rows: list[dict], metric: str, keep: set[str] | None = None) -> list[dict]:
